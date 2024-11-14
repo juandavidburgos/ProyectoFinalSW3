@@ -11,7 +11,6 @@ app.secret_key = 'mysecretkey'  # Necesario para usar 'flash'
 # Inicializacion de la conexión MySQL ANTES de definir las rutas
 mysql = Connection.init_database(app)
 
-#TODO : Rutas y vistas HTML
 
 #Comprobar que el archivo que se esta ejecutando es el principal
 if __name__ == '__main__':

@@ -3,10 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAGINA PRINCIPAL</title>
+    <title>SGA UNICAUCA</title>
 </head>
 <body>
-    <h1> Hola esta esto es una prueba para HTML</h1>
-    <p> Que chimba esto gonorrea</p>
+    <body>
+        <div class="login-container">
+            <h2>Inicio de sesión</h2>
+            
+            <!-- Mostrar mensaje de error dinámico si es necesario -->
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+            
+            <form method="POST">
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" required>
+    
+                <label for="clave">Contraseña:</label>
+                <input type="password" id="clave" name="clave" required>
+    
+                <button type="submit">Iniciar sesión</button>
+            </form>
+        </div>
+    </body>
 </body>
 </html>

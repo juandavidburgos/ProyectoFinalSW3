@@ -1,3 +1,5 @@
+#Clase
+#*CONEXIÓN BASE DE DATOS
 from flask_mysqldb import MySQL
 #*Conexion a base de datos
 class Connection:
@@ -11,3 +13,4 @@ class Connection:
 
         #Retornar la conexión
         return MySQL(app)
+    
