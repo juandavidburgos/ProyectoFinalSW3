@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- Active: 1731345075061@@localhost@3306@bdacademic_management
 --SCRIPT SOFTWARE
 CREATE DATABASE bdacademic_management;
