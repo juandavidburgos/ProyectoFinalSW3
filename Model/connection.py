@@ -5,7 +5,7 @@ from flask_mysqldb import MySQL
 class Connection:
     @staticmethod #Se utiliza porque la funcion no necesita usar ninguna instancia de la clase
     def init_database(app):
-        #Configuración de la abse de datos
+        #Configuración de la base de datos
         app.config['MYSQL_HOST'] = 'localhost' #Servidor local
         app.config['MYSQL_USER'] = 'root' #Por defecto lo da MySQL Workbench
         app.config['MYSQL_PASSWORD'] = '1234' #Establecida al momentod e instalar MySQL Workbench
