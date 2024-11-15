@@ -3,19 +3,6 @@
 --SCRIPT SOFTWARE
 CREATE DATABASE bdacademic_management;
 USE bdacademic_management;
-
-DROP TABLE competence;
-DROP TABLE coordinator;
-DROP TABLE evaluation_criteria;
-DROP TABLE evaluator;
-DROP TABLE learning_outcome;
-DROP TABLE performance_level;
-DROP TABLE program;
-DROP TABLE rubric;
-DROP TABLE subject;
-DROP TABLE teacher;
--- TABLES
-
 --! IMPORTANTE:
 -- TODO: VERIFICAR SI LAS TABLAS A CONTINUACION ESTAN BIEN DEFINIDAS Y SI SON TODAS O FALTAN ALGUNAS
 
