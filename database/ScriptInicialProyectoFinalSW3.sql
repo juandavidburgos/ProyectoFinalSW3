@@ -159,7 +159,7 @@ alter table RESULTAAP_RUBRICA add constraint FK_RESULTAAP_RUBRICA foreign key (R
 alter table RESULTAAP_RUBRICA add constraint FK_RESULTAAP_RUBRICA2 foreign key (IDRUBRICA)
       references TBL_RUBRICA (IDRUBRICA) on delete restrict on update restrict;
 
-alter table TBL_COMPETENCIA add constraint FK_FK_COMPETENCIAPROGRAMA foreign key ()
+alter table TBL_COMPETENCIA add constraint FK_FK_COMPETENCIAPROGRAMA foreign key (COMP_IDPROGRAMA)
       references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
 
 alter table TBL_CORDINADOR add constraint FK_CORDINADOR_ASIGNATURA foreign key (ASIG_ID)
