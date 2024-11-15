@@ -31,8 +31,6 @@ drop table if exists TBL_CORDINADOR;
 
 drop table if exists TBL_DOCENTE;
 
-drop index TBL_EVALUADOR_PK on TBL_EVALUADOR;
-
 drop table if exists TBL_EVALUADOR;
 
 drop table if exists TBL_RA;
@@ -131,14 +129,6 @@ create table TBL_EVALUADOR
    EVA_CORREO           varchar(100),
    EVA_IDENTIFICACION   varchar(100),
    primary key (EVA_ID)
-);
-
-/*==============================================================*/
-/* Index: TBL_EVALUADOR_PK                                      */
-/*==============================================================*/
-create unique index TBL_EVALUADOR_PK on TBL_EVALUADOR
-(
-   
 );
 
 /*==============================================================*/
