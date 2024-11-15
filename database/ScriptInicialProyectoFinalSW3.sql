@@ -3,19 +3,6 @@
 --SCRIPT SOFTWARE
 CREATE DATABASE bdacademic_management;
 USE bdacademic_management;
-
-DROP TABLE competence;
-DROP TABLE coordinator;
-DROP TABLE evaluation_criteria;
-DROP TABLE evaluator;
-DROP TABLE learning_outcome;
-DROP TABLE performance_level;
-DROP TABLE program;
-DROP TABLE rubric;
-DROP TABLE subject;
-DROP TABLE teacher;
--- TABLES
-
 --! IMPORTANTE:
 -- TODO: VERIFICAR SI LAS TABLAS A CONTINUACION ESTAN BIEN DEFINIDAS Y SI SON TODAS O FALTAN ALGUNAS
 
@@ -27,13 +14,9 @@ drop table if exists TBL_ASIGNATURA;
 
 drop table if exists TBL_COMPETENCIA;
 
-drop index TBL_CORDINADOR_PK on TBL_CORDINADOR;
-
 drop table if exists TBL_CORDINADOR;
 
 drop table if exists TBL_DOCENTE;
-
-drop index TBL_EVALUADOR_PK on TBL_EVALUADOR;
 
 drop table if exists TBL_EVALUADOR;
 
@@ -59,7 +42,7 @@ create table ASIG_COMP_DOCENTE
 create table RESULTAAP_RUBRICA
 (
    RAP_ID               int not null,
-   IDRUBRICA            char(10) not null,
+   IDRUBRICA            int not null,
    primary key (RAP_ID, IDRUBRICA)
 );
 
@@ -82,10 +65,10 @@ create table TBL_ASIGNATURA
 create table TBL_COMPETENCIA
 (
    COMP_ID              int not null,
-   TBL_COMP_ID          int,
    COMP_DESCRIPCION     varchar(250),
    COMP_TIPO            varchar(50),
    COMP_NIVEL           varchar(50),
+   COMP_IDPROGRAMA      int,
    primary key (COMP_ID)
 );
 
@@ -107,14 +90,6 @@ create table TBL_CORDINADOR
 );
 
 /*==============================================================*/
-/* Index: TBL_CORDINADOR_PK                                     */
-/*==============================================================*/
-create unique index TBL_CORDINADOR_PK on TBL_CORDINADOR
-(
-   
-);
-
-/*==============================================================*/
 /* Table: TBL_DOCENTE                                           */
 /*==============================================================*/
 create table TBL_DOCENTE
@@ -126,6 +101,7 @@ create table TBL_DOCENTE
    DOC_APELLIDOS        varchar(100),
    DOC_IDENTIFICACION   varchar(100),
    DOC_TITULO           varchar(100),
+   DOC_CORREO           varchar(100),
    primary key (DOC_ID)
 );
 
@@ -141,14 +117,6 @@ create table TBL_EVALUADOR
    EVA_CORREO           varchar(100),
    EVA_IDENTIFICACION   varchar(100),
    primary key (EVA_ID)
-);
-
-/*==============================================================*/
-/* Index: TBL_EVALUADOR_PK                                      */
-/*==============================================================*/
-create unique index TBL_EVALUADOR_PK on TBL_EVALUADOR
-(
-   
 );
 
 /*==============================================================*/
@@ -191,23 +159,24 @@ alter table RESULTAAP_RUBRICA add constraint FK_RESULTAAP_RUBRICA foreign key (R
 alter table RESULTAAP_RUBRICA add constraint FK_RESULTAAP_RUBRICA2 foreign key (IDRUBRICA)
       references TBL_RUBRICA (IDRUBRICA) on delete restrict on update restrict;
 
-alter table TBL_COMPETENCIA add constraint FK_FK_COMPETENCIAPROGRAMA foreign key (TBL_COMP_ID)
+alter table TBL_COMPETENCIA add constraint FK_FK_COMPETENCIAPROGRAMA foreign key ()
+      references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
+
+alter table TBL_CORDINADOR add constraint FK_CORDINADOR_ASIGNATURA foreign key (ASIG_ID)
+      references TBL_ASIGNATURA (ASIG_ID) on delete restrict on update restrict;
+
+alter table TBL_CORDINADOR add constraint FK_CORDINADOR_COMPETENCIA foreign key (COMP_ID)
       references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
 
 alter table TBL_CORDINADOR add constraint FK_CORDINADOR_DOCENTE foreign key (DOC_ID)
       references TBL_DOCENTE (DOC_ID) on delete restrict on update restrict;
-
-alter table TBL_CORDINADOR add constraint FK_REFERENCE_10 foreign key (ASIG_ID)
-      references TBL_ASIGNATURA (ASIG_ID) on delete restrict on update restrict;
-
-alter table TBL_CORDINADOR add constraint FK_REFERENCE_11 foreign key (COMP_ID)
-      references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
 
 alter table TBL_RA add constraint FK_COMP_RA_PRO foreign key (COMP_ID)
       references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
 
 alter table TBL_RUBRICA add constraint FK_RUBRICA_EVALUADOR foreign key (EVA_ID)
       references TBL_EVALUADOR (EVA_ID) on delete restrict on update restrict;
+
 
 ----------------------------------------------------------------------------------------------------
 /*-- COORDINATOR TABLE
