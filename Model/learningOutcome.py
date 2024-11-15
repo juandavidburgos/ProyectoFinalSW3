@@ -1,22 +1,23 @@
 #Clase
 #*RESULTADO DE APRENDIZAJE
-class learningOutcome:
-    def __init__(self, id=None, descripcion=None, competencia_id=None):
+class LearningOutcome:
+    def __init__(self, id=None, description=None, comp_id=None):
         self.id = id
-        self.descripcion = descripcion
-        self.competencia_id = competencia_id
+        self.description = description
+        self.comp_id = comp_id
 
     def to_dict(self):
         return {
             "id": self.id,
-            "descripcion": self.descripcion,
-            "competencia_id": self.competencia_id
+            "description": self.description,
+            "comp_id": self.comp_id
         }
 
     @staticmethod
     def from_dict(data):
-        return learningOutcome(
+        return LearningOutcome(
             id=data.get("id"),
-            descripcion=data.get("descripcion"),
-            competencia_id=data.get("competencia_id")
+            description=data.get("description"),
+            comp_id=data.get("comp_id")
         )
+    

@@ -1,28 +1,28 @@
 #Clase
 #*COMPETENCIA
-class competence:
-    def __init__(self, id=None, descripcion=None, tipo=None, nivel=None, tbl_comp_id=None):
+class Competence:
+    def __init__(self, id=None, description=None, type=None, level=None, parent_id=None):
         self.id = id
-        self.descripcion = descripcion
-        self.tipo = tipo
-        self.nivel = nivel
-        self.tbl_comp_id = tbl_comp_id  # Referencia a la competencia de programa (si es una competencia de asignatura)
+        self.description = description
+        self.type = type
+        self.level = level
+        self.parent_id = parent_id
 
     def to_dict(self):
         return {
             "id": self.id,
-            "descripcion": self.descripcion,
-            "tipo": self.tipo,
-            "nivel": self.nivel,
-            "tbl_comp_id": self.tbl_comp_id  # Incluimos la referencia en el diccionario
+            "description": self.description,
+            "type": self.type,
+            "level": self.level,
+            "parent_id": self.parent_id
         }
 
     @staticmethod
     def from_dict(data):
-        return competence(
+        return Competence(
             id=data.get("id"),
-            descripcion=data.get("descripcion"),
-            tipo=data.get("tipo"),
-            nivel=data.get("nivel"),
-            tbl_comp_id=data.get("tbl_comp_id")
+            description=data.get("description"),
+            type=data.get("type"),
+            level=data.get("level"),
+            parent_id=data.get("parent_id")
         )
