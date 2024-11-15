@@ -81,7 +81,7 @@ create table TBL_COMPETENCIA
    COMP_DESCRIPCION     varchar(250),
    COMP_TIPO            varchar(50),
    COMP_NIVEL           varchar(50),
-   COMP_IDPROGRAMA      char(10),
+   COMP_IDPROGRAMA      int,
    primary key (COMP_ID)
 );
 
@@ -114,6 +114,7 @@ create table TBL_DOCENTE
    DOC_APELLIDOS        varchar(100),
    DOC_IDENTIFICACION   varchar(100),
    DOC_TITULO           varchar(100),
+   DOC_CORREO           varchar(100),
    primary key (DOC_ID)
 );
 
@@ -174,20 +175,21 @@ alter table RESULTAAP_RUBRICA add constraint FK_RESULTAAP_RUBRICA2 foreign key (
 alter table TBL_COMPETENCIA add constraint FK_FK_COMPETENCIAPROGRAMA foreign key ()
       references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
 
-alter table TBL_CORDINADOR add constraint FK_CORDINADOR_DOCENTE foreign key (DOC_ID)
-      references TBL_DOCENTE (DOC_ID) on delete restrict on update restrict;
-
-alter table TBL_CORDINADOR add constraint FK_REFERENCE_10 foreign key (ASIG_ID)
+alter table TBL_CORDINADOR add constraint FK_CORDINADOR_ASIGNATURA foreign key (ASIG_ID)
       references TBL_ASIGNATURA (ASIG_ID) on delete restrict on update restrict;
 
-alter table TBL_CORDINADOR add constraint FK_REFERENCE_11 foreign key (COMP_ID)
+alter table TBL_CORDINADOR add constraint FK_CORDINADOR_COMPETENCIA foreign key (COMP_ID)
       references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
+
+alter table TBL_CORDINADOR add constraint FK_CORDINADOR_DOCENTE foreign key (DOC_ID)
+      references TBL_DOCENTE (DOC_ID) on delete restrict on update restrict;
 
 alter table TBL_RA add constraint FK_COMP_RA_PRO foreign key (COMP_ID)
       references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
 
 alter table TBL_RUBRICA add constraint FK_RUBRICA_EVALUADOR foreign key (EVA_ID)
       references TBL_EVALUADOR (EVA_ID) on delete restrict on update restrict;
+
 
 ----------------------------------------------------------------------------------------------------
 /*-- COORDINATOR TABLE
