@@ -51,7 +51,7 @@ create table RESULTAAP_RUBRICA
 /*==============================================================*/
 create table TBL_ASIGNATURA
 (
-   ASIG_ID              int not null,
+   ASIG_ID              int not null AUTO_INCREMENT,
    ASIG_NOMBRE          varchar(100),
    ASIG_CREDITOS        int,
    ASIG_OBJETIVOS       varchar(500),
@@ -64,7 +64,7 @@ create table TBL_ASIGNATURA
 /*==============================================================*/
 create table TBL_COMPETENCIA
 (
-   COMP_ID              int not null,
+   COMP_ID              int not null AUTO_INCREMENT,
    COMP_DESCRIPCION     varchar(250),
    COMP_TIPO            varchar(50),
    COMP_NIVEL           varchar(50),
@@ -77,7 +77,7 @@ create table TBL_COMPETENCIA
 /*==============================================================*/
 create table TBL_CORDINADOR
 (
-   COR_ID               int not null,
+   COR_ID               int not null AUTO_INCREMENT,
    DOC_ID               int,
    ASIG_ID              int,
    COMP_ID              int,
@@ -94,7 +94,7 @@ create table TBL_CORDINADOR
 /*==============================================================*/
 create table TBL_DOCENTE
 (
-   DOC_ID               int not null,
+   DOC_ID               int not null AUTO_INCREMENT,
    DOC_TIPOIDENTIFICACION varchar(50),
    DOC_TIPODOCENTE      varchar(50),
    DOC_NOMBRES          varchar(100),
@@ -110,7 +110,7 @@ create table TBL_DOCENTE
 /*==============================================================*/
 create table TBL_EVALUADOR
 (
-   EVA_ID               int not null,
+   EVA_ID               int not null AUTO_INCREMENT,
    EVA_TIPOIDENTIFICACION varchar(50),
    EVA_NOMBRE           varchar(100),
    EVA_APELLIDO         varchar(100),
@@ -124,7 +124,7 @@ create table TBL_EVALUADOR
 /*==============================================================*/
 create table TBL_RA
 (
-   RAP_ID               int not null,
+   RAP_ID               int not null AUTO_INCREMENT,
    COMP_ID              int not null,
    RAP_DESCRIPCION      varchar(250),
    primary key (RAP_ID)
@@ -135,7 +135,7 @@ create table TBL_RA
 /*==============================================================*/
 create table TBL_RUBRICA
 (
-   IDRUBRICA            int not null,
+   IDRUBRICA            int not null AUTO_INCREMENT,
    EVA_ID               int,
    RUB_NOMBRE           varchar(100),
    RUB_NOTA             varchar(100),
