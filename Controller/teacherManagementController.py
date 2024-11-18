@@ -4,11 +4,6 @@ from Model.teacher import Teacher
 from Services.teacherService import TeacherService
 
 #* CONTROLADOR GESTION DE PROFESORES
-"""class TeacherManagementController:
-    def __init__(self, app):
-        # Inicializar la conexión a la base de datos usando la clase Connection
-        self.app = app"""
-
 teacher_blueprint = Blueprint('teacher_blueprint', __name__)
 teacher_service = TeacherService()
 
@@ -16,11 +11,11 @@ teacher_service = TeacherService()
 @teacher_blueprint.route('/docentes', methods=['GET'])
 def listar_profesores():
     profesores = teacher_service.obtener_profesores()
-    return render_template('profesores/listar.html', profesores=profesores)
+    return render_template('teachers/index.html', profesores=profesores)
 
 # Ruta para mostrar el formulario de agregar profesor
 @teacher_blueprint.route('/profesores/nuevo', methods=['GET', 'POST'])
-def agregar_profesor():
+def create_teacher():
     if request.method == 'POST':
         datos = request.form
         teacher_service.agregar_profesor(datos)
@@ -51,7 +46,7 @@ def editar_profesor(teId):
 
 # Ruta para eliminar un profesor
 @teacher_blueprint.route('/profesores/eliminar/<int:teId>', methods=['POST'])
-def eliminar_profesor(teId):
-    teacher_service.eliminar_profesor(teId)
+def delete_teacher(teIdentificacion):
+    teacher_service.eliminar_profesor(teIdentificacion)
     flash('Profesor eliminado exitosamente')
     return redirect(url_for('teacher_blueprint.listar_profesores'))
