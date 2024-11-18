@@ -1,5 +1,5 @@
 TITULO
-- Crear un entorno virtual (virtualenv venv)
+- Crear un entorno virtual (virtualenv venv) 
 - Instalar las dependencias (pip install -r .\dependecies.txt)
 - OPCIONAL: Instalar las siguientes extensiones:
             1. Better Comments
