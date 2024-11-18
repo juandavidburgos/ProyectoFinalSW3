@@ -13,7 +13,7 @@ teacher_blueprint = Blueprint('teacher_blueprint', __name__)
 teacher_service = TeacherService()
 
 # Ruta para listar los profesores
-@teacher_blueprint.route('/profesores', methods=['GET'])
+@teacher_blueprint.route('/docentes', methods=['GET'])
 def listar_profesores():
     profesores = teacher_service.obtener_profesores()
     return render_template('profesores/listar.html', profesores=profesores)
