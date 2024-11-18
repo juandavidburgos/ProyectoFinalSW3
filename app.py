@@ -19,4 +19,3 @@ jwt = Connection.config_JWT(app)  # Obtiene el objeto `jwt`s
 if __name__ == '__main__':
     app.run(debug=True, port= 3000) #debug = true, actualiza cada vez que hacemos cambios en el servidor
                         # Se podria poner otro parámetro: port, para definir el puerto, por defecto Flask se ejecuta en el puerto 5000
->>>>>>> 474ab0bf0988b6d99df0e17a5753b099aa1c3e51
