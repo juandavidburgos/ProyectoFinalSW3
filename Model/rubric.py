@@ -1,34 +1,43 @@
 #Clase
 #*RUBRICA
-class rubric:
-    #Constructor (__init__): Cada clase tiene un constructor que define los atributos de la entidad.
-    def __init__(self, id=None, nombre=None, nota=None, criterio_desc=None, nivel=None, evaluador_id=None):
-        self.id = id
-        self.nombre = nombre
-        self.nota = nota
-        self.criterio_desc = criterio_desc
-        self.nivel = nivel
-        self.evaluador_id = evaluador_id
+from connection import db  # Importa db desde connection.py
 
-    #Método to_dict: Convierte los atributos de la instancia en un diccionario, útil para devolver datos en formato JSON.
+class Rubric(db.Model):
+    __tablename__ = 'TBL_RUBRICA'  # Nombre de la tabla
+
+    rub_id = db.Column('IDRUBRICA', db.Integer, primary_key=True, autoincrement=True)  # ID de la rúbrica
+    evaluation_id = db.Column('EVA_ID', db.Integer, nullable=True)  # ID de evaluación
+    rub_name = db.Column('RUB_NOMBRE', db.String(100), nullable=False)  # Nombre de la rúbrica
+    rub_score = db.Column('RUB_NOTA', db.String(100), nullable=False)  # Nota de la rúbrica
+    criterion_description = db.Column('RUB_CRITERIODESC', db.String(100), nullable=True)  # Descripción del criterio
+    rub_level = db.Column('RUB_NIVEL', db.String(100), nullable=True)  # Nivel de la rúbrica
+
+    def __init__(self, evaluation_id, rub_name, rub_score, criterion_description, rub_level):
+        self.evaluation_id = evaluation_id
+        self.rub_name = rub_name
+        self.rub_score = rub_score
+        self.criterion_description = criterion_description
+        self.rub_level = rub_level
+
     def to_dict(self):
         return {
-            "id": self.id,
-            "nombre": self.nombre,
-            "nota": self.nota,
-            "criterio_desc": self.criterio_desc,
-            "nivel": self.nivel,
-            "evaluador_id": self.evaluador_id
+            "rub_id": self.rub_id,
+            "evaluation_id": self.evaluation_id,
+            "rub_name": self.rub_name,
+            "rub_score": self.rub_score,
+            "criterion_description": self.criterion_description,
+            "rub_level": self.rub_level
         }
 
     @staticmethod
-    #Método from_dict: Método estático para crear una instancia de la clase a partir de un diccionario de datos (por ejemplo, cuando se recibe una solicitud JSON en la API).
     def from_dict(data):
-        return rubric(
-            id=data.get("id"),
-            nombre=data.get("nombre"),
-            nota=data.get("nota"),
-            criterio_desc=data.get("criterio_desc"),
-            nivel=data.get("nivel"),
-            evaluador_id=data.get("evaluador_id")
+        return Rubric(
+            rub_id=data.get("rub_id"),
+            evaluation_id=data.get("evaluation_id"),
+            rub_name=data.get("rub_name"),
+            rub_score=data.get("rub_score"),
+            criterion_description=data.get("criterion_description"),
+            rub_level=data.get("rub_level")
         )
+
+    

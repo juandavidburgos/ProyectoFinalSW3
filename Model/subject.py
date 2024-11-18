@@ -33,6 +33,7 @@ class Subject(db.Model):
     @staticmethod
     def from_dict(data):
         return Subject(
+            id=data.get("id"),
             name=data.get("name"),
             credits=data.get("credits"),
             goals=data.get("goals"),
