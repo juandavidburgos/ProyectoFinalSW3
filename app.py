@@ -9,7 +9,10 @@ app = Flask(__name__)
 #Clave secreta
 app.secret_key = 'mysecretkey'  # Necesario para usar 'flash'
 # Inicializacion de la conexión MySQL ANTES de definir las rutas
-mysql = Connection.init_database(app)
+db = Connection.init_database(app) # Obtiene el objeto `db`
+
+# Configuración e inicialización de JWT
+jwt = Connection.config_JWT(app)  # Obtiene el objeto `jwt`s
 
 
 #Comprobar que el archivo que se esta ejecutando es el principal
