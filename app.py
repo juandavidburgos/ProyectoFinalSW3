@@ -1,7 +1,10 @@
 #Aplicacion principal
-from flask import Flask, render_template, request, redirect, url_for
-from Controller.teacherManagementController  import *
+from flask import Flask
 from Model.connection import Connection
+from Controller.teacherManagementController  import *
+from Controller.mainController import main_bp
+
+
 
 
 # Inicializacion de la aplicacion Flask
@@ -14,6 +17,8 @@ db = Connection.init_database(app) # Obtiene el objeto `db`
 # Configuración e inicialización de JWT
 jwt = Connection.config_JWT(app)  # Obtiene el objeto `jwt`s
 
+#Registro de los controladores
+app.register_blueprint(main_bp) #Controlador de la pagina principal
 
 #Comprobar que el archivo que se esta ejecutando es el principal
 if __name__ == '__main__':
