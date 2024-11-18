@@ -1,6 +1,45 @@
-/*Hola per*/
-/* soy juli
-*/
-/*Hola esto es con live share*/
-/*Hola que chimba esta mierda*/
-/*holaaa slds AD */
+.navbar{
+    background-color: rgb(131, 71, 28); 
+}
+
+.navbar-brand {
+    justify-content: center;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* Cambia la fuente */
+    font-size: 20px ;/* Ajusta el tamaño del texto */
+    color:cornsilk;
+}
+
+.navbar-brand img  {
+    align-content: center;
+    margin-top: -30px;
+    margin-bottom: -30px; /* El texto más pegado al logo */
+    margin-right: -10px;
+    margin-left: -30px;
+}
+
+.navbar-brand span {
+    margin-top: -1;
+    text-align: left; /* Centra el texto */
+    font-size: 35px;
+    letter-spacing: 10px;
+    line-height: 35px;
+}
+
+.navbar-brand:hover{
+    color: rgb(194, 165, 113)
+}
+
+.container-brand span{
+
+    justify-content: center;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* Cambia la fuente */
+    font-size: 60px ;/* Ajusta el tamaño del texto */
+    color:cornsilk;
+}
+
+.container-brand img{
+
+    align-content: center;
+    margin-bottom: -90px;
+}
+
