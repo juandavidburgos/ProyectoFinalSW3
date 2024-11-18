@@ -1,76 +1,57 @@
-from flask import jsonify, request
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from Model.connection import Connection
 from Model.teacher import Teacher
+from Services.teacherService import TeacherService
 
 #* CONTROLADOR GESTION DE PROFESORES
-class TeacherManagementController:
+"""class TeacherManagementController:
     def __init__(self, app):
         # Inicializar la conexión a la base de datos usando la clase Connection
-        self.app = app
-    
-    def create_teacher(self):
-        """Crear un nuevo profesor"""
-        data = request.json
-        teTypeIdentification = data.get("teTypeIdentification")
-        teIdentification = data.get("teIdentification")
-        teTypeTeacher = data.get("teTypeTeacher")
-        teName = data.get("teName")
-        teLastName = data.get("teLastName")
-        teLastTitle = data.get("teLastTitle")
-        teEmail = data.get("teEmail")
+        self.app = app"""
 
-        cursor = self.app.mysql.connection.cursor()
-        query = """
-            INSERT INTO TBL_Docente (teTypeIdentification, teIdentification, teTypeTeacher, teName, teLastName, teLastTitle, teEmail)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """
-        cursor.execute(query, (teTypeIdentification, teIdentification, teTypeTeacher, teName, teLastName, teLastTitle, teEmail))
-        self.app.mysql.connection.commit()
-        cursor.close()
-    
-        return jsonify({"message": "Profesor creado exitosamente"}), 201
-    
-    def update_teacher(self, teId):
-        """Actualizar un profesor existente"""
-        data = request.json
-        teTypeIdentification = data.get("teTypeIdentification")
-        teIdentification = data.get("teIdentification")
-        teTypeTeacher = data.get("teTypeTeacher")
-        teName = data.get("teName")
-        teLastName = data.get("teLastName")
-        teLastTitle = data.get("teLastTitle")
-        teEmail = data.get("teEmail")
+teacher_blueprint = Blueprint('teacher_blueprint', __name__)
+teacher_service = TeacherService()
 
-    def delete_teacher(self, teId):
-        """Eliminar un profesor existente"""
-        cursor = self.app.mysql.connection.cursor()
-        query = "DELETE FROM TBL_Docente WHERE teId = %s"
-        cursor.execute(query, (teId,))
-        self.app.mysql.connection.commit()
-        cursor.close()
-        return jsonify({"message": "Profesor eliminado exitosamente"}), 200
-    
-    def search_allTeacher(self):
-        """Obtener todos los profesores"""
-        cursor = self.app.mysql.connection.cursor()
-        query = "SELECT * FROM TBL_Docente"
-        cursor.execute(query)
-        rows = cursor.fetchall()
-        cursor.close()
-        # Convertir resultados a una lista de profesores
-        teacher_list = [Teacher(teId=row[0], teTypeIdentification=row[1], teIdentification=row[2], teTypeTeacher=row[3], teName=row[4], teLastName=row[5], teLastTitle=row[6], teEmail=row[7]).to_dict() for row in rows]
-        return jsonify(teacher_list), 200
-    
-    def search_byIdentification(self, teIdentification):
-        """Obtener un profesor por su número de identificación"""
-        cursor = self.app.mysql.connection.cursor()
-        query = "SELECT * FROM TBL_Docente WHERE teIdentification = %s"
-        cursor.execute(query, (teIdentification,))
-        row = cursor.fetchone()
-        cursor.close()
-        # Convertir resultado a un profesor
-        teacher = Teacher(teId=row[0], teTypeIdentification=row[1], teIdentification=row[2], teTypeTeacher=row[3], teName=row[4], teLastName=row[5], teLastTitle=row[6], teEmail=row[7]).to_dict()
-        return jsonify(teacher), 200
-    
+# Ruta para listar los profesores
+@teacher_blueprint.route('/profesores', methods=['GET'])
+def listar_profesores():
+    profesores = teacher_service.obtener_profesores()
+    return render_template('profesores/listar.html', profesores=profesores)
 
-    
+# Ruta para mostrar el formulario de agregar profesor
+@teacher_blueprint.route('/profesores/nuevo', methods=['GET', 'POST'])
+def agregar_profesor():
+    if request.method == 'POST':
+        datos = request.form
+        teacher_service.agregar_profesor(datos)
+        flash('Profesor agregado exitosamente')
+        return redirect(url_for('teacher_blueprint.listar_profesores'))
+    return render_template('profesores/nuevo.html')
+
+# Ruta para mostrar los detalles de un profesor
+@teacher_blueprint.route('/profesores/<int:teId>', methods=['GET'])
+def ver_profesor(teId):
+    profesor = teacher_service.obtener_profesor(teId)
+    if profesor:
+        return render_template('profesores/detalle.html', profesor=profesor)
+    else:
+        flash('Profesor no encontrado')
+        return redirect(url_for('teacher_blueprint.listar_profesores'))
+
+# Ruta para editar un profesor
+@teacher_blueprint.route('/profesores/editar/<int:teId>', methods=['GET', 'POST'])
+def editar_profesor(teId):
+    profesor = teacher_service.obtener_profesor(teId)
+    if request.method == 'POST':
+        datos = request.form
+        teacher_service.actualizar_profesor(teId, datos)
+        flash('Profesor actualizado exitosamente')
+        return redirect(url_for('teacher_blueprint.listar_profesores'))
+    return render_template('profesores/editar.html', profesor=profesor)
+
+# Ruta para eliminar un profesor
+@teacher_blueprint.route('/profesores/eliminar/<int:teId>', methods=['POST'])
+def eliminar_profesor(teId):
+    teacher_service.eliminar_profesor(teId)
+    flash('Profesor eliminado exitosamente')
+    return redirect(url_for('teacher_blueprint.listar_profesores'))
