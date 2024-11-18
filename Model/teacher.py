@@ -19,7 +19,7 @@ class Teacher(db.Model):
     __tablename__ = 'TBL_Docente'  # Nombre de la tabla en la base de datos
 
     #Se definen las columnas que tiene la tabla en la base de datos
-    teId= db.Column(db.Integer, primary_key=True, nullable=False)
+    teId= db.Column(db.Integer, primary_key=True,  autoincrement=True)
     teTypeIdentification = db.Column(db.Enum(TypeIdentification), nullable=False)
     teIdentification = db.Column(db.String(100), nullable=False)
     teTypeTeacher = db.Column(db.Enum(TypeTeacher), nullable=False)
@@ -53,17 +53,18 @@ class Teacher(db.Model):
         }
     
 #convierte un diccionario en una instancia de la clase Teacher
-def from_dict(data): #TODO: Se debe pasar el id?
-    return Teacher(
-        teId=data.get("teId"),
-        teTypeIdentification=TypeIdentification(data.get("teTypeIdentification")),
-        teIdentification=data.get("teIdentification"),
-        teTypeTeacher=TypeTeacher(data.get("teTypeTeacher")),
-        teName=data.get("teName"),
-        teLastName=data.get("teLastName"),
-        teLastTitle=data.get("teLastTitle"),
-        teEmail=data.get("teEmail")
-    )
+    @staticmethod
+    def from_dict(data): #TODO: Se debe pasar el id?
+        return Teacher(
+            teId=data.get("teId"),
+            teTypeIdentification=TypeIdentification(data.get("teTypeIdentification")),
+            teIdentification=data.get("teIdentification"),
+            teTypeTeacher=TypeTeacher(data.get("teTypeTeacher")),
+            teName=data.get("teName"),
+            teLastName=data.get("teLastName"),
+            teLastTitle=data.get("teLastTitle"),
+            teEmail=data.get("teEmail")
+        )
         
 
         
