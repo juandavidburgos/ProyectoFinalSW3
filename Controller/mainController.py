@@ -6,4 +6,5 @@ main_bp = Blueprint('main',__name__)
 #Ruta para la pagina principal
 @main_bp.route('/')
 def index():
+    
     return render_template('index.html')
