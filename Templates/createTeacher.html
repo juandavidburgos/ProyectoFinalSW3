@@ -1,0 +1,67 @@
+<!-- templates/create_steacher.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create teacher</title>
+</head>
+<body>
+    <h1>Crear Docente</h1>
+
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('teacher.create_teacher') }}" method="POST">
+        <!-- Tipo de Identificación -->
+        <label for="teTypeIdentification">Tipo de Identificación:</label>
+        <select id="teTypeIdentification" name="teTypeIdentification" required>
+            <option value="">Seleccione</option>
+            <option value="CIVILREGISTRY">Registro Civil</option>
+            <option value="TARJETAIDENTIDAD">Tarjeta de identidad</option>
+            <option value="CEDULA">Cédula</option>
+            <option value="PASAPORTE">Pasaporte</option>
+            <option value="CEDULAEXTRANJERIA">Cédula extranjeria</option>
+        </select><br><br>
+
+        <!-- Número de Identificación -->
+        <label for="teIdentification">Número de Identificación:</label>
+        <input type="text" id="teIdentification" name="teIdentification" required><br><br>
+
+        <!-- Tipo de Docente -->
+        <label for="teTypeTeacher">Tipo de Docente:</label>
+        <select id="teTypeTeacher" name="teTypeTeacher" required>
+            <option value="">Seleccione</option>
+            <option value="PLANT">Planta</option>
+            <option value="FULLTIME">Tiempo completo</option>
+            <option value="CATHEDRA">Cátedra</option>
+        </select><br><br>
+
+        <!-- Nombres -->
+        <label for="teName">Nombres:</label>
+        <input type="text" id="teName" name="teName" required><br><br>
+
+        <!-- Apellidos -->
+        <label for="teLastName">Apellidos:</label>
+        <input type="text" id="teLastName" name="teLastName" required><br><br>
+
+        <!-- Último Título -->
+        <label for="teLastTitle">Último Título:</label>
+        <input type="text" id="teLastTitle" name="teLastTitle" required><br><br>
+
+        <!-- Correo Electrónico -->
+        <label for="teEmail">Correo Electrónico:</label>
+        <input type="email" id="teEmail" name="teEmail" required><br><br>
+
+        <button type="submit">Crear Docente</button>
+    </form>
+</body>
+</html>
