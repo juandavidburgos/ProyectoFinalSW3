@@ -4,6 +4,7 @@ from Model.connection import Connection
 from Controller.teacherManagementController  import *
 from Controller.mainController import main_bp
 from Controller.subjectManagementController import subject_bp
+from Controller.teacherManagementController import teacher_blueprint
 
 
 
@@ -20,7 +21,12 @@ jwt = Connection.config_JWT(app)  # Obtiene el objeto `jwt`s
 
 #Registro de los controladores
 app.register_blueprint(main_bp) #Controlador de la pagina principal
+
+#Controlador de la gestion de asignaturas
 app.register_blueprint(subject_bp, url_prefix='/subject')
+
+#Controlador de la gestion de docentes
+app.register_blueprint(teacher_blueprint, url_prefix='/teacher')
 
 #Comprobar que el archivo que se esta ejecutando es el principal
 if __name__ == '__main__':

@@ -74,8 +74,8 @@
 
             <!-- ! #! Se usa el NOMBRE DEL CONTROLADOR, es decir el que se ledio en el primer parametro
                 ! en el blueprint (subject en este caso) para llamar la funcion del contorlador (subject.create_subject).-->
-
             <form action="{{ url_for('subject.create_subject') }}" method="POST">
+            <!--form action="{{ url_for('teacher.create_teacher') }}" method="POST"-->
                 <div class="mb-3">
                     <label for="usuario" class="form-label">Usuario</label>
                     <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ingrese su usuario" required>
@@ -85,7 +85,7 @@
                     <input type="password" class="form-control" id="clave" name="clave" placeholder="Ingrese su contraseña" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
-            </form>
+            <form>
             <!-- Mensaje de error -->
             {% if error %}
             <div class="alert alert-danger mt-3" role="alert">
