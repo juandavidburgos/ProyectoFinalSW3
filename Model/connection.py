@@ -8,7 +8,11 @@ class Connection:
     @staticmethod #Se utiliza porque la funcion no necesita usar ninguna instancia de la clase
     def init_database(app):
         # Configuración de la base de datos MySQL
+<<<<<<< HEAD
         app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/bdacademic_management' #! CAMBIAR SEGUN SU USUARIO Y CONTRASEÑA
+=======
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:admin@localhost/bdacademic_management' #! CAMBIAR SEGUN SU USUARIO Y CONTRASEÑA
+>>>>>>> 866df4863e074105c80d9828040f7a2956771f42
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Desactiva las notificaciones de cambios en SQLAlchemy
 
         # Inicialización de extensiones
