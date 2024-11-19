@@ -43,3 +43,26 @@
     margin-bottom: -90px;
 }
 
+/* Logo y Contenedor */
+.container a {
+    text-decoration: none;
+}
+
+.container a h1 {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 45px;
+    letter-spacing: 5px;
+    color: cornsilk;
+}
+
+/* Card de Inicio de Sesión */
+.card {
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+
+.card-title {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
