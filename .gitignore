@@ -1,0 +1,19 @@
+# Ignorar archivos compilados de Python
+*.pyc
+__pycache__/
+
+# Ignorar configuraciones de entorno virtual de Python
+venv/
+.env
+
+# Ignorar configuraciones específicas del sistema operativo
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Ignorar logs y temporales
+*.log
+*.tmp
+
+# Ignorar carpetas de construcción
+/build/
+/dist/
