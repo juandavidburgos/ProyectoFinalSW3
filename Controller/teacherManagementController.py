@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from Services.teacherService import TeacherService
 
 #CONTROLADOR GESTION DE Docentes
+
 #Blueprint para el controlador de docentes
 teacher_blueprint = Blueprint('teacher', __name__)
 
@@ -32,5 +33,46 @@ def create_teacher():
     #Si el metodo no es POST se muestra la vista del formulario
     return render_template('createTeacher.html')
 
+#Metodo para mostrar todos los docentes
+@teacher_blueprint.route('/search_allTeacher')
+def search_allTeacher():
+    #Se llama al servicio para obtener todos los docentes
+    teachers = TeacherService.search_allTeacher()
+    #Se muestra la vista de todos los docentes
+    return render_template('searchTeacher.html', teachers=teachers)
 
-
+#Metodo para buscar un docente por su identificación
+@teacher_blueprint.route('/search_by_identificationTeacher', methods=['GET', 'POST'])
+def search_by_identificationTeacher():
+    if request.method == 'POST':
+        #Se obtiene la identificación del formulario
+        teIdentification = request.form.get('teIdentification')
+        #Se llama al servicio
+        byIdentificationTeacher,error = TeacherService.search_by_identificationTeacher(teIdentification)
+        #En caso de que ocurra un error
+        if error:
+            #Se muestra un mensaje
+            flash(error, 'error')
+            #Se redirige a la misma pagina para intentar de nuevo
+            return redirect(url_for('teacher.searchTeacher'))
+        #En caso contrario se muestra la vista con el docente encontrado
+        return render_template('searchTeacher.html', teacher=byIdentificationTeacher)
+    return render_template('searchTeacher.html')
+    
+    #Metodo para buscar un docente por el tipo docente
+@teacher_blueprint.route('/search_by_typeTeacher', methods=['GET', 'POST'])
+def search_by_typeTeacher():
+    if request.method == 'POST':
+        #Se obtiene la identificación del formulario
+        teTypeTeacher = request.form.get('teTypeTeacher')
+        #Se llama al servicio
+        byTypeTeacher,error = TeacherService.search_by_typeTeacher(teTypeTeacher)
+        #En caso de que ocurra un error
+        if error:
+            #Se muestra un mensaje
+            flash(error, 'error')
+            #Se redirige a la misma pagina para intentar de nuevo
+            return redirect(url_for('teacher.searchTeacher'))
+        #En caso contrario se muestra la vista con el docente encontrado
+        return render_template('searchTeacher.html', teachers=byTypeTeacher)
+    return render_template('searchTeacher.html')

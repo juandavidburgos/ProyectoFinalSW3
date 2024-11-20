@@ -6,9 +6,6 @@ from Controller.mainController import main_bp
 from Controller.subjectManagementController import subject_bp
 from Controller.teacherManagementController import teacher_blueprint
 
-
-
-
 # Inicializacion de la aplicacion Flask
 app = Flask(__name__)  
 #Clave secreta

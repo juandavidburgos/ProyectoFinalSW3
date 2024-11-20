@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lista de Docentes</title>
+    </head>
+    <body>
+        <h1>Buscar Docente</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Tipo de Identificación</th>
+                    <th>Identificación</th>
+                    <th>Tipo Docente</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Último Título</th>
+                    <th>Correo Electrónico</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                    <tr>
+                        <td>{{ teacher.teTypeIdentification}}</td>
+                        <td>{{ teacher.teIdentification}}</td>
+                        <td>{{ teacher.teTypeTeacher }}</td>
+                        <td>{{ teacher.teName }}</td>
+                        <td>{{ teacher.teLastName}}</td>
+                        <td>{{ teacher.teLastTitle}}</td>
+                        <td>{{ teacher.teEmail}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
+
+
+<!-- templates/searchTeacher.html -->
+<!--<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Docente</title>
+</head>
+<body>
+    <h1>Buscar Docente por Identificación</h1>
+
+    <!-- Mostrar mensajes flash -->
+    <!--{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('teacher.search_by_identificationTeacher') }}" method="POST">
+        <label for="teIdentification">Número de Identificación:</label>
+        <input type="text" id="teIdentification" name="teIdentification" required><br><br>
+        <button type="submit">Buscar</button>
+    </form>
+    {% if teacher %}
+    <h2>Resultados de la Búsqueda:</h2>
+        <table border="1">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo de Identificación</th>
+                <th>Número de Identificación</th>
+                <th>Tipo de Docente</th>
+                <th>Último Título</th>
+                <th>Correo Electrónico</th>
+            </tr>
+            <tr>
+                <td>{{ teacher.teName }}</td>
+                <td>{{ teacher.teLastName }}</td>
+                <td>{{ teacher.teTypeIdentification }}</td>
+                <td>{{ teacher.teIdentification }}</td>
+                <td>{{ teacher.teTypeTeacher }}</td>
+                <td>{{ teacher.teLastTitle }}</td>
+                <td>{{ teacher.teEmail }}</td>
+            </tr>
+        </table>
+    {% endif %}
+</body>
+</html> -->
+
+<!-- templates/searchTeacher.html -->
+<!--<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Docente</title>
+</head>
+<body>
+    <h1>Buscar Docente por Tipo</h1>
+
+    <!-- Mostrar mensajes flash -->
+    <!--{% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('teacher.search_by_typeTeacher') }}" method="POST">
+        <label for="teTypeTeacher">Tipo de Docente:</label>
+        <select id="teTypeTeacher" name="teTypeTeacher" required>
+            <option value="">Seleccione</option>
+            <option value="PLANTA">Planta</option>
+            <option value="TIEMPOCOMPLETO">Tiempo completo</option>
+            <option value="CATEDRA">Cátedra</option>
+        </select><br><br>
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if teachers %}
+        <h2>Resultados de la Búsqueda:</h2>
+        <table border="1">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Tipo de Identificación</th>
+                <th>Número de Identificación</th>
+                <th>Tipo de Docente</th>
+                <th>Último Título</th>
+                <th>Correo Electrónico</th>
+            </tr>
+            {% for teacher in teachers %}
+            <tr>
+                <td>{{ teacher.teName }}</td>
+                <td>{{ teacher.teLastName }}</td>
+                <td>{{ teacher.teTypeIdentification }}</td>
+                <td>{{ teacher.teIdentification }}</td>
+                <td>{{ teacher.teTypeTeacher }}</td>
+                <td>{{ teacher.teLastTitle }}</td>
+                <td>{{ teacher.teEmail }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>-->
