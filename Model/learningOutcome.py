@@ -1,6 +1,6 @@
 #Clase
 #*RESULTADO DE APRENDIZAJE
-from connection import db  # Importa db desde connection.py
+from .connection import db  # Importa db desde connection.py
 
 class LearningOutcome(db.Model):
     __tablename__ = 'TBL_RA'  # Nombre de la tabla
