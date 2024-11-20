@@ -4,9 +4,8 @@ from Model.connection import Connection
 from Controller.teacherManagementController  import *
 from Controller.mainController import main_bp
 from Controller.subjectManagementController import subject_bp
-from Controller.teacherManagementController import teacher_blueprint
-
-
+from Controller.competenceManagementController import competence_bp
+from Controller.learningOutcomeManagementController import learning_outcome_bp
 
 
 # Inicializacion de la aplicacion Flask
@@ -24,7 +23,10 @@ app.register_blueprint(main_bp) #Controlador de la pagina principal
 
 #Controlador de la gestion de asignaturas
 app.register_blueprint(subject_bp, url_prefix='/subject')
-
+#Controlador de la gestion de competencias
+app.register_blueprint(competence_bp,url_prefix='/competence')
+#Controlador de la gestion de RA
+app.register_blueprint(learning_outcome_bp,url_prefix='/learning_outcome')
 #Controlador de la gestion de docentes
 app.register_blueprint(teacher_blueprint, url_prefix='/teacher')
 

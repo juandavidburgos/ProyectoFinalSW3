@@ -1,13 +1,7 @@
-<!-- templates/create_subject.html -->
+{% extends 'layout.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Subject</title>
-</head>
-<body>
+{% block body %}
+
     <h1>Create New Subject</h1>
 
     <!-- Mostrar mensajes flash -->
@@ -36,5 +30,4 @@
 
         <button type="submit">Create Subject</button>
     </form>
-</body>
-</html>
+{% end block %}
