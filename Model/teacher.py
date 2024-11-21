@@ -26,9 +26,10 @@ class Teacher(db.Model):
     teLastName = db.Column('DOC_APELLIDOS',db.String(100), nullable=False)
     teLastTitle = db.Column('DOC_TITULO',db.String(100), nullable=False)
     teEmail = db.Column('DOC_CORREO',db.String(100), nullable=False)
+    teState = db.Column('DOC_ESTADO',db.String(50), default=True)
 
     #Constructor de la clase
-    def __init__(self,teTypeIdentification=None, teIdentification=None, teTypeTeacher=None, teName=None,teLastName=None, teLastTitle=None, teEmail=None):
+    def __init__(self,teTypeIdentification=None, teIdentification=None, teTypeTeacher=None, teName=None,teLastName=None, teLastTitle=None, teEmail=None, teState = None):
         self.teTypeIdentification = teTypeIdentification
         self.teIdentification = teIdentification
         self.teTypeTeacher = teTypeTeacher
@@ -36,6 +37,7 @@ class Teacher(db.Model):
         self.teLastName = teLastName 
         self.teLastTitle = teLastTitle 
         self.teEmail = teEmail
+        self.teState = teState
 
 #convierte una instancia de la clase Teacher en un diccionario
 #Esto es util para convertir el objeto en un JSON
@@ -48,7 +50,8 @@ class Teacher(db.Model):
             "teName": self.teName,
             "teLastName": self.teLastName,
             "teLastTitle": self.teLastTitle,
-            "teEmail": self.teEmail
+            "teEmail": self.teEmail,
+            "teState": self.teState
         }
     
 #convierte un diccionario en una instancia de la clase Teacher
@@ -62,7 +65,8 @@ class Teacher(db.Model):
             teName=data.get("teName"),
             teLastName=data.get("teLastName"),
             teLastTitle=data.get("teLastTitle"),
-            teEmail=data.get("teEmail")
+            teEmail=data.get("teEmail"),
+            teState=data.get("teEstado")
         )
         
 

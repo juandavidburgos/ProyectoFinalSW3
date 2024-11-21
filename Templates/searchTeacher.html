@@ -17,6 +17,7 @@
                     <th>Apellido</th>
                     <th>Último Título</th>
                     <th>Correo Electrónico</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +30,7 @@
                         <td>{{ teacher.teLastName}}</td>
                         <td>{{ teacher.teLastTitle}}</td>
                         <td>{{ teacher.teEmail}}</td>
+                        <td>{{ teacher.teState}}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -75,6 +77,7 @@
                 <th>Tipo de Docente</th>
                 <th>Último Título</th>
                 <th>Correo Electrónico</th>
+                <th>Estado</th>
             </tr>
             <tr>
                 <td>{{ teacher.teName }}</td>
@@ -84,6 +87,7 @@
                 <td>{{ teacher.teTypeTeacher }}</td>
                 <td>{{ teacher.teLastTitle }}</td>
                 <td>{{ teacher.teEmail }}</td>
+                <td>{{ teacher.teState }}</td>
             </tr>
         </table>
     {% endif %}
@@ -134,6 +138,7 @@
                 <th>Tipo de Docente</th>
                 <th>Último Título</th>
                 <th>Correo Electrónico</th>
+                <th>Estado</th>
             </tr>
             {% for teacher in teachers %}
             <tr>
@@ -144,6 +149,7 @@
                 <td>{{ teacher.teTypeTeacher }}</td>
                 <td>{{ teacher.teLastTitle }}</td>
                 <td>{{ teacher.teEmail }}</td>
+                <td>{{ teacher.teState }}</td>
             </tr>
             {% endfor %}
         </table>

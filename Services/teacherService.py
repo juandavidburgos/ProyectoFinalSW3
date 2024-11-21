@@ -41,7 +41,8 @@ class TeacherService:
             teName=data['teName'],
             teLastName=data['teLastName'],
             teLastTitle=data['teLastTitle'],
-            teEmail=data['teEmail']
+            teEmail=data['teEmail'],
+            teState='Activo'
         )
         
         try:
