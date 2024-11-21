@@ -80,3 +80,35 @@ class TeacherService:
             return None, "No se encontraron docentes con el tipo especificado"
         except Exception as e:
             return None, f"Error al buscar al docente {str(e)}"
+    
+    @staticmethod
+    def edit_teacher(teIdentification,data):
+        
+            #Buscar el docente por su identificación
+            teacher = Teacher.query.filter_by(teIdentification=data['teIdentification']).first()
+            if not teacher:
+                return None, "Docente no encontrado"
+            
+            #Actualizar los datos del docente
+            teacher.teTypeIdentification = data['teTypeIdentification']
+            teacher.teIdentification = data['teIdentification']
+            teacher.teTypeTeacher = data['teTypeTeacher']
+            teacher.teName = data['teName']
+            teacher.teLastName = data['teLastName']
+            teacher.teLastTitle = data['teLastTitle']
+            teacher.teEmail = data['teEmail']
+            teacher.teState = data['teState']
+            db.session.commit()
+
+    """try:
+            db.session.add(new_teacher)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return None, f"Ha ocurrido un error en la base de datos: {str(e)}"
+            return teacher, None
+            
+        except Exception as e:
+            return None, f"Error al buscar al docente {str(e)}" """
+        
+       

@@ -79,13 +79,29 @@ def search_by_typeTeacher():
     return render_template('searchTeacher.html')
 
 #Metodo para editar un docente
-@teacher_blueprint.route('/edit_teacher/<string:teIdentification>', methods=['GET', 'POST'])
+@teacher_blueprint.route('/edit_teacher/<teIdentification>', methods=['GET', 'POST'])
 def edit_teacher(teIdentification):
     if request.method == 'POST':
-        teIdentification = request.form.get('teIdentification')
-        edit_teacher, error = TeacherService.edit_teacher(teIdentification)
+        # Obtener datos del formulario
+        data = request.form.to_dict()
+        print(f"Datos recibidos para editar: {data}")  # Para depuración
+
+        # Llamar al servicio para actualizar el docente
+        updated_teacher, error = TeacherService.update_teacher(teIdentification, data)
+
+        # En caso de error, mostrar mensaje y redirigir
         if error:
             flash(error, 'error')
-            return redirect(url_for('teacher.edit_teacher'))
-        return redirect(url_for('teacher.edit_teacher', teIdentification=edit_teacher.teIdentification))
-        
+            return redirect(url_for('teacher.edit_teacher', teIdentification=teIdentification))
+
+        # Mostrar mensaje de éxito
+        flash('Docente actualizado exitosamente')
+        return redirect(url_for('teacher.search_allTeacher'))
+
+    # Si es GET, buscar el docente y mostrar los datos en el formulario
+    teacher, error = TeacherService.search_by_identificationTeacher(teIdentification)
+    if error:
+        flash(error, 'error')
+        return redirect(url_for('teacher.search_allTeacher'))
+
+    return render_template('editTeacher.html', teacher=teacher)
