@@ -1,6 +1,6 @@
 #Clase
 #*COMPETENCIA
-from connection import db  # Importa db desde connection.py
+from .connection import db  # Importa db desde connection.py
 class Competence(db.Model):
     __tablename__ = 'TBL_COMPETENCIA'  # Nombre de la tabla
 

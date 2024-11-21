@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+    <h1>View subject</h1>
+
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Formulario para ingresar el nombre de la asignatura a consultar -->
+    <form action="{{ url_for('subject.get_subject') }}" method="POST">
+        <label for="name">Nombre asignatura:</label>
+        <input type="text" name="name" id="name" value="{{ subject.name }}" required><br>
+        <button type="submit">Consultar</button>
+    </form>
+
+    <!-- Mostrar la asignatura en una tabla si fue encontrada -->
+    {% if subject %}
+    <h2>Subject Found:</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Id:</th>
+                <th>Nombre:</th>
+                <th>Creditos:</th>
+                <th>Objetivos:</th>
+                <th>Semestre:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ subject.id }}</td>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.credits }}</td>
+                <td>{{ subject.goals }}</td>
+                <td>{{ subject.semester }}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+
+{% endblock %}

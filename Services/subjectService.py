@@ -34,3 +34,35 @@ class SubjectService:
 
         return new_subject, None
 
+    @staticmethod
+    def get_subject_by_name(name):
+        # Validaciones de los datos
+        if not name:
+            return None, "El nombre es requerido"
+
+        subject = Subject.query.filter_by(name=name).first()
+        if not subject:
+            return None, f"No se encontro una asignatura con el nombre {name}."
+        return subject, None
+
+    @staticmethod
+    def update_subject(name, data):
+        subject = Subject.query.filter_by(name=name).first()
+        if not subject:
+            return None, f"No se encontro una asignatura con el nombre: {name}"
+
+        try:
+            subject.name = data.get('name', subject.name)#Actualiza el campo subject.name con 'name' que es el que llega
+            subject.credits = int(data.get('credits', subject.credits)) 
+            subject.goals = data.get('goals', subject.goals)
+            subject.semester = int(data.get('semester', subject.semester))
+
+            db.session.commit()
+            return  subject,None
+        except ValueError:
+            db.session.rollback()
+            return None, ValueError("Datos proporcionados NO validos.")
+        except Exception as e:
+            db.session.rollback()
+            return None, f"Error inesperado: {str(e)}"
+
