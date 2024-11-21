@@ -19,7 +19,7 @@ def create_learning_outcome():
         flash('¡Resultado de Aprendizaje añadido satisfactoriamente!', 'success')
         return redirect(url_for('learning_outcome.create_learning_outcome'))
 
-    return render_template('createLearningOutcome.html')
+    return render_template('LearningOutcome/createLearningOutcome.html')
 
 #No funciona -> <int:lo_id> estara bien o cual sera la manera correcta
 @learning_outcome_bp.route('/update_learning_outcome/<int:lo_id>', methods=['GET', 'POST'])
@@ -47,6 +47,6 @@ def update_learning_outcome(lo_id):
         flash('El Resultado de Aprendizaje no existe.', 'error')
         return redirect(url_for('learning_outcome.create_learning_outcome'))
 
-    return render_template('updateLearningOutcome.html', learning_outcome=learning_outcome, lo_id=lo_id)
+    return render_template('LearningOutcome/updateLearningOutcome.html', learning_outcome=learning_outcome, lo_id=lo_id)
 
 

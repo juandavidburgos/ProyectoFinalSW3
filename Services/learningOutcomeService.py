@@ -30,7 +30,7 @@ class LearningOutcomeService:
         return new_learning_outcome, None
     
     @staticmethod
-    def update_learning_outcome(data):
+    def update_learning_outcome(lo_id, data):
         """Actualiza un Resultado de Aprendizaje existente"""
 
         lo_id = data.get("lo_id")  # Obtenemos el ID directamente desde el 'data'
@@ -69,29 +69,3 @@ class LearningOutcomeService:
         learning_outcomes = LearningOutcome.query.filter_by(comp_id=comp_id).all()
         return [lo.to_dict() for lo in learning_outcomes], None
 
-    '''
-    @staticmethod
-    def update_learning_outcome(lo_id, comp_id, lo_description):
-        """Actualiza un resultado de aprendizaje (RA) existente."""
-        try:
-            learning_outcome = LearningOutcome.query.get(lo_id)
-            if not learning_outcome:
-                return {"error": "Learning Outcome not found"}
-
-            learning_outcome.comp_id = comp_id
-            learning_outcome.lo_description = lo_description
-
-            db.session.commit()
-            return {"message": "Learning Outcome updated successfully", "data": learning_outcome.to_dict()}
-        except Exception as e:
-            db.session.rollback()
-            return {"error": str(e)}
-
-    @staticmethod
-    def get_learning_outcomes_by_competencia(comp_id):
-        """Obtiene todos los RA asociados a una competencia específica."""
-        try:
-            learning_outcomes = LearningOutcome.query.filter_by(comp_id=comp_id).all()
-            return [learning_outcome.to_dict() for learning_outcome in learning_outcomes]
-        except Exception as e:
-            return {"error": str(e)}'''

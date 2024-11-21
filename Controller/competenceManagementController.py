@@ -24,7 +24,7 @@ def create_competence():
         return redirect(url_for('competence.create_competence'))
 
     # Si el método no es POST, se muestra el formulario de creación de la competencia
-    return render_template('createCompetence.html')  # Vista para crear la competencia
+    return render_template('Competence/createCompetence.html')  # Vista para crear la competencia
 
 '''
 @competence_controller.route('/competences', methods=['POST'])
