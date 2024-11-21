@@ -35,7 +35,7 @@ class TeacherService:
 
         # Crear un nuevo docente
         new_teacher = Teacher(
-            teTypeIdentification=teTypeIdentification,
+            teTypeIdentification=data.get(teTypeIdentification),
             teIdentification=data['teIdentification'],
             teTypeTeacher=teTypeTeacher,
             teName=data['teName'],
