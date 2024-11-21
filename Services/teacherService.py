@@ -1,11 +1,12 @@
 #Servicio Docente
-from Model.teacher import Teacher
+from Model.teacher import Teacher, TypeIdentification, TypeTeacher
 from Model.connection import db
 
 class TeacherService:
 
     @staticmethod
     def create_teacher(data):
+        print(f"Datos recibidos en el servicio: {data}")
         # Validacion de los datos requeridos
         if not data.get('teTypeIdentification') or not data.get('teIdentification') \
             or not data.get('teTypeTeacher') or not data.get('teName')\
@@ -14,23 +15,34 @@ class TeacherService:
 
             return None, "Todos los campos son requeridos"
         
-        """ #Validacion del tipo de identificacion          
-        if data['teTypeIdentification'] not in ['Registro Civil','Tarjeta de identidad','Cédula''Pasaporte','Cédula extranjeria']:
-            return None, "El tipo de identificacion es invalido"
+        try:
+            teTypeIdentification = TypeIdentification[data['teTypeIdentification']]  # Convertir a Enum
+            teTypeTeacher = TypeTeacher[data['teTypeTeacher']]  # Convertir a Enum
+        except KeyError as e:
+            return None, f"Valor inválido para tipo de identificación o tipo de docente: {str(e)}"
         
-        #Validacion del tipo de docente
-        if data['teTypeTeacher'] not in ['Planta', 'Tiempo completo', 'Catedra']:
-            return None, "El tipo de docente es invalido"""
+
+        """try:
+            teTypeIdentification = TypeIdentification[data['teTypeIdentification']]
+        except KeyError:
+            return None, "Tipo de identificación inválido"
+
+        try:
+            teTypeTeacher = TypeTeacher[data['teTypeTeacher']]
+        except KeyError:
+            return None, "Tipo de docente inválido"""
+    
 
         # Crear un nuevo docente
         new_teacher = Teacher(
-            teTypeIdentification=data['teTypeIdentification'],
+            teTypeIdentification=teTypeIdentification,
             teIdentification=data['teIdentification'],
-            teTypeTeacher=data['teTypeTeacher'],
+            teTypeTeacher=teTypeTeacher,
             teName=data['teName'],
             teLastName=data['teLastName'],
             teLastTitle=data['teLastTitle'],
-            teEmail=data['teEmail']
+            teEmail=data['teEmail'],
+            teState='Activo'
         )
         
         try:
@@ -41,4 +53,30 @@ class TeacherService:
             return None, f"Ha ocurrido un error en la base de datos: {str(e)}"
 
         return new_teacher, None
-
+    
+    @staticmethod
+    def search_allTeacher():
+        #Buca todos los docentes en la base de datos
+        return Teacher.query.all()
+    
+    @staticmethod
+    def search_by_identificationTeacher(teIdentification):
+        try:
+            #Busca un docente por su identificación
+            teacher = Teacher.query.filter_by(teIdentification=teIdentification).first()
+            if teacher:
+                return teacher, None
+            return None, "Docente no encontrado"
+        except Exception as e:
+            return None, f"Error al buscar al docente {str(e)}"
+        
+    @staticmethod
+    def search_by_typeTeacher(teTypeTeacher):
+        try:
+            #Buscar todos los docentes por el tipo de docente
+            teachers = Teacher.query.filter_by(teTypeTeacher=teTypeTeacher).all()
+            if teachers:
+                return teachers, None
+            return None, "No se encontraron docentes con el tipo especificado"
+        except Exception as e:
+            return None, f"Error al buscar al docente {str(e)}"

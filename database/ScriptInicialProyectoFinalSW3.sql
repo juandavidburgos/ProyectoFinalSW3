@@ -102,6 +102,7 @@ create table TBL_DOCENTE
    DOC_IDENTIFICACION   varchar(100),
    DOC_TITULO           varchar(100),
    DOC_CORREO           varchar(100),
+   DOC_ESTADO           varchar(50),
    primary key (DOC_ID)
 );
 

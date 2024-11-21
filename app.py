@@ -4,6 +4,8 @@ from Model.connection import Connection
 from Controller.teacherManagementController  import *
 from Controller.mainController import main_bp
 from Controller.subjectManagementController import subject_bp
+from Controller.teacherManagementController import teacher_blueprint
+
 from Controller.competenceManagementController import competence_bp
 from Controller.learningOutcomeManagementController import learning_outcome_bp
 
