@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Actualizar Competencia</h1>
+
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('competence.update_competence') }}" method="POST">
+        <!-- ID de la competencia (readonly para evitar cambios no deseados) -->
+        <label for="comp_id">ID de Competencia:</label>
+        <input type="number" name="comp_id" id="comp_id" value="{{ competence.comp_id }}" readonly required><br>
+
+        <!-- Descripción de la competencia -->
+        <label for="comp_description">Descripción:</label>
+        <textarea name="comp_description" id="comp_description" required>{{ competence.comp_description }}</textarea><br>
+
+        <!-- Tipo de competencia -->
+        <label for="comp_type">Tipo:</label>
+        <input type="text" name="comp_type" id="comp_type" value="{{ competence.comp_type }}" required><br>
+
+        <!-- Nivel de competencia -->
+        <label for="comp_level">Nivel:</label>
+        <input type="text" name="comp_level" id="comp_level" value="{{ competence.comp_level }}"><br>
+
+        <!-- ID del programa asociado -->
+        <label for="program_comp_id">ID del Programa (opcional):</label>
+        <input type="number" name="program_comp_id" id="program_comp_id" value="{{ competence.program_comp_id }}"><br>
+
+        <button type="submit">Actualizar Competencia</button>
+    </form>
+{% endblock %}
