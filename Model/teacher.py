@@ -13,6 +13,14 @@ class TypeIdentification(Enum):
     CEDULA = 'Cédula'
     PASAPORTE = 'Pasaporte'
     CEDULAEXTRANJERIA = 'Cédula extranjeria'
+    
+"""class teLastTitle (Enum):
+    PREGRADO = 'Pregrado',
+    POSTGRADO = 'Postgrado',
+    ESPECIALIZACION = 'Especialización',
+    MAESTRIA = 'Maesrtia',
+    DOCTORADO = 'Dostorado'
+    POSTDOCTORADO = 'PostDoctorado'"""
 
 class Teacher(db.Model):
     __tablename__ = 'TBL_Docente'  # Nombre de la tabla en la base de datos

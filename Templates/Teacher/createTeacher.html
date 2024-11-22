@@ -49,11 +49,26 @@
 
         <!-- Último Título -->
         <label for="teLastTitle">Último Título:</label>
-        <input type="text" id="teLastTitle" name="teLastTitle" required><br><br>
+        <select id = "teLastTitle" name="teLastTitle" required>
+            <option value="">Seleccione</option>
+            <option value="Pregrado">Pregrado</option>
+            <option value="Postgrado">Postgrado</option>
+            <option value="Especialización">Especialización</option>
+            <option value="Maestría">Maestría</option>
+            <option value="PostDoctorado">PostDoctorado</option>
+            <option value="Doctorado">Doctorado</option>
+        </select><br><br>
 
         <!-- Correo Electrónico -->
         <label for="teEmail">Correo Electrónico:</label>
         <input type="email" id="teEmail" name="teEmail" required><br><br>
+
+        <!--Estado-->
+        <label for="teState">Estado:</label>
+        <select id="teState" name="teState" required disabled>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+        </select><br><br>
 
         <button type="submit">Crear Docente</button>
     </form>

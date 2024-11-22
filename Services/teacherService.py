@@ -21,23 +21,12 @@ class TeacherService:
         except KeyError as e:
             return None, f"Valor inválido para tipo de identificación o tipo de docente: {str(e)}"
         
-
-        """try:
-            teTypeIdentification = TypeIdentification[data['teTypeIdentification']]
-        except KeyError:
-            return None, "Tipo de identificación inválido"
-
-        try:
-            teTypeTeacher = TypeTeacher[data['teTypeTeacher']]
-        except KeyError:
-            return None, "Tipo de docente inválido"""
-    
-
+        
         # Crear un nuevo docente
         new_teacher = Teacher(
-            teTypeIdentification=data.get(teTypeIdentification),
+            teTypeIdentification= teTypeIdentification,#data.get(teTypeIdentification),
             teIdentification=data['teIdentification'],
-            teTypeTeacher=teTypeTeacher,
+            teTypeTeacher= teTypeTeacher, #data.get(teTypeTeacher),
             teName=data['teName'],
             teLastName=data['teLastName'],
             teLastTitle=data['teLastTitle'],
@@ -67,6 +56,17 @@ class TeacherService:
             if teacher:
                 return teacher, None
             return None, "Docente no encontrado"
+        except Exception as e:
+            return None, f"Error al buscar al docente {str(e)}"
+    
+    @staticmethod
+    def search_by_lastNameTeacher(teLastName):
+        try:
+            #Buscar todos los docentes por su apellido
+            teacher = Teacher.query.filter_by(teLastName=teLastName).all()
+            if teacher:
+                return teacher, None
+            return None, "No se encontraron docentes con el apellido especificado"
         except Exception as e:
             return None, f"Error al buscar al docente {str(e)}"
         
