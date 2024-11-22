@@ -1,81 +1,124 @@
-from flask import Blueprint, jsonify, request
-from app.services.coordinator_service import CoordinatorService
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from Services.coordinatorService import CoordinatorService
+
+# CONTROLADOR GESTION DE COORDINADORES
 
 # Blueprint para las rutas del coordinador
 coordinator_blueprint = Blueprint('coordinator', __name__)
-service = CoordinatorService()
 
-# Listar todos los coordinadores
+# Método para listar todos los coordinadores
 @coordinator_blueprint.route('/coordinators', methods=['GET'])
 def get_all_coordinators():
-    coordinators = service.get_all()
-    return jsonify([coordinator.to_dict() for coordinator in coordinators]), 200
+    coordinators = CoordinatorService.get_all_coordinators()
+    return render_template('coordinator/searchCoordinator.html', coordinators=coordinators)
 
-# Obtener un coordinador por ID
+# Método para obtener un coordinador por ID
 @coordinator_blueprint.route('/coordinators/<int:coordinator_id>', methods=['GET'])
 def get_coordinator_by_id(coordinator_id):
-    coordinator = service.get_by_id(coordinator_id)
+    coordinator = CoordinatorService.get_coordinator_by_id(coordinator_id)
     if not coordinator:
-        return jsonify({"error": "Coordinator not found"}), 404
-    return jsonify(coordinator.to_dict()), 200
+        flash("Coordinador no encontrado", 'error')
+        return redirect(url_for('coordinator.get_all_coordinators'))
+    return render_template('coordinator/detailCoordinator.html', coordinator=coordinator)
 
-# Crear un nuevo coordinador
-@coordinator_blueprint.route('/coordinators', methods=['POST'])
+# Método para crear un nuevo coordinador
+@coordinator_blueprint.route('/create_coordinator', methods=['GET', 'POST'])
 def create_coordinator():
-    data = request.get_json()
-    try:
-        new_coordinator = service.create(data)
-        return jsonify(new_coordinator.to_dict()), 201
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(f"Datos recibidos: {data}")  # Verificar datos en consola
+        new_coordinator, error = CoordinatorService.create_coordinator(data)
 
-# Actualizar un coordinador existente
-@coordinator_blueprint.route('/coordinators/<int:coordinator_id>', methods=['PUT'])
+        if error:
+            flash(error, 'error')
+            return redirect(url_for('coordinator.create_coordinator'))
+        
+        flash("Coordinador creado exitosamente", 'success')
+        return redirect(url_for('coordinator.get_all_coordinators'))
+
+    return render_template('coordinator/createCoordinator.html')
+
+# Método para actualizar un coordinador existente
+@coordinator_blueprint.route('/edit_coordinator/<int:coordinator_id>', methods=['GET', 'POST'])
 def update_coordinator(coordinator_id):
-    data = request.get_json()
-    try:
-        updated_coordinator = service.update(coordinator_id, data)
-        return jsonify(updated_coordinator.to_dict()), 200
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
+    coordinator = CoordinatorService.get_coordinator_by_id(coordinator_id)
+    if not coordinator:
+        flash("Coordinador no encontrado", 'error')
+        return redirect(url_for('coordinator.get_all_coordinators'))
 
-# Eliminar un coordinador
-@coordinator_blueprint.route('/coordinators/<int:coordinator_id>', methods=['DELETE'])
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        updated_coordinator, error = CoordinatorService.update_coordinator(coordinator_id, data)
+
+        if error:
+            flash(error, 'error')
+            return redirect(url_for('coordinator.update_coordinator', coordinator_id=coordinator_id))
+
+        flash("Coordinador actualizado exitosamente", 'success')
+        return redirect(url_for('coordinator.get_all_coordinators'))
+
+    return render_template('coordinator/editCoordinator.html', coordinator=coordinator)
+
+# Método para eliminar un coordinador
+@coordinator_blueprint.route('/delete_coordinator/<int:coordinator_id>', methods=['POST'])
 def delete_coordinator(coordinator_id):
     try:
-        service.delete(coordinator_id)
-        return jsonify({"message": "Coordinator deleted successfully"}), 200
+        CoordinatorService.delete_coordinator(coordinator_id)
+        flash("Coordinador eliminado exitosamente", 'success')
     except ValueError as e:
-        return jsonify({"error": str(e)}), 404
+        flash(f"Error al eliminar el coordinador: {str(e)}", 'error')
+
+    return redirect(url_for('coordinator.get_all_coordinators'))
 
 """
-# Crear un docente (gestión de docentes por el coordinador)
-@coordinator_blueprint.route('/coordinators/<int:coordinator_id>/teachers', methods=['POST'])
-def create_teacher_by_coordinator(coordinator_id):
-    data = request.get_json()
-    try:
-        new_teacher = service.create_teacher(coordinator_id, data)
-        return jsonify(new_teacher.to_dict()), 201
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
+# Método para crear un docente por parte de un coordinador
+@coordinator_blueprint.route('/create_teacher_by_coordinator', methods=['GET', 'POST'])
+def create_teacher_by_coordinator():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(f"Datos recibidos: {data}")  # Verificar datos en consola
+        new_teacher, error = CoordinatorService.create_teacher(data)
 
-# Gestionar asignaturas (crear, vincular competencias y RA)
-@coordinator_blueprint.route('/coordinators/<int:coordinator_id>/subjects', methods=['POST'])
-def manage_subjects(coordinator_id):
-    data = request.get_json()
-    try:
-        new_subject = service.create_subject(coordinator_id, data)
-        return jsonify(new_subject.to_dict()), 201
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
+        if error:
+            flash(error, 'error')
+            return redirect(url_for('coordinator.create_teacher_by_coordinator'))
 
-# Vincular competencias y RA a un programa
-@coordinator_blueprint.route('/coordinators/<int:coordinator_id>/competencies', methods=['POST'])
-def manage_competencies(coordinator_id):
-    data = request.get_json()
-    try:
-        new_competency = service.create_competency(coordinator_id, data)
-        return jsonify(new_competency.to_dict()), 201
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
+        flash("Docente creado exitosamente", 'success')
+        return redirect(url_for('coordinator.get_all_coordinators'))
+
+    return render_template('coordinator/createTeacherByCoordinator.html')
+
+# Método para gestionar asignaturas (crear y vincular competencias y RA)
+@coordinator_blueprint.route('/create_subject', methods=['GET', 'POST'])
+def manage_subjects():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(f"Datos recibidos: {data}")  # Verificar datos en consola
+        new_subject, error = CoordinatorService.create_subject(data)
+
+        if error:
+            flash(error, 'error')
+            return redirect(url_for('coordinator.manage_subjects'))
+
+        flash("Asignatura creada exitosamente", 'success')
+        return redirect(url_for('coordinator.get_all_coordinators'))
+
+    return render_template('coordinator/manageSubjects.html')
+
+# Método para gestionar competencias y RA
+@coordinator_blueprint.route('/create_competency', methods=['GET', 'POST'])
+def manage_competencies():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(f"Datos recibidos: {data}")  # Verificar datos en consola
+        new_competency, error = CoordinatorService.create_competency(data)
+
+        if error:
+            flash(error, 'error')
+            return redirect(url_for('coordinator.manage_competencies'))
+
+        flash("Competencia creada exitosamente", 'success')
+        return redirect(url_for('coordinator.get_all_coordinators'))
+
+    return render_template('coordinator/manageCompetencies.html')
 """
