@@ -31,7 +31,7 @@ def create_teacher():
         return redirect(url_for('teacher.create_teacher'))
     
     #Si el metodo no es POST se muestra la vista del formulario
-    return render_template('Teacher/createTeacher.html')
+    return render_template('Teacher/gestionTeacher.html')
 
 #Metodo para mostrar todos los docentes
 @teacher_blueprint.route('/search_allTeacher')
