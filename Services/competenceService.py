@@ -83,9 +83,20 @@ class CompetenceService:
             # Consultar todos las competencias
             competences = Competence.query.all()
             # Convertir los objetos a diccionarios
-            return [lo.to_dict() for lo in competences], None
+            return [comp.to_dict() for comp in competences], None
         except Exception as e:
             return None, f"Error al obtener las competencias: {str(e)}"
+    
+    @staticmethod
+    def get_competence_by_id(comp_id):
+        # Validaciones de los datos
+        if not comp_id:
+            return None, "El ID es requerido"
+
+        competence = Competence.query.filter_by(comp_id=comp_id).first()
+        if not competence:
+            return None, f"No se encontro una asignatura con ese ID {comp_id}."
+        return competence, None
 
     @staticmethod
     def get_competences_by_type(comp_type):

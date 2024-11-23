@@ -15,6 +15,9 @@
     {% endwith %}
 
     <form action="{{ url_for('learning_outcome.update_learning_outcome') }}" method="POST">
+        <label for="comp_id">Id RA:</label>
+        <input type="number" name="lo_id" id="lo_id" value="{{ learning_outcome.lo_id }}" readonly required><br> 
+
         <label for="comp_id">Competencia asociada:</label>
         <input type="number" name="comp_id" id="comp_id" value="{{ learning_outcome.comp_id }}" readonly required><br> <!-- Si no queremos que el usuario lo cambie, se pone: 'readonly' antes de required-->
 

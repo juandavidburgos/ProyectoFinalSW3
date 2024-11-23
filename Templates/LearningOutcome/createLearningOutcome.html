@@ -1,9 +1,8 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-
 <div class="row">
-    <!-- Formulario -->
+    <!-- Formulario para crear un nuevo resultado de aprendizaje -->
     <div class="col-md-5">  
         <div class="card card-body">
             <h3>Crear nuevo resultado de aprendizaje</h3>
@@ -35,33 +34,5 @@
             </form>
         </div>
     </div>
-
-    <!-- Tabla -->
-    <div class="col-md-7">
-        <h2><b>Lista de Resultados de Aprendizaje</b></h2>
-        <table class="table table-striped table-bordered bg-white table-sm">
-            <thead>
-                <tr>
-                    <th>ID Resultado</th>
-                    <th>Descripción</th>
-                    <th>ID Competencia</th>
-                    <th>Operaciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for lo in learning_outcomes %}
-                <tr>
-                    <td>{{ lo.lo_id}}</td>
-                    <td>{{ lo.lo_description}}</td>
-                    <td>{{ lo.comp_id}}</td>
-                    <td>
-                        <a href="{{ url_for('learning_outcome.update_learning_outcome', lo_id=lo.lo_id) }}" class="btn btn-secondary btn-sm">Editar</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
 </div>
-
 {% endblock %}

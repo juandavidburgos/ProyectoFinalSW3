@@ -33,11 +33,11 @@ class LearningOutcomeService:
     def update_learning_outcome(lo_id, data):
         """Actualiza un Resultado de Aprendizaje existente"""
         # Buscar el Resultado de Aprendizaje por su ID
-        learning_outcome = LearningOutcome.query.get(lo_id)
-        if not learning_outcome:
-            return None, "El Resultado de Aprendizaje no existe"
-
         try:
+            learning_outcome = LearningOutcome.query.get(lo_id)
+            if not learning_outcome:
+                return None, "El Resultado de Aprendizaje no existe"
+            learning_outcome.comp_id = int(data.get('lo_id', learning_outcome.lo_id))
             learning_outcome.comp_id = int(data.get('comp_id', learning_outcome.comp_id))
             learning_outcome.lo_description = data.get('lo_description', learning_outcome.lo_description)
 
@@ -73,4 +73,15 @@ class LearningOutcomeService:
             return [lo.to_dict() for lo in learning_outcomes], None
         except Exception as e:
             return None, f"Error al obtener los Resultados de Aprendizaje: {str(e)}"
+    
+    @staticmethod
+    def get_learning_outcome_by_id(lo_id):
+        # Validaciones de los datos
+        if not lo_id:
+            return None, "El ID es requerido"
+
+        learningOutcome = LearningOutcome.query.filter_by(lo_id=lo_id).first()
+        if not learningOutcome:
+            return None, f"No se encontro un RA con ese ID {lo_id}."
+        return learningOutcome, None
 
