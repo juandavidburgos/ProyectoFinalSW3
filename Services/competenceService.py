@@ -14,6 +14,10 @@ class CompetenceService:
         if data['comp_type'] not in valid_types:
             return None, f"El tipo de competencia debe ser uno de los siguientes: {', '.join(valid_types)}"
 
+         # Validar para competencias de tipo Programa
+        if data['comp_type'] == 'Programa':
+            data['program_comp_id'] = None
+
         # Validar el nivel solo para competencias de programa
         if data['comp_type'] == 'Programa':
             if not data.get('comp_level'):
@@ -32,7 +36,7 @@ class CompetenceService:
             # Opcional: verificar si program_comp_id corresponde a una competencia válida en la base de datos
             program_comp = Competence.query.filter_by(comp_id=data['program_comp_id'], comp_type='Programa').first()
             if not program_comp:
-                return None, "El ID de programa asociado no existe o no es válido"
+                return None, "El ID de la competencia de programa asociado no existe o no es válido"
 
         # Crear la competencia
         try:
@@ -65,9 +69,34 @@ class CompetenceService:
 
             db.session.commit()
             return competence, None
+        except ValueError:
+            db.session.rollback()
+            return None, ValueError("Datos proporcionados NO validos.")
         except Exception as e:
             db.session.rollback()
             return None, f"Error al actualizar la competencia: {str(e)}"
+
+    @staticmethod
+    def get_all_competences():
+        """Obtiene todos las competencias"""
+        try:
+            # Consultar todos las competencias
+            competences = Competence.query.all()
+            # Convertir los objetos a diccionarios
+            return [comp.to_dict() for comp in competences], None
+        except Exception as e:
+            return None, f"Error al obtener las competencias: {str(e)}"
+    
+    @staticmethod
+    def get_competence_by_id(comp_id):
+        # Validaciones de los datos
+        if not comp_id:
+            return None, "El ID es requerido"
+
+        competence = Competence.query.filter_by(comp_id=comp_id).first()
+        if not competence:
+            return None, f"No se encontro una asignatura con ese ID {comp_id}."
+        return competence, None
 
     @staticmethod
     def get_competences_by_type(comp_type):

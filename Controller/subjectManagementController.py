@@ -29,7 +29,7 @@ def create_subject():
         #* Si se logro, se lo redirige a la misma pagia para añadir otra materia
         return redirect(url_for('subject.create_subject'))
     #* Si el método NO ES POST, se muestra la vista del formulario.
-    return render_template('createSubject.html')  # Vista para crear la asignatura
+    return render_template('Subject/createSubject.html')  # Vista para crear la asignatura
 
 
 @subject_bp.route('/get_subject', methods=['GET', 'POST'])
@@ -46,7 +46,7 @@ def get_subject():
             flash(error, "error")
             return redirect(url_for('subject.get_subject'))
 
-    return render_template('viewSubject.html', subject=subject)
+    return render_template('Subject/viewSubject.html', subject=subject)
 
 @subject_bp.route('/search_subject', methods=['GET', 'POST'])
 def search_subject():
@@ -55,7 +55,7 @@ def search_subject():
 
     # Si el método es GET, se renderiza la vista de búsqueda de asignatura
     if request.method == 'GET':
-        return render_template('searchUpdateSubject.html', subject=subject)
+        return render_template('Subject/searchUpdateSubject.html', subject=subject)
 
     # Si el método es POST, se intenta buscar la asignatura por nombre
     if request.method == 'POST':
@@ -70,11 +70,11 @@ def search_subject():
             return redirect(url_for('subject.search_subject', name=''))
 
         if subject:
-            return render_template('updateSubject.html', subject=subject)
+            return render_template('Subject/updateSubject.html', subject=subject)
         else:
             # Si no se encuentra la asignatura, se muestra un mensaje y se regresa a la búsqueda
             flash("La asignatura no existe", "error")
-            return render_template('searchUpdateSubject.html', subject=subject)
+            return render_template('Subject/searchUpdateSubject.html', subject=subject)
 
 @subject_bp.route('/update_subject', methods=['GET', 'POST'])
 def update_subject():
@@ -99,7 +99,7 @@ def update_subject():
             return redirect(url_for('subject.search_subject', name=subject.name))  # Redirigimos usando el nombre actualizado
 
     # Si el método NO ES POST, se muestra la vista del formulario.
-    return render_template('updateSubject.html', subject=subject)
+    return render_template('Subject/updateSubject.html', subject=subject)
 
 
 
