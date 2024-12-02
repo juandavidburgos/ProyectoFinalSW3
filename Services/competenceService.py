@@ -1,5 +1,6 @@
 from Model.competence import Competence
 from Model.connection import db
+from Model.learningOutcome import LearningOutcome
 
 class CompetenceService:
     @staticmethod
@@ -115,3 +116,26 @@ class CompetenceService:
             return [competence.to_dict() for competence in linked_competences]
         except Exception as e:
             return {"error": str(e)}
+        
+    @staticmethod
+    def create_competence_with_rap(competence_data, rap_data):
+        #*Crea una competencia (CP) y un RAP asociado.
+
+        # Crear la competencia
+        competence = Competence(comp_description=competence_data['comp_description'],
+                comp_type=competence_data['comp_type'],
+                comp_level=competence_data['comp_level'],  # Será None para competencias de asignatura
+                comp_subject_id=competence_data['comp_subject_id']  # Puede ser None para competencias de programa
+                )
+        db.session.add(competence)
+        db.session.commit()  # Guardar para obtener el ID de la competencia
+
+        # Crear el RAP asociado
+        loutcome = LearningOutcome(lout_description=rap_data['lout_description'],
+                comp_id=competence.id,
+                lout_subject_id=rap_data['lout_subject_id']
+                )
+        db.session.add(loutcome)
+        db.session.commit()
+
+        return competence, loutcome

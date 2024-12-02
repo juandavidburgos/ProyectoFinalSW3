@@ -160,7 +160,7 @@ alter table RESULTAAP_RUBRICA add constraint FK_RESULTAAP_RUBRICA foreign key (R
 alter table RESULTAAP_RUBRICA add constraint FK_RESULTAAP_RUBRICA2 foreign key (IDRUBRICA)
       references TBL_RUBRICA (IDRUBRICA) on delete restrict on update restrict;
 
-alter table TBL_COMPETENCIA add constraint FK_FK_COMPETENCIAPROGRAMA foreign key (COMP_IDPROGRAMA)
+alter table TBL_COMPETENCIA add constraint FK_FK_COMPETENCIAPROGRAMA foreign key (COMP_IDASIGNATURA)
       references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
 
 alter table TBL_CORDINADOR add constraint FK_CORDINADOR_ASIGNATURA foreign key (ASIG_ID)
@@ -175,6 +175,24 @@ alter table TBL_CORDINADOR add constraint FK_CORDINADOR_DOCENTE foreign key (DOC
 alter table TBL_RA add constraint FK_COMP_RA_PRO foreign key (COMP_ID)
       references TBL_COMPETENCIA (COMP_ID) on delete restrict on update restrict;
 
+alter table TBL_RA add constraint FK_ASIG foreign key (ASIG_ID)
+      references TBL_ASIGNATURA (ASIG_ID) on delete restrict on update restrict;
+
 alter table TBL_RUBRICA add constraint FK_RUBRICA_EVALUADOR foreign key (EVA_ID)
       references TBL_EVALUADOR (EVA_ID) on delete restrict on update restrict;
 
+----------------------------------------------------------------------------------------------------------
+-- * Integración de tablas para las funcionalidades
+ALTER TABLE TBL_RA
+ADD ASIG_ID INT;
+
+ALTER TABLE TBL_COMPETENCIA
+CHANGE COLUMN COMP_IDPROGRAMA COMP_IDASIGNATURA int;
+
+
+ALTER TABLE TBL_COMPETENCIA
+DROP COLUMN comp_idprograma
+
+
+ALTER TABLE TBL_COMPETENCIA
+DROP CONSTRAINT comp_idprograma;

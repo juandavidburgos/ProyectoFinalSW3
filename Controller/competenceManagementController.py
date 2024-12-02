@@ -1,9 +1,36 @@
 #holaaaaaaaaaa
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from Services.competenceService import CompetenceService
+from Facade.CmpLoutFacade import CmpLoutFacade
 
 competence_bp = Blueprint('competence', __name__)
 
+@competence_bp.route('/add_program_competence', methods=['GET', 'POST'])
+def create_program_competence():
+    #*Ruta para crear una competencia de programa (CP) y un RAP asociado.
+    if request.method == 'POST':
+        # Recuperar TODOS los datos del formulario
+        competence_data = {
+            'comp_description':request.form['comp_description'],
+            'comp_type':request.form['comp_type'],
+            'comp_level':request.form['comp_level']
+            }
+        #TODO: START
+        rap_data = {'description': request.form['rap_description']}
+        #TODO: END
+        # Crear competencia y RAP
+        try:
+            facade = CmpLoutFacade()  # Crear instancia de la fachada
+            facade.create_competence_with_rap(competence_data, rap_data)
+            flash("Competencia de programa y RAP creados exitosamente.", "success")
+            return redirect(url_for('competence.list_competences'))
+        except Exception as e:
+            flash(f"Error al crear competencia y RAP: {e}", "danger")
+
+    return render_template('createCompetence.html')
+
+
+"""""
 # Ruta para crear una nueva competencia, con métodos GET y POST
 @competence_bp.route('/add_competence', methods=['GET', 'POST'])
 def create_competence():
@@ -25,7 +52,7 @@ def create_competence():
 
     # Si el método no es POST, se muestra el formulario de creación de la competencia
     return render_template('Competence/createCompetence.html')  # Vista para crear la competencia
-
+"""
 @competence_bp.route('/list_competence', methods=['GET', 'POST'])
 def list_and_search_competences():
     """Ruta para listar y buscar competencias"""
