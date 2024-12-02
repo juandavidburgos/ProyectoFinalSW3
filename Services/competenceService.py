@@ -4,8 +4,57 @@ from Model.learningOutcome import LearningOutcome
 
 class CompetenceService:
     @staticmethod
+    def create_competence_with_rap(competence_data, rap_data):
+        #*Crea una competencia (CP) y un RAP asociado.
+
+        # Crear una nueva instancia de Competence con los datos proporcionados
+        competence = Competence(comp_description=competence_data['comp_description'],
+                                comp_type=competence_data['comp_type'],
+                                comp_level=competence_data['comp_level'],  # Puede ser None si es de tipo programa
+                                comp_subject_id=competence_data.get('comp_subject_id')  # Puede ser None para competencias de programa
+                            )
+        # Agregar la competencia a la sesión de la base de datos
+        db.session.add(competence)
+        # Confirmar y guardar los cambios en la base de datos para obtener el ID de la competencia
+        db.session.commit()
+
+        # Crear el RAP (LearningOutcome) asociado con la competencia recién creada
+        loutcome = LearningOutcome(lout_description=rap_data['lout_description'],
+                                    comp_id=competence.comp_id,  # Asociar el RAP con la competencia
+                                    lout_subject_id=rap_data.get('lout_subject_id')   # El RAP puede o no tener un 'subject_id'
+                                )
+        # Agregar el RAP a la sesión de la base de datos
+        db.session.add(loutcome)
+        # Confirmar y guardar los cambios en la base de datos
+        db.session.commit()
+
+        # Retornar la competencia y el RAP creados
+        return competence, loutcome
+    
+    @staticmethod
+    def get_all_competences():
+        #*Obtiene todas las competencias
+        try:
+            # Consultar todas las competencias utilizando outerjoin para incluir sus resultados
+            competences = (
+                db.session.query(Competence)  # Consulta sobre la tabla Competence
+                .outerjoin(LearningOutcome, Competence.comp_id == LearningOutcome.comp_id)  # Realiza un outer join con LearningOutcome
+                .options(db.contains_eager(Competence.programLearningOutcome)) # Indica que la relación se cargue de forma ansiosa
+                .all()  # Ejecutar la consulta y obtener todos los resultados
+            )                
+
+            # Convertir los objetos de competencia a diccionarios y ver su contenido con un print
+            competences_dict = [comp.to_dict() for comp in competences]
+            print(competences_dict)  # Esto imprimirá el contenido de los diccionarios
+            
+            return competences_dict, None  # Devolver los resultados como lista de diccionarios
+        except Exception as e:
+            # En caso de error, devolver el mensaje de error
+            return [], f"Error al obtener las competencias: {str(e)}"
+    """"
+    @staticmethod
     def create_competence(data):
-        """Crea una nueva competencia."""
+        #Crea una nueva competencia.
         # Validaciones de los datos comunes
         if not data.get('comp_description') or not data.get('comp_type'):
             return None, "La descripción y el tipo de la competencia son requeridos"
@@ -56,7 +105,7 @@ class CompetenceService:
 
     @staticmethod
     def update_competence(comp_id, data):
-        """Actualiza una competencia existente."""
+        #Actualiza una competencia existente.
         try:
             competence = Competence.query.get(comp_id)
             if not competence:
@@ -76,18 +125,8 @@ class CompetenceService:
         except Exception as e:
             db.session.rollback()
             return None, f"Error al actualizar la competencia: {str(e)}"
-
-    @staticmethod
-    def get_all_competences():
-        """Obtiene todos las competencias"""
-        try:
-            # Consultar todos las competencias
-            competences = Competence.query.all()
-            # Convertir los objetos a diccionarios
-            return [comp.to_dict() for comp in competences], None
-        except Exception as e:
-            return None, f"Error al obtener las competencias: {str(e)}"
-    
+    """
+    """"
     @staticmethod
     def get_competence_by_id(comp_id):
         # Validaciones de los datos
@@ -98,10 +137,10 @@ class CompetenceService:
         if not competence:
             return None, f"No se encontro una asignatura con ese ID {comp_id}."
         return competence, None
-
+    
     @staticmethod
     def get_competences_by_type(comp_type):
-        """Obtiene todas las competencias por tipo."""
+        #Obtiene todas las competencias por tipo.
         try:
             competences = Competence.query.filter_by(comp_type=comp_type).all()
             return [competence.to_dict() for competence in competences]
@@ -110,32 +149,10 @@ class CompetenceService:
 
     @staticmethod
     def get_linked_competences(program_comp_id):
-        """Obtiene competencias vinculadas a una competencia padre."""
+        #Obtiene competencias vinculadas a una competencia padre.
         try:
             linked_competences = Competence.query.filter_by(program_comp_id=program_comp_id).all()
             return [competence.to_dict() for competence in linked_competences]
         except Exception as e:
-            return {"error": str(e)}
-        
-    @staticmethod
-    def create_competence_with_rap(competence_data, rap_data):
-        #*Crea una competencia (CP) y un RAP asociado.
+            return {"error": str(e)}"""
 
-        # Crear la competencia
-        competence = Competence(comp_description=competence_data['comp_description'],
-                comp_type=competence_data['comp_type'],
-                comp_level=competence_data['comp_level'],  # Será None para competencias de asignatura
-                comp_subject_id=competence_data['comp_subject_id']  # Puede ser None para competencias de programa
-                )
-        db.session.add(competence)
-        db.session.commit()  # Guardar para obtener el ID de la competencia
-
-        # Crear el RAP asociado
-        loutcome = LearningOutcome(lout_description=rap_data['lout_description'],
-                comp_id=competence.id,
-                lout_subject_id=rap_data['lout_subject_id']
-                )
-        db.session.add(loutcome)
-        db.session.commit()
-
-        return competence, loutcome

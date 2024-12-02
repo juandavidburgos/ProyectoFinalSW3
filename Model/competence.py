@@ -8,10 +8,13 @@ class Competence(db.Model):
     comp_description = db.Column('COMP_DESCRIPCION', db.String(250), nullable=False)  # Descripción de la competencia
     comp_type = db.Column('COMP_TIPO', db.String(50), nullable=False)  # Tipo de competencia
     comp_level = db.Column('COMP_NIVEL', db.String(50), nullable=False)  # Nivel de competencia
-    comp_subject_id =db.Column('COMP_IDASIGNATURA',db.Integer, db.ForeignKey('TBL_COMPETENCIA.comp_id'), nullable=True)  # Relación recursiva
+    comp_subject_id =db.Column('COMP_IDASIGNATURA',db.Integer, db.ForeignKey('TBL_COMPETENCIA.COMP_ID'), nullable=True)  # Relación recursiva
 
     # Relación con ResultProgram
-    programLearningOutcome = db.relationship('learningOutcome', backref='competence', lazy=True)
+    programLearningOutcome = db.relationship('LearningOutcome', backref='competence', lazy=True)
+
+    # Relación recursiva con la propia competencia (si es necesario)
+    programCompetence = db.relationship('Competence', remote_side=[comp_id], backref='subcompetencies', lazy=True)
 
     def __init__(self, comp_description, comp_type, comp_level, comp_subject_id=None):
         self.comp_description = comp_description
@@ -25,7 +28,8 @@ class Competence(db.Model):
             "comp_description": self.comp_description,
             "comp_type": self.comp_type,
             "comp_level": self.comp_level,
-            "comp_subject_id": self.comp_subject_id
+            "comp_subject_id": self.comp_subject_id if self.comp_subject_id is not None else 'null',
+            'programLearningOutcome': [rap.to_dict() for rap in self.programLearningOutcome]  # Aquí estamos asegurándonos de incluir los RAPs
         }
 
     @staticmethod

@@ -184,15 +184,15 @@ alter table TBL_RUBRICA add constraint FK_RUBRICA_EVALUADOR foreign key (EVA_ID)
 ----------------------------------------------------------------------------------------------------------
 -- * Integración de tablas para las funcionalidades
 ALTER TABLE TBL_RA
-ADD ASIG_ID INT;
+ADD RASIG_ID INT;
 
 ALTER TABLE TBL_COMPETENCIA
 CHANGE COLUMN COMP_IDPROGRAMA COMP_IDASIGNATURA int;
 
 
-ALTER TABLE TBL_COMPETENCIA
-DROP COLUMN comp_idprograma
+ALTER TABLE TBL_RA
+DROP COLUMN ASIG_ID
 
 
-ALTER TABLE TBL_COMPETENCIA
-DROP CONSTRAINT comp_idprograma;
+ALTER TABLE TBL_RA
+DROP CONSTRAINT FK_ASIG;
