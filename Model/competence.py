@@ -14,7 +14,7 @@ class Competence(db.Model):
     programLearningOutcome = db.relationship('LearningOutcome', backref='competence', lazy=True)
 
     # Relación con integration
-    subjectCompetence = db.relationship('IntegrationTSC', backref='subcompetence')  
+    subjectCompetence = db.relationship('IntegrationTSC', backref='subjectcompetence')  
 
     # Relación recursiva con la propia competencia (si es necesario)
     programCompetence = db.relationship('Competence', remote_side=[comp_id], backref='subcompetencies', lazy=True)
