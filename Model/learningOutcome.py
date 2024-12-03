@@ -30,7 +30,7 @@ class LearningOutcome(db.Model):
     @staticmethod
     def from_dict(data):
         return LearningOutcome(
-            lout_id=data.ge("lout_id"),
+            lout_id=data.get("lout_id"),
             comp_id=data.get("comp_id"),
             lout_description=data.get("lout_description"),
             lout_subject_id=data.get("lout_subject_id")

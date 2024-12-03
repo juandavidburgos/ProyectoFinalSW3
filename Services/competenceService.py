@@ -51,6 +51,24 @@ class CompetenceService:
         except Exception as e:
             # En caso de error, devolver el mensaje de error
             return [], f"Error al obtener las competencias: {str(e)}"
+        
+    @staticmethod
+    def get_all_competences_description():
+        #*Obtiene todas las competencias y su descripcion e id
+        try:
+            # Consultar todas las asignaturas 
+            competences = db.session.query(Competence.comp_id, Competence.comp_description).all()
+            # Convertir los objetos de asignaturas a diccionarios y ver su contenido con un print
+            competences_dict = [comp.to_dict() for comp in competences]
+            print(competences_dict)  # Esto imprimirá el contenido de los diccionarios
+            
+            return competences_dict, None  # Devolver los resultados como lista de diccionarios
+        except Exception as e:
+            # En caso de error, devolver el mensaje de error
+            return [], f"Error al obtener las competencias: {str(e)}"
+        
+    
+
     """"
     @staticmethod
     def create_competence(data):

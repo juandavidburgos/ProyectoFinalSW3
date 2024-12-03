@@ -16,7 +16,7 @@ class Competence(db.Model):
     # Relación recursiva con la propia competencia (si es necesario)
     programCompetence = db.relationship('Competence', remote_side=[comp_id], backref='subcompetencies', lazy=True)
 
-    def __init__(self, comp_description, comp_type, comp_level, comp_subject_id=None):
+    def __init__(self, comp_description, comp_type, comp_level=None, comp_subject_id=None):
         self.comp_description = comp_description
         self.comp_type = comp_type
         self.comp_level = comp_level
