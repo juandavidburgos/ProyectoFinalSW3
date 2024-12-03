@@ -29,13 +29,22 @@ def assign_to_subject():
             selected_subject_id = data['subject_id']
             selected_teacher_id = data ['teacher_id']
             time = data['time']
+
+            if not selected_comp_id or not selected_subject_id or not selected_teacher_id:
+                flash("Por favor, complete todos los campos del formulario.", "danger")
+                return redirect(url_for('integration.assign_to_subject'))
+
             sub_competence_data={
                 'comp_description': data['cmp_subject_description'],
                 'comp_type': data['comp_type'],
-                'comp_level':data.get['comp_level']
+                'comp_level':data.get('comp_level')
             } 
-
+            print("DATOS COMPETENCIA DE ASIGNATURA")
+            print(sub_competence_data)
             raa_data={'lout_description':data['lout_sub_description']}
+
+            print("DATOS RAA DE ASIGNATURA")
+            print(raa_data)
 
             facadeInt.assign_to_subject(selected_comp_id,selected_teacher_id,selected_subject_id, time)
             facadeInt.create_subject_competence(sub_competence_data,raa_data)
@@ -47,14 +56,17 @@ def assign_to_subject():
             flash(f"Error al asignar y crear competencia: {e}", "danger")
 
     competences, error = facadeInt.get_all_competences()
-    
-    if (competences is None) or (cbxcompetences is None) or (cbxsubjects is None) or (cbxteachers is None):
+    assignments, error = facadeInt.get_assignments()
+
+    if (competences is None) or (cbxcompetences is None) or (cbxsubjects is None) or (cbxteachers is None) or (assignments is None):
         competences = []  # Asegurarse de que 'competences' sea una lista vacía si ocurre un error
         cbxsubjects = []  # Asegurarse de que 'subjects' sea una lista vacía si ocurre un error
         cbxteachers = []  # Asegurarse de que 'teachers' sea una lista vacía si ocurre un error
-        cbxcompetences = []
+        cbxcompetences = [] # Asegurarse de que 'competences' sea una lista vacía si ocurre un error
+        assignments = []  # Asegurarse de que 'assignments' sea una lista vacía si ocurre un error
     return render_template('Competence/assigns.html', 
     cbxcompetences=cbxcompetences,
     cbxsubjects=cbxsubjects,
     cbxteachers=cbxteachers,
-    competences=competences)
+    competences=competences,
+    assignments=assignments)

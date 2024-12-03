@@ -47,7 +47,7 @@
                     <select name="teacher_id" id="teacher_id" class="form-control mt-1">
                         <option value="">Seleccione</option>
                         {% for teacher in cbxteachers %}
-                            <option value="{{ teacher.teId }}">{{ teacher.teName }}: {{teacher.teLastName}}</option>
+                            <option value="{{ teacher.teId }}">{{ teacher.teName }} {{teacher.teLastName}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -130,7 +130,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Descripción</th>
-                                        <th>RA Asignatura ID</th>
+                                        <!--<td>RA ASIGNATUDA ID</td>-->
                                         <th>Competencia ID</th>
                                     </tr>
                                 </thead>
@@ -140,7 +140,7 @@
                                         <tr>
                                             <td>{{ rap.lout_id }}</td>
                                             <td>{{ rap.lout_description }}</td>
-                                            <td>{{ rap.lout_subject_id }}</td>
+                                            <!--<td>{{ rap.lout_subject_id }}</td>-->
                                             <td>{{ rap.comp_id }}</td>
                                         </tr>
                                         {% endfor %}
@@ -167,65 +167,29 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>ID ASIGNATURA</th>
-                                <th>ID DOCENTE</th>
-                                <th>ID COMPETENCIA ID</th>
+                                <th>ASIGNATURA</th>
+                                <th>DOCENTE DESIGNADO</th>
+                                <th>ID COMPETENCIA</th>
                                 <th>PERIODO</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            {% for sub in cbxsubjects %}
+                            {% for ass in assignments %}
                             <tr>
-                                <td>{{ sub.id }}</td>
-                                <td></td> <!-- Agregar celdas vacías para completar las columnas -->
-                                <td></td>
-                                <td></td>
+                                <td>{{ ass.subject_name }}</td>
+                                <td>{{ ass.teacher_name}}</td>
+                                <td>{{ ass.comp_id}}</td>
+                                <td>{{ ass.time}}</td>
+                                
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4">No hay asignaturas registradas</td>
+                                <td colspan="4">No hay asignaciones registradas</td>
                             </tr>
                             {% endfor %}
 
-                            {% for tea in cbxteachers %}
-                            <tr>
-                                <td></td> <!-- Agregar celdas vacías para completar las columnas -->
-                                <td>{{ tea.teId }}</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="4">No hay docentes registrados</td>
-                            </tr>
-                            {% endfor %}
-
-                            {% for comp in cbxcompetences %}
-                            <tr>
-                                <td></td> <!-- Agregar celdas vacías para completar las columnas -->
-                                <td></td>
-                                <td>{{ comp.comp_id }}</td>
-                                <td></td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="4">No hay competencias registrados</td>
-                            </tr>
-                            {% endfor %}
-
-                            {% for asig in integrations %}
-                            <tr>
-                                <td></td> <!-- Agregar celdas vacías para completar las columnas -->
-                                <td></td>
-                                <td></td>
-                                <td>{{ asig.time }}</td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="4">No hay un periodo registrado</td>
-                            </tr>
-                            {% endfor %}
+                            
                         </tbody>
                     </table>
                 </div>

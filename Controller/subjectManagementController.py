@@ -3,6 +3,7 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from Services.subjectService import SubjectService
+from Facade.subjectManagementFacade import SubjectManagementFacade
 
 
 # Crear un blueprint para el controlador principal
@@ -12,11 +13,12 @@ subject_bp = Blueprint('subject',__name__)
 # para mostrar el formulario y añadir una asignatura respectivamente
 @subject_bp.route('/add_subject', methods=['GET', 'POST'])
 def create_subject():
+    facade = SubjectManagementFacade()
     if request.method == 'POST':
         data = request.form.to_dict()
         #* Se puede poner: print(f"Formulario recibido: {data}") para verificar que se esten pasando los datos 
         # Llamar al servicio para crear la asignatura
-        new_subject, error = SubjectService.create_subject(data)
+        new_subject, error = facade.create_subject(data)
 
         if error:
             flash(error, 'error')
@@ -28,8 +30,12 @@ def create_subject():
         flash('Asignatura añadida satisfactoriamente!', 'success')
         #* Si se logro, se lo redirige a la misma pagia para añadir otra materia
         return redirect(url_for('subject.create_subject'))
+    subjects,error = facade.get_all_subjects()
+    if subjects is None:
+        flash(f"Error: {error}", "danger")
+        subjects = []  # Asegurarse de que 'competences' sea una lista vacía si ocurre un error
     #* Si el método NO ES POST, se muestra la vista del formulario.
-    return render_template('Subject/createSubject.html')  # Vista para crear la asignatura
+    return render_template('Subject/createSubject.html', subjects=subjects)  # Vista para crear la asignatura
 
 
 @subject_bp.route('/get_subject', methods=['GET', 'POST'])
