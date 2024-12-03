@@ -20,8 +20,8 @@ class CompetenceService:
 
         # Crear el RAP (LearningOutcome) asociado con la competencia recién creada
         loutcome = LearningOutcome(lout_description=rap_data['lout_description'],
-                                    comp_id=competence.comp_id,  # Asociar el RAP con la competencia
-                                    lout_subject_id=rap_data.get('lout_subject_id')   # El RAP puede o no tener un 'subject_id'
+                                    comp_id=competence.comp_id  # Asociar el RAP con la competencia
+                                    #lout_subject_id=rap_data.get('lout_subject_id')   # El RAP puede o no tener un 'subject_id'
                                 )
         # Agregar el RAP a la sesión de la base de datos
         db.session.add(loutcome)
@@ -70,7 +70,7 @@ class CompetenceService:
     @staticmethod
     def get_all_competences_1():
         try:
-            # Consultar todas las competencias pero solo el id y la descripcion
+            # Consultar todas las competencias 
             competences = db.session.query(Competence).all()
             # Convertir los objetos de competencias a diccionarios y ver su contenido con un print
             # !No se usa el emtodo to_dict() porque son campos especificos.
