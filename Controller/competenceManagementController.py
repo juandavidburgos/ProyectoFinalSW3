@@ -1,9 +1,49 @@
 #holaaaaaaaaaa
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from Services.competenceService import CompetenceService
+from Facade.cmpLoutFacade import CmpLoutFacade
 
 competence_bp = Blueprint('competence', __name__)
 
+@competence_bp.route('/add_program_competence', methods=['GET', 'POST'])
+def create_program_competence():
+    facade = CmpLoutFacade()
+
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        print(f"Formulario recibido: {data}")
+        try:
+            competence_data = {
+                'comp_description': data['comp_description'],
+                'comp_type': data['comp_type'],
+                'comp_level': data['comp_level'],
+                'comp_subject_id': data.get('comp_subject_id',None)  # Asignatura opcional
+            }
+
+            rap_data = {
+                'lout_description': data['lout_description']
+                #'lout_subject_id': data.get('lout_subject_id',None)  # Asignatura opcional para el RAP
+            }
+
+            
+            facade.create_competence_with_rap(competence_data, rap_data)
+            flash("Competencia de programa y RAP creados exitosamente.", "success")
+            return redirect(url_for('competence.create_program_competence'))
+        except KeyError as e:
+            flash(f"Error: Falta el campo {str(e)} en el formulario.", "danger")
+        except Exception as e:
+            flash(f"Error al crear competencia y RAP: {e}", "danger")
+
+    competences, error = facade.get_all_competences()
+    if competences is None:
+        flash(f"Error: {error}", "danger")
+        competences = []  # Asegurarse de que 'competences' sea una lista vacía si ocurre un error
+
+    return render_template('Competence/createCompetence.html', competences=competences)
+
+
+
+
+"""""
 # Ruta para crear una nueva competencia, con métodos GET y POST
 @competence_bp.route('/add_competence', methods=['GET', 'POST'])
 def create_competence():
@@ -28,7 +68,7 @@ def create_competence():
 
 @competence_bp.route('/list_competence', methods=['GET', 'POST'])
 def list_and_search_competences():
-    """Ruta para listar y buscar competencias"""
+    #Ruta para listar y buscar competencias
     try:
         # Obtener todas las competencias para mostrarlas en la tabla
         competences, error = CompetenceService.get_all_competences()
@@ -82,13 +122,13 @@ def update_competence():
 '''
 @competence_controller.route('/competences/comp_type/<string:comp_type>', methods=['GET'])
 def get_competences_by_type(comp_type):
-    """Obtiene todas las competencias por tipo."""
+    #Obtiene todas las competencias por tipo.
     response = CompetenceService.get_competences_by_type(comp_type)
     return jsonify(response), 200 if isinstance(response, list) else 400
 
 @competence_controller.route('/competences/linked/<int:program_comp_id>', methods=['GET'])
 def get_linked_competences(program_comp_id):
-    """Obtiene competencias vinculadas a una competencia padre."""
+    #Obtiene competencias vinculadas a una competencia padre.
     response = CompetenceService.get_linked_competences(program_comp_id)
     return jsonify(response), 200 if isinstance(response, list) else 400
-'''
+"""

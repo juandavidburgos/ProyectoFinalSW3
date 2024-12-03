@@ -21,7 +21,7 @@ class SubjectService:
             #No se pone el id porque se genera automaticamente cuando se crea una nueva instancia
             name=data['name'],
             credits=data['credits'],
-            goals=data.get('goals'),
+            goals=data['goals'],
             semester=data['semester']
         )
 
@@ -30,9 +30,38 @@ class SubjectService:
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            return None, f"Error en la base de datos: {str(e)}"
+            return None, f"Error al crear la asignatura: {str(e)}"
 
         return new_subject, None
+    
+    @staticmethod
+    def get_all_subjects():
+        #*Obtiene todos los ids y nombres de las asignaturas
+        try:
+            # Consultar todas las asignaturas 
+            subjects = db.session.query(Subject.id, Subject.name).all()
+            # Convertir los objetos de asignaturas a diccionarios y ver su contenido con un print
+            # ! No se puede usar el metodo to_dict() porque son campos especificos
+            subjects_dict = [{"id":sub.id, "name":sub.name} for sub in subjects]
+            print(subjects_dict)  # Esto imprimirá el contenido de los diccionarios
+            
+            return subjects_dict, None  # Devolver los resultados como lista de diccionarios
+        except Exception as e:
+            # En caso de error, devolver el mensaje de error
+            return [], f"Error al obtener las asignaturas: {str(e)}"
+
+    @staticmethod
+    def get_all_subjects_camps():
+        #*Obtiene todas las asignaturas
+        try:
+            # Consultar todas las asignaturas 
+            subjects = db.session.query(Subject).all()
+            # Convertir los objetos de asignaturas a diccionarios y ver su contenido con un print
+            subjects_dict = [sub.to_dict() for sub in subjects]
+            return subjects_dict, None  # Devolver los resultados como lista de diccionarios
+        except Exception as e:
+            # En caso de error, devolver el mensaje de error
+            return [], f"Error al obtener las asignaturas: {str(e)}"
 
     @staticmethod
     def get_subject_by_name(name):

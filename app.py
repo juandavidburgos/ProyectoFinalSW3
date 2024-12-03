@@ -2,12 +2,13 @@
 from flask import Flask
 from Model.connection import Connection
 from Controller.teacherManagementController  import *
+
 from Controller.mainController import main_bp
 from Controller.subjectManagementController import subject_bp
 from Controller.teacherManagementController import teacher_blueprint
-
 from Controller.competenceManagementController import competence_bp
 from Controller.learningOutcomeManagementController import learning_outcome_bp
+from Controller.integrationController import integration_bp
 
 
 # Inicializacion de la aplicacion Flask
@@ -31,8 +32,9 @@ app.register_blueprint(competence_bp,url_prefix='/competence')
 app.register_blueprint(learning_outcome_bp,url_prefix='/learning_outcome')
 #Controlador de la gestion de docentes
 app.register_blueprint(teacher_blueprint, url_prefix='/teacher')
+#Controlador de la integracion asignatura-competencia-docente
+app.register_blueprint(integration_bp, url_prefix='/asign')
 
 #Comprobar que el archivo que se esta ejecutando es el principal
 if __name__ == '__main__':
     app.run(debug=True, port= 3000) #debug = true, actualiza cada vez que hacemos cambios en el servidor
-                        # Se podria poner otro parámetro: port, para definir el puerto, por defecto Flask se ejecuta en el puerto 5000
