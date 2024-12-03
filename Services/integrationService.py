@@ -69,4 +69,3 @@ class IntegrationService:
             db.session.rollback()  # Si hay error, hacer rollback
             return None, f"Error al crear la competencia de asignatura: {str(e)}"
         
-    
