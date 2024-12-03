@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1>Actualizar resultado de aprendizaje</h1>
+
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('learning_outcome.update_learning_outcome') }}" method="POST">
+        <label for="comp_id">Id RA:</label>
+        <input type="number" name="lo_id" id="lo_id" value="{{ learning_outcome.lo_id }}" readonly required><br> 
+
+        <label for="comp_id">Competencia asociada:</label>
+        <input type="number" name="comp_id" id="comp_id" value="{{ learning_outcome.comp_id }}" readonly required><br> <!-- Si no queremos que el usuario lo cambie, se pone: 'readonly' antes de required-->
+
+        <label for="lo_description">Descripcion:</label>
+        <textarea name="lo_description" id="lo_description">{{ learning_outcome.lo_description }}</textarea><br>
+
+        <button type="submit">Actualizar RA</button>
+    </form>
+{% endblock %}

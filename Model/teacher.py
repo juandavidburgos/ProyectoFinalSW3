@@ -23,18 +23,21 @@ class TypeIdentification(Enum):
     POSTDOCTORADO = 'PostDoctorado'"""
 
 class Teacher(db.Model):
-    __tablename__ = 'TBL_Docente'  # Nombre de la tabla en la base de datos
+    __tablename__ = 'TBL_DOCENTE'  # Nombre de la tabla en la base de datos
 
     #Se definen las columnas que tiene la tabla en la base de datos
-    teId= db.Column('DOC_ID',db.Integer, primary_key=True,  autoincrement=True)
-    teTypeIdentification = db.Column('DOC_TIPOIDENTIFICACION',db.Enum(TypeIdentification))
-    teIdentification = db.Column('DOC_IDENTIFICACION',db.String(100), nullable=False)
-    teTypeTeacher = db.Column('DOC_TIPODOCENTE',db.Enum(TypeTeacher))
-    teName = db.Column('DOC_NOMBRES',db.String(100), nullable=False)
-    teLastName = db.Column('DOC_APELLIDOS',db.String(100), nullable=False)
-    teLastTitle = db.Column('DOC_TITULO',db.String(100), nullable=False)
-    teEmail = db.Column('DOC_CORREO',db.String(100), nullable=False)
-    teState = db.Column('DOC_ESTADO',db.String(50), default=True)
+    # Definición de las columnas
+    teId = db.Column('DOC_ID', db.Integer, primary_key=True, autoincrement=True)  # Identificador único
+    teTypeIdentification = db.Column('DOC_TIPOIDENTIFICACION', db.Enum(TypeIdentification))  # Tipo de identificación
+    teIdentification = db.Column('DOC_IDENTIFICACION', db.String(100), nullable=False)  # Número de identificación
+    teTypeTeacher = db.Column('DOC_TIPODOCENTE', db.Enum(TypeTeacher))  # Tipo de docente
+    teName = db.Column('DOC_NOMBRES', db.String(100), nullable=False)  # Nombre del docente
+    teLastName = db.Column('DOC_APELLIDOS', db.String(100), nullable=False)  # Apellido del docente
+    teLastTitle = db.Column('DOC_TITULO', db.String(100), nullable=False)  # Último título académico
+    teEmail = db.Column('DOC_CORREO', db.String(100), nullable=False)  # Correo del docente
+    teState = db.Column('DOC_ESTADO', db.String(50), default=True)  # Estado activo/inactivo
+
+    teacher = db.relationship('IntegrationTSC', backref='teacher')  # Relación con Integration
 
     #Constructor de la clase
     def __init__(self,teTypeIdentification=None, teIdentification=None, teTypeTeacher=None, teName=None,teLastName=None, teLastTitle=None, teEmail=None, teState = None):

@@ -44,9 +44,19 @@ class TeacherService:
         return new_teacher, None
     
     @staticmethod
-    def search_allTeacher():
-        #Buca todos los docentes en la base de datos
-        return Teacher.query.all()
+    def get_all_teacher():
+        #*Obtiene todos los docentes
+        try:
+            # Consultar todas las asignaturas 
+            teachers = db.session.query(Teacher.teId, Teacher.teName, Teacher.teLastName).all()
+            # Convertir los objetos de asignaturas a diccionarios y ver su contenido con un print
+            teachers_dict = [tea.to_dict() for tea in teachers]
+            print(teachers_dict)  # Esto imprimirá el contenido de los diccionarios
+            
+            return teachers_dict, None  # Devolver los resultados como lista de diccionarios
+        except Exception as e:
+            # En caso de error, devolver el mensaje de error
+            return [], f"Error al obtener los docentes: {str(e)}"
     
     @staticmethod
     def search_by_identificationTeacher(teIdentification):
