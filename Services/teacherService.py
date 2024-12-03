@@ -58,17 +58,22 @@ class TeacherService:
     def get_all_teacher():
         #*Obtiene todos los docentes
         try:
-            # Consultar todas las asignaturas 
+            # Consultar todos los docentes 
+            # Consultar solo los campos requeridos
             teachers = db.session.query(Teacher.teId, Teacher.teName, Teacher.teLastName).all()
-            # Convertir los objetos de asignaturas a diccionarios y ver su contenido con un print
-            teachers_dict = [tea.to_dict() for tea in teachers]
+
+            if not teachers:
+                return [], "No se encontraron docentes."
+            # Convertir las tuplas resultantes en una lista de diccionarios
+            teachers_dict = [{"teId": tea.teId, "teName": tea.teName, "teLastName": tea.teLastName} for tea in teachers]
+        
             print(teachers_dict)  # Esto imprimirá el contenido de los diccionarios
             
             return teachers_dict, None  # Devolver los resultados como lista de diccionarios
         except Exception as e:
             # En caso de error, devolver el mensaje de error
             return [], f"Error al obtener los docentes: {str(e)}"
-    
+        
     @staticmethod
     def search_by_identificationTeacher(teIdentification):
         try:

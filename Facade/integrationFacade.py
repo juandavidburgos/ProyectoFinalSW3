@@ -39,6 +39,20 @@ class IntegrationFacade:
         competences, error = CompetenceService.get_all_competences_description()
         if error:
             return None, error
-        return competences, None    
+        return competences, None 
+
+    @staticmethod
+    def get_all_competences():
+        competences, error = CompetenceService.get_all_competences_1()
+        if error:
+            return None, error
+        return competences, None  
+
+    @staticmethod
+    def get_assignments():  
+        assignments , error = IntegrationService.get_all_assignments()
+        if error:
+            return None, error
+        return assignments, None  
 
 

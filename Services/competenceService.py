@@ -20,8 +20,8 @@ class CompetenceService:
 
         # Crear el RAP (LearningOutcome) asociado con la competencia recién creada
         loutcome = LearningOutcome(lout_description=rap_data['lout_description'],
-                                    comp_id=competence.comp_id,  # Asociar el RAP con la competencia
-                                    lout_subject_id=rap_data.get('lout_subject_id')   # El RAP puede o no tener un 'subject_id'
+                                    comp_id=competence.comp_id  # Asociar el RAP con la competencia
+                                    #lout_subject_id=rap_data.get('lout_subject_id')   # El RAP puede o no tener un 'subject_id'
                                 )
         # Agregar el RAP a la sesión de la base de datos
         db.session.add(loutcome)
@@ -56,18 +56,34 @@ class CompetenceService:
     def get_all_competences_description():
         #*Obtiene todas las competencias y su descripcion e id
         try:
-            # Consultar todas las asignaturas 
+            # Consultar todas las competencias pero solo el id y la descripcion
             competences = db.session.query(Competence.comp_id, Competence.comp_description).all()
-            # Convertir los objetos de asignaturas a diccionarios y ver su contenido con un print
+            # Convertir los objetos de competencias a diccionarios y ver su contenido con un print
+            # !No se usa el emtodo to_dict() porque son campos especificos.
+            competences_dict = [{"comp_id":comp.comp_id, "comp_description":comp.comp_description} for comp in competences]
+            print(competences_dict)  # Esto imprimirá el contenido de los diccionarios
+            
+            return competences_dict, None  # Devolver los resultados como lista de diccionarios
+        except Exception as e:
+            return [], f"Error al obtener las competencias: {str(e)}"
+        
+    @staticmethod
+    def get_all_competences_1():
+        try:
+            # Consultar todas las competencias 
+            competences = db.session.query(Competence).all()
+            # Convertir los objetos de competencias a diccionarios y ver su contenido con un print
+            # !No se usa el emtodo to_dict() porque son campos especificos.
             competences_dict = [comp.to_dict() for comp in competences]
+            print("COMPETENCIAS TODAS")
             print(competences_dict)  # Esto imprimirá el contenido de los diccionarios
             
             return competences_dict, None  # Devolver los resultados como lista de diccionarios
         except Exception as e:
             # En caso de error, devolver el mensaje de error
-            return [], f"Error al obtener las competencias: {str(e)}"
-        
-    
+            print(f"Error: {str(e)}")
+            return [], f"Error al obtener las competencias: {str(e)}" 
+
 
     """"
     @staticmethod

@@ -26,7 +26,7 @@
                     <label for="competence_id">Seleccione una Asignatura:</label>
                     <select name="subject_id" id="subject_id" class="form-control mt-1">
                         <option value="">Seleccione</option>
-                        {% for subject in subjects %}
+                        {% for subject in cbxsubjects %}
                             <option value="{{ subject.id }}">{{ subject.name }}</option>
                         {% endfor %}
                     </select>
@@ -36,7 +36,7 @@
                     <label for="competence_id">Seleccione una Competencia de programa:</label>
                     <select name="competence_id" id="competence_id" class="form-control mt-1">
                         <option value="">Seleccione</option>
-                        {% for competence in competences %}
+                        {% for competence in cbxcompetences %}
                             <option value="{{ competence.comp_id }}">{{ competence.comp_description }}</option>
                         {% endfor %}
                     </select>
@@ -46,8 +46,8 @@
                     <label for="teacher_id">Seleccione el docente a asignar:</label>
                     <select name="teacher_id" id="teacher_id" class="form-control mt-1">
                         <option value="">Seleccione</option>
-                        {% for teacher in teachers %}
-                            <option value="{{ teacher.teId }}">{{ teacher.teName }}: {{teacher.teLastName}}</option>
+                        {% for teacher in cbxteachers %}
+                            <option value="{{ teacher.teId }}">{{ teacher.teName }} {{teacher.teLastName}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -130,7 +130,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Descripción</th>
-                                        <th>RA Asignatura ID</th>
+                                        <!--<td>RA ASIGNATUDA ID</td>-->
                                         <th>Competencia ID</th>
                                     </tr>
                                 </thead>
@@ -140,7 +140,7 @@
                                         <tr>
                                             <td>{{ rap.lout_id }}</td>
                                             <td>{{ rap.lout_description }}</td>
-                                            <td>{{ rap.lout_subject_id }}</td>
+                                            <!--<td>{{ rap.lout_subject_id }}</td>-->
                                             <td>{{ rap.comp_id }}</td>
                                         </tr>
                                         {% endfor %}
@@ -158,7 +158,7 @@
         </div>
 
         <!-- Tabla de Asignaciones -->
-        <div class="col-md-12 mt-3">
+        <div class="col-md-12 mt-4">
             <div class="card">
                 <div class="card-header">
                     <h3>Asignaciones</h3>
@@ -167,43 +167,29 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>ID ASIGNATURA</th>
-                                <th>ID DOCENTE</th>
-                                <th>ID COMPETENCIA ID</th>
+                                <th>ASIGNATURA</th>
+                                <th>DOCENTE DESIGNADO</th>
+                                <th>ID COMPETENCIA</th>
                                 <th>PERIODO</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            {% for sub in subjects %}
+                            {% for ass in assignments %}
                             <tr>
-                                <td>{{ sub.id }}</td>
+                                <td>{{ ass.subject_name }}</td>
+                                <td>{{ ass.teacher_name}}</td>
+                                <td>{{ ass.comp_id}}</td>
+                                <td>{{ ass.time}}</td>
+                                
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4">No hay asignaturas registradas</td>
+                                <td colspan="4">No hay asignaciones registradas</td>
                             </tr>
                             {% endfor %}
 
-                            {% for tea in teachers %}
-                            <tr>
-                                <td>{{ tea.teId }}</td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="4">No hay docentes registrados</td>
-                            </tr>
-                            {% endfor %}
-
-                            {% for comp in competences %}
-                            <tr>
-                                <td>{{ comp.comp_id }}</td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="4">No hay competencias registrados</td>
-                            </tr>
-                            {% endfor %}
+                            
                         </tbody>
                     </table>
                 </div>

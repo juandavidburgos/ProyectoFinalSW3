@@ -20,8 +20,8 @@ def create_program_competence():
             }
 
             rap_data = {
-                'lout_description': data['lout_description'],
-                'lout_subject_id': data.get('lout_subject_id',None)  # Asignatura opcional para el RAP
+                'lout_description': data['lout_description']
+                #'lout_subject_id': data.get('lout_subject_id',None)  # Asignatura opcional para el RAP
             }
 
             
