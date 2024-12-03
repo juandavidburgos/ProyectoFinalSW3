@@ -41,7 +41,8 @@ class SubjectService:
             # Consultar todas las asignaturas 
             subjects = db.session.query(Subject.id, Subject.name).all()
             # Convertir los objetos de asignaturas a diccionarios y ver su contenido con un print
-            subjects_dict = [sub.to_dict() for sub in subjects]
+            # ! No se puede usar el metodo to_dict() porque son campos especificos
+            subjects_dict = [{"id":sub.id, "name":sub.name} for sub in subjects]
             print(subjects_dict)  # Esto imprimirá el contenido de los diccionarios
             
             return subjects_dict, None  # Devolver los resultados como lista de diccionarios
