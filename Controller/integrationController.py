@@ -12,9 +12,6 @@ def assign_to_subject():
     subjects, error= facade.get_subjects()
     teachers, error= facade.get_teachers()
 
-    if error:
-        flash(f"Error desconocido: {str(error)}", "danger")
-
     if request.method == 'POST':
         data = request.form.to_dict()
         print(f"Formulario recibido: {data}")
