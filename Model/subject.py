@@ -14,6 +14,8 @@ class Subject(db.Model):
     goals = db.Column('ASIG_OBJETIVOS', db.String(500))
     semester = db.Column('ASIG_SEMESTRE', db.Integer)
 
+    subject = db.relationship('IntegrationTSC', backref='subject')  # Relación con Integration
+
     # Constructor de la clase
     def __init__(self, name, credits, goals, semester):
         self.name = name
