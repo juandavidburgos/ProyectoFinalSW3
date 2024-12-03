@@ -1,5 +1,5 @@
 #Servicio Docente
-from Model.teacher import Teacher, TypeIdentification, TypeTeacher
+from Model.teacher import Teacher
 from Model.connection import db
 
 class TeacherService:
@@ -15,18 +15,18 @@ class TeacherService:
 
             return None, "Todos los campos son requeridos"
         
-        try:
+        """try:
             teTypeIdentification = TypeIdentification[data['teTypeIdentification']]  # Convertir a Enum
             teTypeTeacher = TypeTeacher[data['teTypeTeacher']]  # Convertir a Enum
         except KeyError as e:
             return None, f"Valor inválido para tipo de identificación o tipo de docente: {str(e)}"
-        
+        """
         
         # Crear un nuevo docente
         new_teacher = Teacher(
-            teTypeIdentification= teTypeIdentification,#data.get(teTypeIdentification),
+            teTypeIdentification= ['teTypeIdentification'],#data.get(teTypeIdentification),
             teIdentification=data['teIdentification'],
-            teTypeTeacher= teTypeTeacher, #data.get(teTypeTeacher),
+            teTypeTeacher= ['teTypeTeacher'], #data.get(teTypeTeacher),
             teName=data['teName'],
             teLastName=data['teLastName'],
             teLastTitle=data['teLastTitle'],
