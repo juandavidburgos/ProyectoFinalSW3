@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from Facade.authFacade import AuthFacade
-
+#holaaaaaaa
 # Crear el blueprint para el controlador de autenticación
 auth_blueprint = Blueprint('auth', __name__)
 
