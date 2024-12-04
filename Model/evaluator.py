@@ -3,19 +3,12 @@
 from enum import Enum
 from .connection import db  # Importa el db desde connection.py
 
-class TypeIdentification(Enum):
-    CIVILREGISTRY = 'Registro Civil'
-    TARJETAIDENTIDAD = 'Tarjeta de identidad'
-    CEDULA = 'Cédula'
-    PASAPORTE = 'Pasaporte'
-    CEDULAEXTRANJERIA = 'Cédula extranjeria'
-
 class Evaluator(db.Model):
     __tablename__ = 'TBL_EVALUADOR'  # Nombre de la tabla en la base de datos
 
     # Definición de las columnas
     evId = db.Column('EVA_ID', db.Integer, primary_key=True, autoincrement=True)  # Identificador único
-    evTypeIdentification = db.Column('EVA_TIPOIDENTIFICACION', db.Enum(TypeIdentification))  # Tipo de identificación
+    evTypeIdentification = db.Column('EVA_TIPOIDENTIFICACION', db.String(100), nullable=False)  # Tipo de identificación
     evIdentification = db.Column('EVA_IDENTIFICACION', db.String(100), nullable=False)  # Número de identificación
     evName = db.Column('EVA_NOMBRE', db.String(100), nullable=False)  # Nombre del evaluador
     evLastName = db.Column('EVA_APELLIDO', db.String(100), nullable=False)  # Apellido del evaluador
