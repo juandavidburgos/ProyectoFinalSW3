@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Coordinadores</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Coordinadores</h1>
+    </header>
+    <main>
+        <a href="{{ url_for('coordinator.create_coordinator') }}" class="btn">Crear Nuevo Coordinador</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for coordinator in coordinators %}
+                <tr>
+                    <td>{{ coordinator.id }}</td>
+                    <td>{{ coordinator.name }}</td>
+                    <td>
+                        <a href="{{ url_for('coordinator.get_coordinator_by_id', coordinator_id=coordinator.id) }}">Ver</a>
+                        <a href="{{ url_for('coordinator.update_coordinator', coordinator_id=coordinator.id) }}">Editar</a>
+                        <form action="{{ url_for('coordinator.delete_coordinator', coordinator_id=coordinator.id) }}" method="post" style="display:inline;">
+                            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este coordinador?')">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        <a href="{{ url_for('coordinator.main_dashboard') }}">Volver al Dashboard</a>
+    </footer>
+</body>
+</html>

@@ -3,173 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vista Principal Coordinador</title>
-    <link rel="stylesheet" href="path_to_your_css_file.css"> <!-- Asegúrate de enlazar correctamente tu archivo CSS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Si usas jQuery para alguna funcionalidad -->
-    <style>
-        /* Estilo básico para el diseño */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        .navbar {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-        }
-        h1, h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 10px;
-            color: white;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 5px;
-            width: 30%;
-            margin-top: 20px;
-        }
-        .btn-primary { background-color: #007bff; }
-        .btn-success { background-color: #28a745; }
-        .btn-danger { background-color: #dc3545; }
-        .btn-warning { background-color: #ffc107; }
-        .btn-info { background-color: #17a2b8; }
-        .btn-dark { background-color: #343a40; }
-        .row {
-            display: flex;
-            justify-content: center;
-        }
-        .col-md-4 {
-            margin: 10px;
-        }
-        .text-center {
-            text-align: center;
-        }
-        #resultados {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <title>Dashboard Coordinador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-
-<!-- Barra de Navegación -->
-<nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="logo.png" alt="Logo"> <!-- Ajusta la ruta de la imagen -->
-            <span>Gestión Académica</span>
-        </a>
-    </div>
-</nav>
-
-<!-- Contenedor Principal -->
-<div class="container mt-5">
-    <h1>Bienvenido, Coordinador</h1>
-    
-    <!-- Botones de Acciones Principales -->
-    <div class="row text-center">
-        <div class="col-md-4">
-            <button class="btn btn-primary" onclick="mostrarTrabajosRelacionados()">Ver Trabajos Relacionados</button>
+    <header>
+        <h1>Bienvenido, Coordinador</h1>
+    </header>
+    <main>
+        <div>
+            <a href="{{ url_for('coordinator.get_all_coordinators') }}" class="btn">Ver Coordinadores</a>
+            <a href="{{ url_for('coordinator.create_coordinator') }}" class="btn">Crear Coordinador</a>
+            <a href="{{ url_for('coordinator.manage_subjects') }}" class="btn">Crear Asignatura</a>
+            <a href="{{ url_for('coordinator.manage_competencies') }}" class="btn">Gestionar Competencias</a>
         </div>
-        <div class="col-md-4">
-            <button class="btn btn-success" onclick="agregarInformacion()">Agregar Información</button>
-        </div>
-        <div class="col-md-4">
-            <button class="btn btn-danger" onclick="finalizarSesion()">Finalizar Sesión</button>
-        </div>
-    </div>
-
-    <!-- Sección de Gestión -->
-    <div class="row text-center mt-4">
-        <div class="col-md-4">
-            <a href="crear_docente.html" class="btn btn-primary">Crear Docente</a>
-        </div>
-        <div class="col-md-4">
-            <a href="crear_programa.html" class="btn btn-success">Crear Programa</a>
-        </div>
-        <div class="col-md-4">
-            <a href="crear_asignatura.html" class="btn btn-warning">Crear Asignatura</a>
-        </div>
-    </div>
-
-    <!-- Sección de Edición y Eliminación -->
-    <div class="row text-center mt-4">
-        <div class="col-md-4">
-            <a href="editar_docente.html" class="btn btn-info">Editar Docente</a>
-        </div>
-        <div class="col-md-4">
-            <a href="editar_programa.html" class="btn btn-secondary">Editar Programa</a>
-        </div>
-        <div class="col-md-4">
-            <a href="eliminar_docente.html" class="btn btn-danger">Eliminar Docente</a>
-        </div>
-    </div>
-
-    <!-- Sección de Opcionales -->
-    <div class="row text-center mt-5">
-        <div class="col-md-12">
-            <a href="ver_reportes.html" class="btn btn-dark">Ver Reportes</a>
-        </div>
-    </div>
-
-    <!-- Resultados Dinámicos -->
-    <div id="resultados"></div>
-</div>
-
-<!-- Pie de Página -->
-<footer class="mt-5">
-    <div class="container text-center">
+    </main>
+    <footer>
         <p>&copy; 2024 Gestión Académica. Todos los derechos reservados.</p>
-    </div>
-</footer>
-
-<script>
-    function mostrarTrabajosRelacionados() {
-        const trabajos = [
-            "1. Marketing strategy and competitiveness: Evidence from Colombian SMEs",
-            "2. The Micro-Influencers Effect on the Business Sustainability of Small Medium Enterprise: The Marketing Strategy Approach",
-            "3. Analysis of Strategic Marketing in Small and Medium-sized Enterprises: Case of the Bakery Industry in Colombia",
-            "4. AI-powered marketing: What, where, and how?",
-            "5. Understanding Factors Influencing the Adoption of Digital Marketing Among Small Businesses",
-            "6. Empowering Micro-Entrepreneurs through Artificial Intelligence"
-        ];
-
-        let resultadoHTML = "<h3>Trabajos relacionados:</h3><ul>";
-        trabajos.forEach(trabajo => {
-            resultadoHTML += `<li>${trabajo}</li>`;
-        });
-        resultadoHTML += "</ul>";
-        document.getElementById('resultados').innerHTML = resultadoHTML;
-    }
-
-    function agregarInformacion() {
-        document.getElementById('resultados').innerHTML = "<h3>Agregando información al documento...</h3><p>Aquí puedes agregar detalles o realizar cambios en el documento.</p>";
-    }
-
-    function finalizarSesion() {
-        document.getElementById('resultados').innerHTML = "<h3>Finalizando sesión...</h3><p>Gracias por usar el sistema. Hasta pronto.</p>";
-    }
-</script>
-
+    </footer>
 </body>
 </html>

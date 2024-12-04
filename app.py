@@ -35,6 +35,11 @@ app.register_blueprint(teacher_blueprint, url_prefix='/teacher')
 #Controlador de la integracion asignatura-competencia-docente
 app.register_blueprint(integration_bp, url_prefix='/asign')
 
+
+from Controller.authController import auth_blueprint
+app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+
 #Comprobar que el archivo que se esta ejecutando es el principal
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True, port= 3000) #debug = true, actualiza cada vez que hacemos cambios en el servidor
