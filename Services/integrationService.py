@@ -65,6 +65,7 @@ class IntegrationService:
                                     )
             # Agregar el RAP a la sesión de la base de datos
             db.session.add(loutcome)
+
             # Confirmar y guardar los cambios en la base de datos
             db.session.commit()
             return "Competencia de asignatura creada exitosamente", None

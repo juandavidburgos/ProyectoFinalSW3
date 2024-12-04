@@ -16,30 +16,35 @@
             {% endif %}
             {% endwith %}
 
-            <form action="{{ url_for('subject.update_subject',id=subject.id) }}" method="POST">
-                
-                <div class ="form-group mt-2">
+            <form action="{{ url_for('subject.update_subject', id=subject.id) }}" method="POST">
+                <div class="form-group mt-2">
                     <label for="name">Nombre de la asignatura:</label>
-                    <input type="text" id="name" name="name" class="form-control mt-1" value="{{ subject.name }}" required><br> <!-- Si no queremos que el usuario lo cambie, se pone: 'readonly' antes de required-->
+                    <input type="text" id="name" name="name" class="form-control mt-1" value="{{ subject.name }}" required><br>
                 </div>
-
-                <div class ="form-group mt-2">
-                    <label for="credits">Creditos:</label>
+            
+                <div class="form-group mt-2">
+                    <label for="credits">Créditos:</label>
                     <input type="number" id="credits" name="credits" class="form-control mt-1" value="{{ subject.credits }}" required><br>
                 </div>
-
-                <div class ="form-group mt-2">
+            
+                <div class="form-group mt-2">
                     <label for="goals">Objetivos:</label>
                     <textarea id="goals" name="goals" class="form-control mt-1">{{ subject.goals }}</textarea><br>
                 </div>
-
-                <div class ="form-group mt-2">
+            
+                <div class="form-group mt-2">
                     <label for="semester">Semestre:</label>
                     <input type="number" id="semester" name="semester" class="form-control mt-1" value="{{ subject.semester }}" required><br>
                 </div>
                 <br>
+            
+                <!-- Botón para actualizar -->
                 <button type="submit" class="btn btn-primary">Actualizar</button>
+            
+                <!-- Botón para regresar -->
+                <a href="{{ url_for('subject.search_subject') }}" class="btn btn-danger ml-2">Regresar</a>
             </form>
+            
         </div>
     </div>
 
