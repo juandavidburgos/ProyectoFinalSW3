@@ -1,18 +1,28 @@
+from enum import Enum
+from .connection import db # Importa el db desde connection.py
 #Clase DOCENTE
 from enum import Enum
 from .connection import db # Importa el db desde connection.py
 
-class TypeTeacher(Enum):
+"""class TypeTeacher(Enum):
     PLANT = 'Planta'
     FULLTIME = 'Tiempo completo'
-    CATHEDRA = 'Catedra'
+    CATHEDRA = 'Catedra'"""
 
-class TypeIdentification(Enum):
+"""class TypeIdentification(Enum):
     CIVILREGISTRY = 'Registro Civil'
     TARJETAIDENTIDAD = 'Tarjeta de identidad'
     CEDULA = 'Cédula'
     PASAPORTE = 'Pasaporte'
-    CEDULAEXTRANJERIA = 'Cédula extranjeria'
+    CEDULAEXTRANJERIA = 'Cédula extranjeria' """
+    
+"""class teLastTitle (Enum):
+    PREGRADO = 'Pregrado',
+    POSTGRADO = 'Postgrado',
+    ESPECIALIZACION = 'Especialización',
+    MAESTRIA = 'Maesrtia',
+    DOCTORADO = 'Dostorado'
+    POSTDOCTORADO = 'PostDoctorado'"""
 
 class Teacher(db.Model):
     __tablename__ = 'TBL_DOCENTE'  # Nombre de la tabla en la base de datos
@@ -20,9 +30,9 @@ class Teacher(db.Model):
     #Se definen las columnas que tiene la tabla en la base de datos
     # Definición de las columnas
     teId = db.Column('DOC_ID', db.Integer, primary_key=True, autoincrement=True)  # Identificador único
-    teTypeIdentification = db.Column('DOC_TIPOIDENTIFICACION', db.Enum(TypeIdentification))  # Tipo de identificación
+    teTypeIdentification = db.Column('DOC_TIPOIDENTIFICACION',db.String(100), nullable=False)  # Tipo de identificación
     teIdentification = db.Column('DOC_IDENTIFICACION', db.String(100), nullable=False)  # Número de identificación
-    teTypeTeacher = db.Column('DOC_TIPODOCENTE', db.Enum(TypeTeacher))  # Tipo de docente
+    teTypeTeacher = db.Column('DOC_TIPODOCENTE', db.String(100), nullable=False)  # Tipo de docente
     teName = db.Column('DOC_NOMBRES', db.String(100), nullable=False)  # Nombre del docente
     teLastName = db.Column('DOC_APELLIDOS', db.String(100), nullable=False)  # Apellido del docente
     teLastTitle = db.Column('DOC_TITULO', db.String(100), nullable=False)  # Último título académico
@@ -47,9 +57,9 @@ class Teacher(db.Model):
     def to_dict(self):
         return {
             "teId": self.teId,
-            "teTypeIdentification": self.teTypeIdentification.value,
+            "teTypeIdentification": self.teTypeIdentification,
             "teIdentification": self.teIdentification,
-            "teTypeTeacher": self.teTypeTeacher.value,
+            "teTypeTeacher": self.teTypeTeacher,
             "teName": self.teName,
             "teLastName": self.teLastName,
             "teLastTitle": self.teLastTitle,
@@ -62,16 +72,14 @@ class Teacher(db.Model):
     def from_dict(data): #TODO: Se debe pasar el id?
         return Teacher(
             teId=data.get("teId"),
-            teTypeIdentification=TypeIdentification(data.get("teTypeIdentification")),
+            teTypeIdentification=data.get("teTypeIdentification"),
             teIdentification=data.get("teIdentification"),
-            teTypeTeacher=TypeTeacher(data.get("teTypeTeacher")),
+            teTypeTeacher=data.get("teTypeTeacher"),
             teName=data.get("teName"),
             teLastName=data.get("teLastName"),
             teLastTitle=data.get("teLastTitle"),
             teEmail=data.get("teEmail"),
             teState=data.get("teEstado")
         )
-        
-
         
         

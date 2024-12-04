@@ -1,5 +1,5 @@
 #Servicio Docente
-from Model.teacher import Teacher, TypeIdentification, TypeTeacher
+from Model.teacher import Teacher
 from Model.connection import db
 
 class TeacherService:
