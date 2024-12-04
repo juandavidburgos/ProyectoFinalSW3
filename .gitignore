@@ -17,3 +17,7 @@ Thumbs.db  # Windows
 # Ignorar carpetas de construcción
 /build/
 /dist/
+
+#Ignorar el archivo de conexion
+Model/connection.py
+

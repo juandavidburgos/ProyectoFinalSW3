@@ -75,7 +75,6 @@ def update_learning_outcome():
             flash("RA actualizado con éxito!", 'success')
             #return redirect(url_for('learning_outcome.list_and_search_learning_outcomes', lout_id=lout_id))  # Redirigimos usando el nombre actualizado
     # Si el método NO ES POST, se muestra la vista del formulario.
-    
     return render_template('LearningOutcome/updateLearningOutcome.html', learning_outcome=learning_outcome)
 
 
