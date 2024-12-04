@@ -26,7 +26,10 @@
                     <label for="teacher_id">Querido profesor, ingrese su id:</label>
                     <input type="number" name="teacher_id" id="teacher_id" class="form-control mt-1" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Buscar</button>
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary">Buscar</button>   
+                    <a href="{{ url_for('main.mainTeacher') }}" class="btn btn-danger">Regresar</a>
+                </div>
             </form>
                                                                                         
         </div>

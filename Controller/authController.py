@@ -30,11 +30,11 @@ def login():
 
     # Redirigir según el rol del usuario
     if role == "Docente":
-        return redirect(url_for('teacher.create_teacher', token=token))  # Redirigir al dashboard de Docente
+        return redirect(url_for('main.mainTeacher', token=token))  # Redirigir al dashboard de Docente
     elif role == "Coordinador":
-        return redirect(url_for('coordinator_dashboard', token=token))  # Redirigir al dashboard de Coordinador
+        return redirect(url_for('main.mainCoordinator', token=token))  # Redirigir al dashboard de Coordinador
     elif role == "Evaluador":
-        return redirect(url_for('evaluator_dashboard', token=token))  # Redirigir al dashboard de Evaluador
+        return redirect(url_for('main.mainEvaluator', token=token))  # Redirigir al dashboard de Evaluador
     else:
         # Si el rol no se reconoce, redirigir al login
         flash('Rol no reconocido', 'error')
