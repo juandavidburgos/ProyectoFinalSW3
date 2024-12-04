@@ -23,7 +23,7 @@
             <form action="{{ url_for('integration.assign_to_subject') }}" method="POST">
                 
                 <div class="form-group mt-2">
-                    <label for="competence_id">Seleccione una Asignatura:</label>
+                    <label for="subject_id">Seleccione una Asignatura:</label>
                     <select name="subject_id" id="subject_id" class="form-control mt-1">
                         <option value="">Seleccione</option>
                         {% for subject in cbxsubjects %}
