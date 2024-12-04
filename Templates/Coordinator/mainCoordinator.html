@@ -2,45 +2,64 @@
 
 {% block body %}
 <div class="container text-center">
-    <h1 class="my-4">Dashboard Coordinador</h1>
+    <!-- Incluir la fuente de Google Fonts (puedes elegir otra fuente llamativa) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <!-- Título con estilo personalizado -->
+    <h1 class="my-4 text-center display-3" style="font-family: 'Poppins', sans-serif; color: #f5e1d5;">Dashboard Coordinador</h1>
+
 
     <div class="row">
         <div class="col-md-3">
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/competencias.jpg') }}" class="card-img-top" alt="Competencias">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/competencias.jpg') }}" class="card-img-top" alt="Competencias" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title">Crear Competencias</h5>
-                    <a href="{{ url_for('coordinator.create_competencies') }}" class="btn btn-primary">Ir a Crear Competencias</a>
+                    <h5 class="card-title">Gestión de Competencias</h5>
+                    <!-- Contenedor para alinear los botones uno encima de otro -->
+                    <div class="d-flex flex-column mt-3">
+                        <a href="{{ url_for('competence.create_program_competence') }}" class="btn btn-primary mb-2">Ir a crear una competencia</a>
+                        <a href="{{ url_for('competence.view_competences') }}" class="btn btn-secondary mb-2">Listar</a>
+                        <a href="{{ url_for('competence.search_competence') }}" class="btn btn-warning">Editar</a>
+                    </div>
                 </div>
             </div>
         </div>
         
         <div class="col-md-3">
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/docente.jpg') }}" class="card-img-top" alt="Docente">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/docente.jpg') }}" class="card-img-top" alt="Docente" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title">Crear Docente</h5>
-                    <a href="{{ url_for('coordinator.create_teacher') }}" class="btn btn-primary">Ir a Crear Docente</a>
+                    <h5 class="card-title">Gestión de Docentes</h5>
+                    <!-- Contenedor para alinear los botones -->
+                    <div class="d-flex flex-column mt-3">
+                        <a href="{{ url_for('teacher.create_teacher') }}" class="btn btn-primary mb-2">Ir a Crear Docente</a>
+                    </div>
                 </div>
             </div>
         </div>
-
+        
         <div class="col-md-3">
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/asignatura.jpg') }}" class="card-img-top" alt="Asignatura">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/asignatura.jpg') }}" class="card-img-top" alt="Asignatura" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
-                    <h5 class="card-title">Crear Asignatura</h5>
-                    <a href="{{ url_for('coordinator.create_subject') }}" class="btn btn-primary">Ir a Crear Asignatura</a>
+                    <h5 class="card-title">Gestión de Asignaturas</h5>
+                    <div class="d-flex flex-column mt-3">
+                        <a href="{{ url_for('subject.create_subject') }}" class="btn btn-primary mb-2">Ir a Crear Asignatura</a>
+                        <a href="{{ url_for('subject.get_subject') }}" class="btn btn-secondary mb-2">Listar</a>
+                        <a href="{{ url_for('subject.search_subject') }}" class="btn btn-warning">Editar</a>
+                    </div>
                 </div>
             </div>
         </div>
-
+        
         <div class="col-md-3">
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/asignacion.jpg') }}" class="card-img-top" alt="Asignación Académica">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/asignacion.png') }}" class="card-img-top" alt="Asignación Académica" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">Asignación Académica</h5>
-                    <a href="{{ url_for('coordinator.assign_academic') }}" class="btn btn-primary">Ir a Asignación Académica</a>
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="{{ url_for('integration.assign_to_subject') }}" class="btn btn-primary">Ir a Asignación Académica</a>
+                    </div>
                 </div>
             </div>
         </div>

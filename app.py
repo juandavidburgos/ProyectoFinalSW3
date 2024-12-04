@@ -26,18 +26,5 @@ app.register_blueprint(learning_outcome_bp, url_prefix='/learning_outcome')  # C
 app.register_blueprint(teacher_blueprint, url_prefix='/teacher')  # Controlador de la gestión de docentes
 app.register_blueprint(integration_bp, url_prefix='/asign')  # Controlador de la integración asignatura-competencia-docente
 
-# Definir rutas adicionales si es necesario
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/coordinator')
-def mainCoordinator():
-    return render_template('coordinator/mainCoordinator.html')
-
-@app.route('/teacher')
-def mainTeacher():
-    return render_template('mainTeacher.html')
-
 if __name__ == '__main__':
     app.run(debug=True, port=3000)  # debug = true, actualiza cada vez que hacemos cambios en el servidor

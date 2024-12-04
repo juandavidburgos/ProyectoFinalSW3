@@ -28,10 +28,10 @@ def create_teacher():
         
         #En caso contrario se muestra un mensaje y se redirige a la misma pagina
         flash('Docente agregado exitosamente')
-        return redirect(url_for('teacher/teacher.create_teacher'))
+        return redirect(url_for('Teacher/teacher.create_teacher'))
     
     #Si el metodo no es POST se muestra la vista del formulario
-    return render_template('createTeacher.html')
+    return render_template('Teacher/createTeacher.html')
 
 #Metodo para mostrar todos los docentes
 @teacher_blueprint.route('/search_allTeacher')
@@ -39,7 +39,7 @@ def search_allTeacher():
     #Se llama al servicio para obtener todos los docentes
     teachers = TeacherService.search_allTeacher()
     #Se muestra la vista de todos los docentes
-    return render_template('teacher/searchTeacher.html', teachers=teachers)
+    return render_template('Teacher/searchTeacher.html', teachers=teachers)
 
 #Metodo para buscar un docente por su identificación
 @teacher_blueprint.route('/search_by_identificationTeacher', methods=['GET', 'POST'])
@@ -56,8 +56,8 @@ def search_by_identificationTeacher():
             #Se redirige a la misma pagina para intentar de nuevo
             return redirect(url_for('teacher.searchTeacher'))
         #En caso contrario se muestra la vista con el docente encontrado
-        return render_template('teacher/searchTeacher.html', teacher=byIdentificationTeacher)
-    return render_template('teacher/searchTeacher.html')
+        return render_template('Teacher/searchTeacher.html', teacher=byIdentificationTeacher)
+    return render_template('Teacher/searchTeacher.html')
     
 #Metodo para buscar un docente por el tipo docente
 @teacher_blueprint.route('/search_by_typeTeacher', methods=['GET', 'POST'])
@@ -75,8 +75,8 @@ def search_by_typeTeacher():
             #Se redirige a la misma pagina para intentar de nuevo
             return redirect(url_for('teacher.searchTeacher'))
         #En caso contrario se muestra la vista con el docente encontrado
-        return render_template('teacher/searchTeacher.html', teachers=byTypeTeacher)
-    return render_template('teacher/searchTeacher.html')
+        return render_template('Teacher/searchTeacher.html', teachers=byTypeTeacher)
+    return render_template('Teacher/searchTeacher.html')
 
 #Metodo para editar un docente
 @teacher_blueprint.route('/edit_teacher/<string:teIdentification>', methods=['GET', 'POST'])

@@ -38,7 +38,10 @@
                     <input type="text" id="semester" name="semester" class="form-control mt-1" required>
                 </div>
                 <br>
-                <button type="submit" class="btn btn-primary" >Crear</button>
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a href="{{ url_for('main.mainCoordinator') }}" class="btn btn-danger">Regresar</a>
+                </div>
             </form>
         </div>
     </div>
@@ -84,16 +87,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="md-7">
-        <a href="{{ url_for('subject.get_subject') }}">  <!--, name=subject.name-->
-            <button>Consultar asignatura</button>
-        </a>
-
-        <a href="{{ url_for('subject.search_subject') }}"> <!-- , name=subject.name-->
-            <button>Actualizar asignatura</button>
-        </a>
     </div>
 </div>
 

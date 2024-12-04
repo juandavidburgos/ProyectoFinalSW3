@@ -113,6 +113,27 @@ def update_competence(comp_id):
 
     return render_template('Competence/updateCompetence.html', competence=competence)
 
+@competence_bp.route('/view_competences', methods=['GET'])
+def view_competences():
+    facade = CmpLoutFacade()
+    try:
+        # Obtener todas las competencias
+        competences, error = facade.get_all_competences()
+
+        if error:
+            flash("Error al obtener las competencias: " + error, "danger")
+    except Exception as e:
+        flash(f"Error al buscar competencias: {e}", "danger")
+        competences = []
+
+    # Renderizar la plantilla con todas las competencias
+    return render_template('Competence/listCompetence.html', competences=competences)
+
+
+
+
+
+
 
 """""
 # Ruta para crear una nueva competencia, con métodos GET y POST

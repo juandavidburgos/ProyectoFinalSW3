@@ -38,21 +38,21 @@ def create_subject():
     return render_template('Subject/createSubject.html', subjects=subjects)  # Vista para crear la asignatura
 
 
-@subject_bp.route('/get_subject', methods=['GET', 'POST'])
+@subject_bp.route('/get_subject', methods=['GET'])
 def get_subject():
-    subject = None  # Inicializa subject como None
-    if request.method == 'POST':
-        name = request.form.get('name')  # Obtener el nombre del formulario
-        if not name:
-            flash("Por favor, ingrese el nombre de la asignatura.", "error")
-            return redirect(url_for('subject.get_subject'))
+    facade = SubjectManagementFacade()
+    try:
+        # Obtener todas las competencias
+        subjects, error = facade.get_all_subjects()
 
-        subject, error = SubjectService.get_subject_by_name(name)
         if error:
-            flash(error, "error")
-            return redirect(url_for('subject.get_subject'))
+            flash("Error al obtener las asignaturas: " + error, "danger")
+    except Exception as e:
+        flash(f"Error al buscar asignaturas: {e}", "danger")
+        subjects = []
 
-    return render_template('Subject/viewSubject.html', subject=subject)
+    # Renderizar la plantilla con todas las competencias
+    return render_template('Subject/viewSubject.html', subjects=subjects)
 
 @subject_bp.route('/search_subject', methods=['GET', 'POST'])
 def search_subject():

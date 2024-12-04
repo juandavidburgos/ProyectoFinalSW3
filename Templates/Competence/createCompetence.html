@@ -40,8 +40,13 @@
                     <label for="lout_description">Descripción RAP</label>
                     <input type="text" id="lout_description" name="lout_description" class="form-control mt-1" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-3">Crear</button>
+                <!-- Botones centrados con separación -->
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a href="{{ url_for('main.mainCoordinator') }}" class="btn btn-danger">Regresar</a>
+                </div>
             </form>
+            
         </div>
     </div>
 </div>

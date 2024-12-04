@@ -27,10 +27,11 @@
                             {% endfor %}
                         </select><br>
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                    <!-- Botón para regresar -->
-                    <a href="{{ url_for('subject.create_subject') }}" class="btn btn-danger ml-2">Regresar</a>
+                    <!-- Botón de Regresar -->
+                    <div class="d-flex justify-content-center gap-2 mt-1">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>   
+                        <a href="{{ url_for('main.mainCoordinator') }}" class="btn btn-danger">Regresar</a>
+                    </div>
                 </form>
             </div>
         </div>
