@@ -4,7 +4,7 @@ from Services.teacherService import TeacherService
 #CONTROLADOR GESTION DE Docentes
 
 #Blueprint para el controlador de docentes
-teacher_blueprint = Blueprint('teacher', _name_)
+teacher_blueprint = Blueprint('teacher', __name__)
 
 #GET:Sirve para mostrar el formulario para crear un docente 
 #POST:Sirve para crear un docente en la base de datos 

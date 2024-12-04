@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acciones de Asignatura</title>
+</head>
+<body>
+    <h1>Acciones de Asignatura</h1>
+
+    <!-- Mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div>
+            <label for="action">Seleccionar Acción:</label>
+            <select name="action" id="action" required>
+                <option value="add">Agregar Asignatura</option>
+                <option value="edit">Editar Asignatura</option>
+                <option value="delete">Eliminar Asignatura</option>
+            </select>
+        </div>
+
+        <div id="subject_select" style="display:none;">
+            <label for="subject_id">Seleccionar Asignatura:</label>
+            <select name="subject_id" id="subject_id" required>
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">Ejecutar Acción</button>
+    </form>
+
+    <script>
+        const actionSelect = document.getElementById("action");
+        const subjectSelect = document.getElementById("subject_select");
+
+        actionSelect.addEventListener("change", function() {
+            if (actionSelect.value === "edit" || actionSelect.value === "delete") {
+                subjectSelect.style.display = "block";
+            } else {
+                subjectSelect.style.display = "none";
+            }
+        });
+    </script>
+
+    <a href="{{ url_for('subject.search_subject') }}">Ver todas las asignaturas</a>
+</body>
+</html>

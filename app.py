@@ -12,7 +12,7 @@ from Controller.integrationController import integration_bp
 
 
 # Inicializacion de la aplicacion Flask
-app = Flask(_name_)  
+app = Flask(__name__)  
 #Clave secreta
 app.secret_key = 'mysecretkey'  # Necesario para usar 'flash'
 # Inicializacion de la conexión MySQL ANTES de definir las rutas

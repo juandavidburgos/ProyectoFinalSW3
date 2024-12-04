@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Aprendizaje</title>
+</head>
+<body>
+    <h1>Resultados de Aprendizaje</h1>
+
+    <!-- Mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div>
+            <label for="action">Seleccionar Acción:</label>
+            <select name="action" id="action" required>
+                <option value="add">Agregar Resultado de Aprendizaje</option>
+                <option value="edit">Editar Resultado de Aprendizaje</option>
+                <option value="delete">Eliminar Resultado de Aprendizaje</option>
+            </select>
+        </div>
+
+        <div id="learning_outcome_select" style="display:none;">
+            <label for="learning_outcome_id">Seleccionar Resultado de Aprendizaje:</label>
+            <select name="learning_outcome_id" id="learning_outcome_id" required>
+                {% for outcome in learning_outcomes %}
+                    <option value="{{ outcome.id }}">{{ outcome.description }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="learning_outcome_description" style="display:none;">
+            <label for="description">Descripción del Resultado de Aprendizaje:</label>
+            <textarea name="description" id="description" required></textarea>
+        </div>
+
+        <button type="submit">Ejecutar Acción</button>
+    </form>
+
+    <script>
+        const actionSelect = document.getElementById("action");
+        const learningOutcomeSelect = document.getElementById("learning_outcome_select");
+        const learningOutcomeDescription = document.getElementById("learning_outcome_description");
+
+        actionSelect.addEventListener("change", function() {
+            if (actionSelect.value === "edit" || actionSelect.value === "delete") {
+                learningOutcomeSelect.style.display = "block";
+                learningOutcomeDescription.style.display = "none";
+            } else if (actionSelect.value === "add") {
+                learningOutcomeSelect.style.display = "none";
+                learningOutcomeDescription.style.display = "block";
+            } else {
+                learningOutcomeSelect.style.display = "none";
+                learningOutcomeDescription.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
