@@ -20,6 +20,11 @@ class Connection:
         # Configuración de JWT
         app.config['JWT_SECRET_KEY'] = 'super_secret_key'  # Cambia esta clave a una más segura en producción
         app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3600  # Tokens de acceso expiran en 1 hora
+        app.config['JWT_TOKEN_LOCATION'] = ['cookies']  # Usar cookies para almacenar tokens
+        app.config['JWT_COOKIE_SECURE'] = False  # Cambiar a True en producción para usar HTTPS
+        app.config['JWT_ACCESS_COOKIE_PATH'] = '/'  # Cookie accesible para toda la app
+        app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'  # Ruta para la cookie de refresh
+        app.config['JWT_COOKIE_CSRF_PROTECT'] = True  # Protección contra CSRF
 
         jwt = JWTManager(app)  # Objeto para manejar JWT
         return jwt

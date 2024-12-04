@@ -1,6 +1,7 @@
 import jwt
 import datetime
 from flask import current_app
+from flask_jwt_extended import create_access_token
 from Model.teacher import Teacher
 from Model.coordinator import Coordinator
 from Model.evaluator import Evaluator
@@ -39,6 +40,7 @@ class AuthService:
 
         # Crear token JWT
         try:
+            #token = create_access_token(identity={"user_id": user_id, "role": role})
             payload = {
                 "user_id": user_id,
                 "role": role,
