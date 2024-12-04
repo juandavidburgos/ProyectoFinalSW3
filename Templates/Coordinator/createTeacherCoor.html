@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+    <h1 class="my-4">Crear Docente</h1>
+    <form method="POST" action="{{ url_for('coordinator.create_teacher') }}">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Docente</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Docente</button>
+    </form>
+</div>
+{% endblock %}

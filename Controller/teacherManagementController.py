@@ -96,4 +96,3 @@ def edit_teacher(teIdentification):
             flash(error, 'error')
             return redirect(url_for('teacher.edit_teacher'))
         return redirect(url_for('teacher.edit_teacher', teIdentification=edit_teacher.teIdentification))
-        

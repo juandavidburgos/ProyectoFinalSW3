@@ -1,11 +1,8 @@
-#Aplicacion principal
-from flask import Flask
+from flask import Flask, render_template
 from Model.connection import Connection
-from Controller.teacherManagementController  import *
-
+from Controller.teacherManagementController import teacher_blueprint
 from Controller.mainController import main_bp
 from Controller.subjectManagementController import subject_bp
-from Controller.teacherManagementController import teacher_blueprint
 from Controller.competenceManagementController import competence_bp
 from Controller.learningOutcomeManagementController import learning_outcome_bp
 from Controller.integrationController import integration_bp
@@ -15,13 +12,14 @@ from Controller.authController import auth_blueprint
 
 # Inicializacion de la aplicacion Flask
 app = Flask(__name__)  
-#Clave secreta
+# Clave secreta
 app.secret_key = 'mysecretkey'  # Necesario para usar 'flash'
-# Inicializacion de la conexión MySQL ANTES de definir las rutas
-db = Connection.init_database(app) # Obtiene el objeto `db`
+
+# Inicialización de la conexión MySQL ANTES de definir las rutas
+db = Connection.init_database(app)  # Obtiene el objeto db
 
 # Configuración e inicialización de JWT
-jwt = Connection.config_JWT(app)  # Obtiene el objeto `jwt`s
+jwt = Connection.config_JWT(app)  # Obtiene el objeto `jwt`
 
 #Registro de los controladores
 app.register_blueprint(main_bp) #Controlador de la pagina principal
@@ -41,4 +39,4 @@ app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
 #Comprobar que el archivo que se esta ejecutando es el principal
 if __name__ == '__main__':
-    app.run(debug=True, port= 3000) #debug = true, actualiza cada vez que hacemos cambios en el servidor
+    app.run(debug=True, port=3000)  # debug = true, actualiza cada vez que hacemos cambios en el servidor

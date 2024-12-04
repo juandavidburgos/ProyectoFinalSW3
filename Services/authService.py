@@ -31,7 +31,7 @@ class AuthService:
         user = (
             Teacher.query.filter_by(teEmail=email, teIdentification=data['password']).first() or
             Coordinator.query.filter_by(coEmail=email, coIdentification=data['password']).first() or
-            Evaluator.query.filter_by(evEmail=email, evIdentification=data['password']).first()
+            Evaluator.query.filter_by(evaEmail=email, evaIdentification=data['password']).first()
         )
 
         if not user:
@@ -77,3 +77,4 @@ class AuthService:
             return None, f"Error al generar el token: {str(e)}"
 
         return {"token": token, "role": role}, None
+
