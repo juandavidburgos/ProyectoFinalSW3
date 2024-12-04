@@ -72,6 +72,17 @@ class RubricService:
             return None, "No se encontraron rubricas con esa descripción"
         except Exception as e:
             return None, f"Error al buscar la rubrica {str(e)}"
+        
+    @staticmethod
+    def search_by_name(rub_name):
+        try:
+            #Buscar todoas las rubricas por la descripción del criterio
+            rubric = Rubric.query.filter_by(rub_name=rub_name).first()
+            if rubric:
+                return rubric, None
+            return None, "No se encontraron rubricas con esa descripción"
+        except Exception as e:
+            return None, f"Error al buscar la rubrica {str(e)}"
     
     @staticmethod
     def edit_rubric(rub_name,data):
@@ -92,29 +103,3 @@ class RubricService:
             db.session.rollback()
             return None, f"Error al editar la rubrica {str(e)}"
         
-#Buscar el docente por su identificación
-            teacher = Teacher.query.filter_by(teIdentification=data['teIdentification']).first()
-            if not teacher:
-                return None, "Docente no encontrado"
-            
-            #Actualizar los datos del docente
-            teacher.teTypeIdentification = data['teTypeIdentification']
-            teacher.teIdentification = data['teIdentification']
-            teacher.teTypeTeacher = data['teTypeTeacher']
-            teacher.teName = data['teName']
-            teacher.teLastName = data['teLastName']
-            teacher.teLastTitle = data['teLastTitle']
-            teacher.teEmail = data['teEmail']
-            teacher.teState = data['teState']
-            db.session.commit()
-
-    """try:
-            db.session.add(new_teacher)
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return None, f"Ha ocurrido un error en la base de datos: {str(e)}"
-            return teacher, None
-            
-        except Exception as e:
-            return None, f"Error al buscar al docente {str(e)}" """

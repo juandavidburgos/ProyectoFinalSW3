@@ -35,23 +35,23 @@ def create_rubric():
 
 #Metodo para mostrar todos las rubricas
 @rubric_blueprint.route('/search_allRubric')
-def search_allTeacher():
+def search_allRubricr():
     #Se llama al servicio para obtener todos las rubricas
     rubrics = RubricService.get_all_Rubric()
     #Se muestra la vista de todos los docentes
     return render_template('Rubric/searchRubric.html', rubrics=rubrics)
 
-#Metodo para buscar un docente por su apellido
+#Metodo para buscar un 
 @rubric_blueprint.route('/search_by_criterion_description', methods=['GET', 'POST'])
 def search_by_criterion_description(criterion_description):
     if request.method == 'POST':
         #Se obtiene el apellido del formulario
-        teLastName = request.form.get('criterion_description')
+        criterion_description = request.form.get('criterion_description')
         #Se llama al servicio
         byCriterion_description,error = RubricService.search_by_criterion_description(criterion_description)
         if error:
             flash(error, 'error')
-            return redirect(url_for('rubric.searchTeacher'))
+            return redirect(url_for('rubric.searchRubric'))
         #En caso contrario se muestra la vista con el docente encontrado
         return render_template('rubric/searchRubric.html', rubrics=byCriterion_description)
     return render_template('rubric/searchRubric.html')
@@ -90,14 +90,14 @@ def edit_rubric(rub_name):
         # En caso de error, mostrar mensaje y redirigir
         if error:
             flash(error, 'error')
-            return redirect(url_for('teacher.edit_teacher', rub_name=rub_name))
+            return redirect(url_for('rubric.edit_rubric', rub_name=rub_name))
 
         # Mostrar mensaje de éxito
         flash('Docente actualizado exitosamente')
-        return redirect(url_for('Teacher/teacher.search_allRubric'))
+        return redirect(url_for('Rubric/.search_allRubric'))
 
     # Si es GET, buscar el docente y mostrar los datos en el formulario
-    rubric, error = RubricService.search_by_identificationTeacher(rub_name)
+    rubric, error = RubricService.search_by_name(rub_name)
     if error:
         flash(error, 'error')
         return redirect(url_for('rubric.search_allRubric'))
