@@ -14,7 +14,8 @@ class Evaluator(db.Model):
     evaName = db.Column('EVA NOMBRE', db.String(100), nullable=False)  # Nombre del evaluador
     evaLastName = db.Column('EVA APELLIDO', db.String(100), nullable=False)  # Apellido del evaluador
     evaEmail = db.Column('EVA CORREO', db.String(100), nullable=False)  # Correo del evaluador
-
+    
+    evaluator = db.relationship('ResultaApRubrica', backref='evaluator') # Relación con Integration
     
     #Constructor de la clase
     def __init__(self,evaTypeIdentification=None, evaIdentification=None, evaName=None, evaLastName=None,evaEmail=None):

@@ -58,7 +58,7 @@ class IntegrationService:
             # Confirmar y guardar los cambios en la base de datos para obtener el ID de la competencia
             db.session.commit()
 
-            # Crear el RAP (LearningOutcome) asociado con la competencia recién creada
+            # Crear el RAP (LearningOutcome) asociado con la competencia
             loutcome = LearningOutcome(lout_description=raa_data['lout_description'],
                                         comp_id=subject_competence.comp_id,  # Asociar el RAP con la competencia
                                         #lout_subject_id=next_lout_id  # El RAP puede o no tener un 'subject_id'
@@ -153,3 +153,5 @@ class IntegrationService:
         except Exception as e:
             
             return [], f"Error al consultar resultados de aprendizaje: {e}"
+        
+    

@@ -9,6 +9,8 @@ from Controller.teacherManagementController import teacher_blueprint
 from Controller.competenceManagementController import competence_bp
 from Controller.learningOutcomeManagementController import learning_outcome_bp
 from Controller.integrationController import integration_bp
+from Controller.rubricManagementController import rubric_blueprint
+from Controller.evaluatorManagementController import evaluator_blueprint
 
 
 # Inicializacion de la aplicacion Flask
@@ -34,6 +36,10 @@ app.register_blueprint(learning_outcome_bp,url_prefix='/learning_outcome')
 app.register_blueprint(teacher_blueprint, url_prefix='/teacher')
 #Controlador de la integracion asignatura-competencia-docente
 app.register_blueprint(integration_bp, url_prefix='/asign')
+#Controlador de la gestion de rubricas
+app.register_blueprint(rubric_blueprint, url_prefix='/rubric')
+#Controlador de la gestion de evaluadores
+app.register_blueprint(evaluator_blueprint, url_prefix='/evaluator')
 
 #Comprobar que el archivo que se esta ejecutando es el principal
 if __name__ == '__main__':

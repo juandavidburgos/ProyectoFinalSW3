@@ -10,7 +10,7 @@ class LearningOutcome(db.Model):
     #lout_subject_id =db.Column('RASIG_ID',db.Integer, db.ForeignKey('TBL_RA.RAP_ID'), nullable=True)  # Relación recursiva
 
     comp_id = db.Column(db.Integer, db.ForeignKey('TBL_COMPETENCIA.COMP_ID'), nullable=False)  # Relación con Competencia (clave foránea)
-
+    learningOutcome = db.relationship('ResultaApRubrica', backref='learningOutcome') #Relación con Integration
     # Relación recursiva con el propio RA (si es necesario)
     #raProgram = db.relationship('LearningOutcome', remote_side=[lout_id], backref='sublearningoutcome', lazy=True)
 

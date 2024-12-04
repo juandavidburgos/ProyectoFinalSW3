@@ -1,35 +1,55 @@
 from Model.ResultaApRubrica import ResultaApRubrica
+from Model.rubric import Rubric
+from Model.evaluator import Evaluator
+from Model.learningOutcome import LearningOutcome
+from Model.competence import Competence
 from Model.connection import db
-from Model.evaluator import Evaluator  # Importar la clase evaluator para validar comp_id
 
-class ResultaApRubrica:
+class ResultaApRubricaService:
+
     @staticmethod
-    def create_learning_outcome(data):
-        """Crea un nuevo Resultado de Aprendizaje"""
-        # Validaciones de los datos
-        if not data.get('lo_description') or not data.get('comp_id'):
-            return None, "La descripción y el ID de la competencia son requeridos"
-
-        # Validar que el comp_id esté asociado a una competencia existente
-        competence = Competence.query.get(data['comp_id'])
-        if not competence:
-            return None, "El ID de la competencia proporcionado no existe"
-
-        # Crear el nuevo Resultado de Aprendizaje
-        new_learning_outcome = LearningOutcome(
-            comp_id=data['comp_id'],
-            lo_description=data['lo_description']
-        )
-
+    def create_learning_outcome_rubric(lo_id, rubric_id):
+        "Se le asigna un RA a una rubrica"
         try:
-            db.session.add(new_learning_outcome)
+            # Crear una nueva instancia de ResultaApRubrica con los datos proporcionados
+            resultaApRubrica = ResultaApRubrica(lo_id=lo_id, rubric_id=rubric_id)
+            
+            # Agregar la relación a la sesión y hacer commit
+            db.session.add(resultaApRubrica)
             db.session.commit()
+
+            return "Asignación realizada exitosamente", None
+        except Exception as e:
+            db.session.rollback()  # Si hay error, hacer rollback
+            return None, f"Error al realizar la asignación: {str(e)}"
+    @staticmethod    
+    def get_next_learning_id():
+        #obtiene el siguiente ID disponible para rubric_id para no tener conflictos
+        max_rubric_id = db.session.query(db.func.max(LearningOutcome.lout_id)).scalar()
+        return (max_rubric_id or 0) + 1  # Si no hay registros, comienza desde 1
+    
+    @staticmethod
+    def create_rubric_learning_outcome(rubric_data,lo_data):
+        try:
+            # Crear una nueva instancia de Rubric con los datos proporcionados
+            rubric = Rubric(**rubric_data)
+            db.session.add(rubric)
+            db.session.commit()
+
+            # Obtener el siguiente ID disponible para LearningOutcome
+            next_lo_id = ResultaApRubricaService.get_next_learning_id()
+
+            # Crear una nueva instancia de LearningOutcome con los datos proporcionados
+            learning_outcome = LearningOutcome(lout_id=next_lo_id, **lo_data)
+            db.session.add(learning_outcome)
+            db.session.commit()
+
+            # Asociar el LearningOutcome a la Rubric
+            return ResultaApRubricaService.create_learning_outcome_rubric(learning_outcome.lout_id, rubric.rubric_id)
         except Exception as e:
             db.session.rollback()
-            return None, f"Error en la base de datos: {str(e)}"
+            return None, f"Error al crear la rúbrica y asociar el resultado de aprendizaje: {str(e)}"
 
-        return new_learning_outcome, None
-    
     @staticmethod
     def update_learning_outcome(lo_id, data):
         """Actualiza un Resultado de Aprendizaje existente"""
@@ -52,15 +72,15 @@ class ResultaApRubrica:
             return None, f"Error inesperado: {str(e)}"
 
     @staticmethod
-    def get_learning_outcomes_by_competencia(comp_id):
-        """Obtiene todos los Resultados de Aprendizaje asociados a una Competencia"""
-        # Validar que la competencia existe
-        competence = Competence.query.get(comp_id)
-        if not competence:
+    def get_learning_outcomes_by_rubric(rubric_id):
+        """Obtiene todos los Resultados de Aprendizaje asociados a una rubrics"""
+        # Validar que la rubrica existe
+        rubric = rubric.query.get(rubric_id)
+        if not rubric:
             return None, "La competencia especificada no existe"
 
         # Consultar los Resultados de Aprendizaje asociados
-        learning_outcomes = LearningOutcome.query.filter_by(comp_id=comp_id).all()
+        learning_outcomes = LearningOutcome.query.filter_by(rubric_id=rubric_id).all()
         return [lo.to_dict() for lo in learning_outcomes], None
     
     @staticmethod
@@ -75,14 +95,38 @@ class ResultaApRubrica:
         except Exception as e:
             return None, f"Error al obtener los Resultados de Aprendizaje: {str(e)}"
     
-    @staticmethod
-    def get_learning_outcome_by_id(lo_id):
-        # Validaciones de los datos
-        if not lo_id:
-            return None, "El ID es requerido"
+@staticmethod
+def get_learning_outcomes_by_competence_type(competence_type):
+    """Obtiene todos los Resultados de Aprendizaje asociados a una competencia de tipo asignatura"""
+    try:
+        # Consultar los Resultados de Aprendizaje asociados a competencias de tipo asignatura
+        learning_outcomes = (db.session.query(LearningOutcome)
+                             .join(Competence, LearningOutcome.comp_id == Competence.comp_id)
+                             .filter(Competence.type == competence_type)
+                             .all())
+        return [lo.to_dict() for lo in learning_outcomes], None
+    except Exception as e:
+        return None, f"Error al obtener los Resultados de Aprendizaje: {str(e)}"
+    
+@staticmethod
+def update_rubric_score(rubric_id, evaluator_id, new_score):
+    """Actualiza la nota de una rúbrica por su ID y el ID del evaluador"""
+    try:
+        # Buscar la rúbrica por su ID
+        rubric = Rubric.query.get(rubric_id)
+        if not rubric:
+            return None, "La rúbrica no existe"
 
-        learningOutcome = LearningOutcome.query.filter_by(lo_id=lo_id).first()
-        if not learningOutcome:
-            return None, f"No se encontro un RA con ese ID {lo_id}."
-        return learningOutcome, None
+        # Buscar el evaluador por su ID
+        evaluator = Evaluator.query.get(evaluator_id)
+        if not evaluator:
+            return None, "El evaluador no existe"
 
+        # Actualizar la nota de la rúbrica
+        rubric.score = new_score
+
+        db.session.commit()
+        return "Nota actualizada exitosamente", None
+    except Exception as e:
+        db.session.rollback()
+        return None, f"Error al actualizar la nota de la rúbrica: {str(e)}"

@@ -11,7 +11,8 @@ class Rubric(db.Model):
     rub_level = db.Column('RUB_NIVEL', db.String(100), nullable=True)  # Nivel de la rúbrica
 
     evaluation_id = db.Column(db.Integer, db.ForeignKey('TBL_EVALUADOR.EVA_ID'), nullable=False)  # Relación conevaluador (clave foránea)
-    evaluator = db.relationship('Evaluator', backref=db.backref('rubrics', lazy=True))
+    #evaluator = db.relationship('Evaluator', backref=db.backref('rubrics', lazy=True))
+    rubric = db.relationship('ResultaApRubrica', backref='rubric') # Relación con Integration
     
     def __init__(self, evaluation_id, rub_name, rub_score, criterion_description, rub_level):
         self.evaluation_id = evaluation_id

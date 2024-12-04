@@ -1,0 +1,115 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <!-- FORMULARIO -->
+            <form action="{{ url_for('rubric.create_rubric') }}" method="POST">
+                <div class ="form-group mt-2">
+                    <label for="rub_name">Nombre de la rubrica:</label>
+                    <input type="text" id="rub_name" name="rub_name" class="form-control mt-1" required>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label for="criterion_description">Criterio evaluación:</label>
+                    <textarea id="criterion_description" name="criterion_description" class="form-control mt-1" required></textarea>
+                </div>
+            
+                <div class="form-group mt-2">
+                    <label for="rub_score">Nota:</label>
+                    <textarea id="rub_score" name="rub_score" class="form-control mt-1" required></textarea>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label for="rub_score">Nota:</label>
+                    <textarea id="rub_score" name="rub_score" class="form-control mt-1" required></textarea>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label for="evaid">Evaluador:</label>
+                    <textarea id="evaid" name="evaid" class="form-control mt-1" required></textarea>
+                </div>
+                   
+                <label for="rub_level">Último Título:</label>
+                <select id = "rub_level" name="rub_level" required>
+                    <option value="">Seleccione</option>
+                    <option value="Excelente">Excelente</option>
+                    <option value="Bueno">Bueno</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Deficiente">Deficiente</option>
+                </select><br><br>
+                        <br>
+                        
+                <button type="submit" class="btn btn-primary" >Crear</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="container">
+            <div class="row">
+                <!-- Tabla de Asignaturas-->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Asignaturas existentes</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Creditos</th>
+                                        <th>Objetivos</th>
+                                        <th>Semestre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for sub in subjects %}
+                                    <tr>
+                                        <td>{{ sub.id }}</td>
+                                        <td>{{ sub.name }}</td>
+                                        <td>{{ sub.credits }}</td>
+                                        <td>{{ sub.goals }}</td>
+                                        <td>{{ sub.semester }}</td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5">No hay asignaturas registradas</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="md-7">
+        <a href="{{ url_for('subject.get_subject') }}">  , name=subject.name
+            <button>Consultar asignatura</button>
+        </a>
+
+        <a href="{{ url_for('subject.search_subject') }}"> <!-- , name=subject.name-->
+            <button>Actualizar asignatura</button>
+        </a>
+    </div>
+</div>
+
+{% endblock %}
