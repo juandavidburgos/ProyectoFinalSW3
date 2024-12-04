@@ -1,18 +1,24 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
-from flask_jwt_extended import create_access_token
-from Services.authService import AuthService
+from Facade.authFacade import AuthFacade
 
+# Crear el blueprint para el controlador de autenticación
 auth_blueprint = Blueprint('auth', __name__)
 
 @auth_blueprint.route('/login', methods=['POST'])
 def login():
+    """
+    Ruta para manejar el inicio de sesión de los usuarios.
+    """
+    # Instanciar la fachada de autenticación
+    auth_facade = AuthFacade()
+
     # Obtener los datos del formulario
     email = request.form.get('usuario')
     password = request.form.get('clave')
 
-    # Pasar los datos al servicio de autenticación
+    # Preparar los datos para enviarlos a la fachada
     data = {'email': email, 'password': password}
-    response, error = AuthService.login_user(data)
+    response, error = auth_facade.login_user(data)
 
     if error:
         # Si hubo un error, renderizar el formulario de inicio de sesión con un mensaje de error
@@ -31,5 +37,5 @@ def login():
         return redirect(url_for('evaluator_dashboard', token=token))  # Redirigir al dashboard de Evaluador
     else:
         # Si el rol no se reconoce, redirigir al login
-        flash('Rol no reconocido')
+        flash('Rol no reconocido', 'error')
         return redirect(url_for('auth.login'))
