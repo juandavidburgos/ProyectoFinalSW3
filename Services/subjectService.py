@@ -75,10 +75,27 @@ class SubjectService:
         return subject, None
 
     @staticmethod
-    def update_subject(name, data):
-        subject = Subject.query.filter_by(name=name).first()
+    def get_subject_by_id(id):
+        # Validaciones de los datos
+        if not id:
+            return None, "El id es requerido"
+
+        # Buscar la asignatura por ID
+        subject = db.session.query(Subject).filter_by(id=id).first()
+
         if not subject:
-            return None, f"No se encontro una asignatura con el nombre: {name}"
+            return None, f"No se encontró una asignatura con el id {id}."
+
+        # Convertir el objeto a diccionario
+        subject_dict = subject.to_dict()
+        return subject_dict, None
+
+    
+    @staticmethod
+    def update_subject(id, data):
+        subject = Subject.query.filter_by(id=id).first()
+        if not subject:
+            return None, f"No se encontro una asignatura con el id: {id}"
 
         try:
             subject.name = data.get('name', subject.name)#Actualiza el campo subject.name con 'name' que es el que llega
@@ -94,4 +111,6 @@ class SubjectService:
         except Exception as e:
             db.session.rollback()
             return None, f"Error inesperado: {str(e)}"
+
+
 
