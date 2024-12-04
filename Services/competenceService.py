@@ -150,7 +150,7 @@ class CompetenceService:
             competence.comp_description = data.get('comp_description', competence.comp_description)
             competence.comp_type = data.get('comp_type', competence.comp_type)
             competence.comp_level = data.get('comp_level', competence.comp_level)
-            competence.program_comp_id = data.get('program_comp_id', competence.program_comp_id)
+            #competence.comp_subject_id = data.get('comp_subject_id', competence.comp_subject_id)
 
             db.session.commit()
             return competence, None

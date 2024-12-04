@@ -14,5 +14,5 @@ class CmpLoutFacade:
     def get_competence_by_id(self,comp_id):
         return self.competence_service.get_competence_by_id(comp_id)
     
-    def update_comeptence(self, id, data):
+    def update_competence(self, id, data):
         return self.competence_service.update_competence(id,data)

@@ -75,32 +75,33 @@ def search_competence():
     #* Si el método NO ES POST, se muestra la vista del formulario.
     return render_template('Competence/searchUpdateCompetence.html', cbxcompetences=cbxcompetences)
 
-@competence_bp.route('/update_competence/<int:id>', methods=['GET', 'POST'])
-def update_competence(id):
+@competence_bp.route('/update_competence/<int:comp_id>', methods=['GET', 'POST'])
+def update_competence(comp_id):
     facade = CmpLoutFacade()
     competence = None
 
     if request.method == 'POST':
         data = request.form.to_dict()
-
+        print("LLEGAMOS ACAA")
         try:
+            print("LLEGAMOS ACAA")
             # Llamar al servicio para actualizar la asignatura
-            updated_competence, error = facade.update_comeptence(id,data)
+            updated_competence, error = facade.update_competence(comp_id,data)
 
             if error:
                 flash(error, "danger")
-                return redirect(url_for('competence.update_competence', id=id))
+                return redirect(url_for('competence.update_competence', comp_id=comp_id))
 
             flash("Asignatura actualizada con éxito!", 'success')
             #return redirect(url_for('subject.update_subject'))
 
         except Exception as e:
             flash(f"Error al actualizar la competencia: {e}", "danger")
-            return redirect(url_for('competence.competence', id=id))
+            return redirect(url_for('competence.update_competence', comp_id=comp_id))
 
     try:
         # Recuperar los datos de la asignatura actual para mostrarlos en el formulario
-        competence, error = facade.get_competence_by_id(id)
+        competence, error = facade.get_competence_by_id(comp_id)
 
         if error or not competence:
             flash("Error al recuperar los datos de la competencia.", "danger")
