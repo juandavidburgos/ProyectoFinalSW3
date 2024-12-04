@@ -1,11 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Lista de Docentes</title>
-    </head>
-    <body>
+{% extends 'layout.html' %}
+
+{% block body %}
+
+    <h1>Crear Docente</h1>
+    <!-- Mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
         <h1>Buscar Docente</h1>
         <table border="1">
             <thead>
@@ -35,19 +43,11 @@
                 {% endfor %}
             </tbody>
         </table>
-    </body>
-</html>
+        {% endblock %}>
 
 
 <!-- templates/searchTeacher.html -->
-<!--<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Docente</title>
-</head>
-<body>
+<!--
     <h1>Buscar Docente por Identificación</h1>
 
     <!-- Mostrar mensajes flash -->
@@ -91,18 +91,11 @@
             </tr>
         </table>
     {% endif %}
-</body>
-</html> -->
+
+-->
 
 <!-- templates/searchTeacher.html -->
-<!--<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Docente</title>
-</head>
-<body>
+<!--
     <h1>Buscar Docente por Tipo</h1>
 
     <!-- Mostrar mensajes flash -->
@@ -154,5 +147,4 @@
             {% endfor %}
         </table>
     {% endif %}
-</body>
-</html>-->
+-->

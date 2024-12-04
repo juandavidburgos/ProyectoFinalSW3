@@ -37,7 +37,7 @@ def create_teacher():
 @teacher_blueprint.route('/search_allTeacher')
 def search_allTeacher():
     #Se llama al servicio para obtener todos los docentes
-    teachers = TeacherService.search_allTeacher()
+    teachers = TeacherService.get_all_teacher()
     #Se muestra la vista de todos los docentes
     return render_template('Teacher/searchTeacher.html', teachers=teachers)
 
@@ -104,7 +104,8 @@ def edit_teacher(teIdentification):
         print(f"Datos recibidos para editar: {data}")  # Para depuración
 
         # Llamar al servicio para actualizar el docente
-        updated_teacher, error = TeacherService.update_teacher(teIdentification, data)
+        updated_teacher, error = TeacherService.edit_teacher(teIdentification, data)
+        #update_teacher(teIdentification, data)
 
         # En caso de error, mostrar mensaje y redirigir
         if error:

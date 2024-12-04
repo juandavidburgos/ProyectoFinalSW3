@@ -1,17 +1,18 @@
-#Clase
-#*RUBRICA
+# #*RUBRICA
 from connection import db  # Importa db desde connection.py
 
 class Rubric(db.Model):
     __tablename__ = 'TBL_RUBRICA'  # Nombre de la tabla
 
     rub_id = db.Column('IDRUBRICA', db.Integer, primary_key=True, autoincrement=True)  # ID de la rúbrica
-    evaluation_id = db.Column('EVA_ID', db.Integer, nullable=True)  # ID de evaluación
     rub_name = db.Column('RUB_NOMBRE', db.String(100), nullable=False)  # Nombre de la rúbrica
     rub_score = db.Column('RUB_NOTA', db.String(100), nullable=False)  # Nota de la rúbrica
     criterion_description = db.Column('RUB_CRITERIODESC', db.String(100), nullable=True)  # Descripción del criterio
     rub_level = db.Column('RUB_NIVEL', db.String(100), nullable=True)  # Nivel de la rúbrica
 
+    evaluation_id = db.Column(db.Integer, db.ForeignKey('TBL_EVALUADOR.EVA_ID'), nullable=False)  # Relación conevaluador (clave foránea)
+    evaluator = db.relationship('Evaluator', backref=db.backref('rubrics', lazy=True))
+    
     def __init__(self, evaluation_id, rub_name, rub_score, criterion_description, rub_level):
         self.evaluation_id = evaluation_id
         self.rub_name = rub_name
