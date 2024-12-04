@@ -15,24 +15,21 @@ class RubricService:
         
         # Crear un nueva rubrica
         new_rubric = Rubric(
-            teTypeIdentification= ['teTypeIdentification'],#data.get(teTypeIdentification),
-            teIdentification=data['teIdentification'],
-            teTypeTeacher= ['teTypeTeacher'], #data.get(teTypeTeacher),
-            teName=data['teName'],
-            teLastName=data['teLastName'],
-            teLastTitle=data['teLastTitle'],
-            teEmail=data['teEmail'],
-            teState='Activo'
+            evaluation_id= ['evaluation_id'],
+            rub_name=data['rub_name'],
+            rub_score=data['rub_score'],
+            criterion_description=data['criterion_description'],
+            rub_level=data['rub_level']   
         )
         
         try:
-            db.session.add(new_teacher)
+            db.session.add(new_rubric)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
             return None, f"Ha ocurrido un error en la base de datos: {str(e)}"
 
-        return new_teacher, None
+        return new_rubric, None
     
     @staticmethod
     def get_all_Rubric():

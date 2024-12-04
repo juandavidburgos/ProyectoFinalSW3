@@ -1,5 +1,6 @@
 #Servicio Evaluador
 from Model.evaluator import Evaluator
+from Model.rubric import Rubric
 from Model.connection import db
 
 class EvaluatorService:
@@ -100,4 +101,41 @@ class EvaluatorService:
                 return None, f"Error inesperado: {str(e)}"
 
         
-      
+"""- Evalua RA de de estudiantes con RUBRICAS PREDEFINIDAS
+- NO PUEDE MODIFICAR RA NI COMPETENCIAS
+
+>> Visualización de RA asignatura
+- Se muestran las rubricas asociadas a ese RA
+- Selecciona una rubrica (Boton al frente de cada una que diga "Seleccionar")
+- Permite ingresar una puntuación (Nota), es decir, permite editar el campo NOTA de rubrica
+- Guardar"""
+@staticmethod
+ def get_all_RASubject():
+        try:
+            rubric=db.session.query(Rubric.rubId, Rubric.rubName, Rubric.rubDescription, Rubric.criterion_description, Rubric.).all()
+            # Consultar todos los RA de la asignatura
+            RA = RA.query.all()
+            print (RA)
+            # Convertir los objetos a diccionarios
+            return [ra.to_dict() for ra in RA], None
+        except Exception as e:
+            return None, f"Error al obtener los RA de la asignatura: {str(e)}"
+        
+
+        #*Obtiene todos los evaluadores
+        try:
+            # Consultar todos los evaluadores 
+            # Consultar solo los campos requeridos
+            evaluators = db.session.query(Evaluator.evaId , Evaluator.evaName, Evaluator.evaLastName).all()
+
+            if not evaluators:
+                return [], "No se encontraron evaluadores."
+            # Convertir las tuplas resultantes en una lista de diccionarios
+            evaluators_dict = [{"evaId": evalu.evaId, "evaName": evalu.teName, "evaLastName": evalu.evaLastName} for evalu in evaluators]
+        
+            print(evaluators_dict)  # Esto imprimirá el contenido de los diccionarios
+            
+            return evaluators_dict, None  # Devolver los resultados como lista de diccionarios
+        except Exception as e:
+            # En caso de error, devolver el mensaje de error
+            return [], f"Error al obtener los evaluadores: {str(e)}"
