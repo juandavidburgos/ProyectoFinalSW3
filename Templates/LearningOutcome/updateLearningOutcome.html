@@ -2,28 +2,74 @@
 
 {% block body %}
     <h1>Actualizar resultado de aprendizaje</h1>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul>
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
 
-    <!-- Mostrar mensajes flash -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+            <form action="{{ url_for('learning_outcome.update_learning_outcome') }}" method="POST">
+                
+                <div class="form-group mt-2">
+                    <label for="lout_id">Id RA:</label>
+                    <input type="number" name="lout_id" id="lout_id" value="{{ learning_outcome.lout_id }}" readonly required><br> 
+                </div>
+                <div class="form-group mt-2">
+                    <label for="comp_id">Competencia asociada:</label>
+                    <input type="number" name="comp_id" id="comp_id" value="{{ learning_outcome.comp_id }}" readonly required><br> <!-- Si no queremos que el usuario lo cambie, se pone: 'readonly' antes de required-->
+                </div>
+                <div class="form-group mt-2">
+                    <label for="lout_description">Descripcion:</label>
+                    <textarea name="lout_description" id="lout_description">{{ learning_outcome.lout_description }}</textarea><br>
+                </div>
 
-    <form action="{{ url_for('learning_outcome.update_learning_outcome') }}" method="POST">
-        <label for="comp_id">Id RA:</label>
-        <input type="number" name="lo_id" id="lo_id" value="{{ learning_outcome.lo_id }}" readonly required><br> 
+                <button type="submit" class="btn btn-primary">Actualizar</button>
 
-        <label for="comp_id">Competencia asociada:</label>
-        <input type="number" name="comp_id" id="comp_id" value="{{ learning_outcome.comp_id }}" readonly required><br> <!-- Si no queremos que el usuario lo cambie, se pone: 'readonly' antes de required-->
+                <!-- Botón para regresar -->
+                <a href="{{ url_for('integration.search_subcomp') }}" class="btn btn-danger ml-2">Regresar</a>
+            </form>
+        </div>
+    </div>
 
-        <label for="lo_description">Descripcion:</label>
-        <textarea name="lo_description" id="lo_description">{{ learning_outcome.lo_description }}</textarea><br>
-
-        <button type="submit">Actualizar RA</button>
-    </form>
+    <div class="col-md-6">
+        <div class="container">
+            <div class="row">
+                <!-- Tabla de Ra-->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Resultados de aprendizaje</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Descripcion</th>
+                                        <th>ID Competencia Asociada</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ learning_outcome.lout_id }}</td>
+                                        <td>{{ learning_outcome.lout_description }}</td>
+                                        <td>{{ learning_outcome.comp_id }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

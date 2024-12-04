@@ -1,0 +1,105 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="row">
+    <!-- Columna del formulario -->
+    <div class="col-md-6">
+        <div class="card card-body">
+            <h3>Configurar RA asignatura</h3>
+
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('integration.search_subcomp') }}" method="POST">
+                
+                <div class="form-group mt-2">
+                    <label for="teacher_id">Querido profesor, ingrese su id:</label>
+                    <input type="number" name="teacher_id" id="teacher_id" class="form-control mt-1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+                                                                                        
+        </div>
+    </div>
+
+    {% if mostrar_nuevo_campo %}
+        <form action="{{ url_for('integration.get_lout_by_competence') }}" method="POST">
+            <div class="form-group mt-2">
+                <label for="competence_id">Seleccione una Competencia para editar su RA:</label>
+                <select name="competence_id" id="competence_id" class="form-control mt-1">
+                    <option value="">Seleccione</option>
+                    {% for competence in competences %}
+                        <option value="{{ competence.comp_id }}">{{ competence.comp_description }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Seleccionar</button>
+            </div>
+        </form>
+    {% endif %}
+
+    {% if mostrar_cbx %}
+        <form action="{{ url_for('integration.search_subject_lout') }}" method="POST">
+            <div class="form-group mt-2">
+                <label for="subject_lout_id">Seleccione un RA a editar:</label>
+                <select name="subject_lout_id" id="subject_lout_id" class="form-control mt-1">
+                    <option value="">Seleccione</option>
+                    {% for ra in raas %}
+                        <option value="{{ ra.lout_id }}">{{ ra.lout_description }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Seleccionar</button>
+            </div>
+        </form>
+    {% endif %}
+
+    <!-- Tabla de Asignaciones -->
+    <div class="col-md-12 mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Asignaciones</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>DOCENTE DESIGNADO</th>
+                            <th>ASIGNATURA</th>
+                            <th>ID COMPETENCIA</th>
+                            <th>PERIODO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for ass in assignment %}
+                        <tr>
+                            <td>{{ ass.teach_id}}</td>
+                            <td>{{ ass.subj_id }}</td>
+                            <td>{{ ass.comp_id}}</td>
+                            <td>{{ ass.time}}</td>
+                            
+                            
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4">No hay asignaciones registradas</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

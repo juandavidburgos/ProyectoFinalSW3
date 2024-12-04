@@ -14,11 +14,11 @@ teacher_blueprint = Blueprint('teacher', __name__)
 # Metodo crear docente
 # Ruta protegida para crear docente
 @teacher_blueprint.route('/create_teacher', methods=['GET', 'POST'])
-#@jwt_required()  # Proteger la ruta con JWT
+@jwt_required()  # Proteger la ruta con JWT
 def create_teacher():
     # Obtener la identidad del usuario desde el token JWT
-    #current_user = get_jwt_identity()
-    #print(f"Usuario autenticado: {current_user}")
+    current_user = get_jwt_identity()
+    print(f"Usuario autenticado: {current_user}")
 
     if request.method == 'POST':
         # Se obtienen los datos del formulario y se convierten a un diccionario

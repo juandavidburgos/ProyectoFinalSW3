@@ -70,3 +70,124 @@ def assign_to_subject():
     cbxteachers=cbxteachers,
     competences=competences,
     assignments=assignments)
+
+@integration_bp.route('/search_subject_comp', methods=['GET', 'POST'])
+def search_subcomp():
+    facade = IntegrationFacade()
+    mostrar_nuevo_campo = False  # Flag para controlar si mostrar el nuevo campo
+    competences = []
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        try:
+            
+            teacher_id = data['teacher_id']
+            if not teacher_id:
+                flash("Por favor, complete todos los campos del formulario.", "danger")
+                return redirect(url_for('integration.search_subcomp'))
+
+            print("LLEGAMOS ANTES DE LLAMAR ASSIGNMNET BY TICHER")
+            assignment, error = facade.get_assignment_by_teacher(teacher_id)
+
+            print("---------------")
+            print(assignment)
+
+            if error:
+                flash(error, 'error')
+                return redirect(url_for('integration.search_subcomp'))
+            if assignment:
+                competenceIds = [ass["comp_id"] for ass in assignment]
+                competences , error = facade.get_competences_names_by_ids(competenceIds)
+                if error:
+                    print(error)
+                mostrar_nuevo_campo = True
+                flash(f"Consulta realizada con exito", "success")
+                #return render_template('Teacher/searchLearningOutcome.html', assignment=assignment, idCompetencias=idCompetencias)
+                return render_template('Teacher/searchLearningOutcome.html', assignment=assignment,competences=competences,mostrar_nuevo_campo=mostrar_nuevo_campo)
+            
+        except Exception as e:
+            flash(f"Error al recuperar la asignacion: {e}", "danger")
+    
+    return render_template('Teacher/searchLearningOutcome.html')
+
+@integration_bp.route('/get_subject_lout', methods=['GET', 'POST'])
+def get_lout_by_competence():
+    facade = IntegrationFacade()
+    mostrar_cbx=False
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        try:
+            print("ENTRAMOS A GET_LOUT_BY_COMPTENCE")
+            selected_comp_id = data['competence_id']
+            print(selected_comp_id)
+            # Llamar al servicio para actualizar la asignatura
+            raas, error = facade.get_lout_by_competence(selected_comp_id)
+            print("pASAMOS A RASS,ERROR")
+            print(raas)
+            if error:
+                flash(error, "danger")
+                return redirect(url_for('integration.get_lout_by_competence'))
+        
+            if raas:
+                raaIds = [lou["lout_id"] for lou in raas]
+                raas,error = facade.get_lout_names_by_ids(raaIds)
+                print("Entramos al if de raas")
+                if error:
+                    print(error)
+                mostrar_cbx = True
+                return render_template('Teacher/searchLearningOutcome.html',raas=raas,mostrar_cbx=mostrar_cbx)
+
+        except Exception as e:
+            flash(f"Error al recuperar el raa: {e}", "danger")
+
+    return render_template('Teacher/searchLearningOutcome.html')
+
+
+@integration_bp.route('/search_subject_lout', methods=['GET', 'POST'])
+def search_subject_lout():
+    facade = IntegrationFacade()
+    if request.method == 'POST':
+        data=request.form.to_dict()
+
+        try:
+            selected_raa = data['subject_lout_id']
+
+            if not selected_raa:
+                flash("Por favor, complete todos los campos del formulario.", "danger")
+                return redirect(url_for('integration.search_subject_lout'))
+
+            # Llamar al servicio para obtener la asignatura
+            raa, error = facade.get_lout_by_id(selected_raa)
+
+            print(raa)
+            if error:
+                flash(error, 'error')
+                return redirect(url_for('integration.search_subject_lout'))
+            if raa:
+
+                return render_template('LearningOutcome/updateLearningOutcome.html',learning_outcome=raa)
+            
+        except Exception as e:
+            flash(f"Error al recuperar el RAA: {e}", "danger")
+
+    return render_template('Teacher/searchLearningOutcome.html')
+""""
+@integration_bp.route('/update_learning_outcome', methods=['GET', 'POST'])
+def update_learning_outcome():
+    facade = IntegrationFacade()
+    learning_outcome = None
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        lout_id = data.get('lout_id')  # Obtener el nombre del formulario
+
+        # Llamamos al servicio para actualizar el RA
+        learning_outcome, error = facade.update_subject_lout(lout_id, data)
+        if error:
+            flash(error, "error")
+            return redirect(url_for('learning_outcome.list_and_search_learning_outcomes', lout_id=lout_id))
+        if learning_outcome:
+            flash("RA actualizado con éxito!", 'success')
+            return redirect(url_for('learning_outcome.list_and_search_learning_outcomes', lout_id=lout_id))  # Redirigimos usando el nombre actualizado
+
+    # Si el método NO ES POST, se muestra la vista del formulario.
+    return render_template('LearningOutcome/updateLearningOutcome.html', learning_outcome=learning_outcome)
+"""
