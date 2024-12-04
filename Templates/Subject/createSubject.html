@@ -1,44 +1,100 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
 
-    <h1>Create New Subject</h1>
+            <!-- FORMULARIO -->
+            <form action="{{ url_for('subject.create_subject') }}" method="POST">
+                <div class ="form-group mt-2">
+                    <label for="name">Nombre de la asignatura:</label>
+                    <input type="text" id="name" name="name" class="form-control mt-1" required>
+                </div>
+                
+                <div class ="form-group mt-2">
+                    <label for="credits">Creditos:</label>
+                    <input type="number" id="credits" name="credits" class="form-control mt-1" required>
+                </div>
 
-    <!-- Mostrar mensajes flash -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+                <div class="form-group mt-2">
+                    <label for="goals">Objetivos:</label>
+                    <textarea id="goals" name="goals" class="form-control mt-1" required></textarea>
+                </div>
+                
+                <div class="form-group mt-2">
+                    <label for="semester">Semestre:</label>
+                    <input type="text" id="semester" name="semester" class="form-control mt-1" required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary" >Crear</button>
+            </form>
+        </div>
+    </div>
 
-    <form action="{{ url_for('subject.create_subject') }}" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-
-        <label for="credits">Credits:</label>
-        <input type="number" id="credits" name="credits" required><br><br>
-
-        <label for="goals">Goals:</label>
-        <textarea id="goals" name="goals"></textarea><br><br>
-
-        <label for="semester">Semester:</label>
-        <input type="text" id="semester" name="semester" required><br><br>
-
-        <button type="submit">Create Subject</button>
-    </form>
+    <div class="col-md-6">
+        <div class="container">
+            <div class="row">
+                <!-- Tabla de Asignaturas-->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Asignaturas existentes</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Creditos</th>
+                                        <th>Objetivos</th>
+                                        <th>Semestre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for sub in subjects %}
+                                    <tr>
+                                        <td>{{ sub.id }}</td>
+                                        <td>{{ sub.name }}</td>
+                                        <td>{{ sub.credits }}</td>
+                                        <td>{{ sub.goals }}</td>
+                                        <td>{{ sub.semester }}</td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5">No hay asignaturas registradas</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="md-7">
         <a href="{{ url_for('subject.get_subject') }}"> <!-- , name=subject.name-->
             <button>Consultar asignatura</button>
         </a>
 
-        <a href="{{ url_for('subject.search_subject', name='') }}"> <!-- , name=subject.name-->
+        <a href="{{ url_for('subject.search_subject') }}"> <!-- , name=subject.name-->
             <button>Actualizar asignatura</button>
         </a>
     </div>
+</div>
 
 {% endblock %}

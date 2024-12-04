@@ -3,6 +3,7 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from Services.subjectService import SubjectService
+from Facade.subjectManagementFacade import SubjectManagementFacade
 
 
 # Crear un blueprint para el controlador principal
@@ -12,11 +13,12 @@ subject_bp = Blueprint('subject',__name__)
 # para mostrar el formulario y añadir una asignatura respectivamente
 @subject_bp.route('/add_subject', methods=['GET', 'POST'])
 def create_subject():
+    facade = SubjectManagementFacade()
     if request.method == 'POST':
         data = request.form.to_dict()
         #* Se puede poner: print(f"Formulario recibido: {data}") para verificar que se esten pasando los datos 
         # Llamar al servicio para crear la asignatura
-        new_subject, error = SubjectService.create_subject(data)
+        new_subject, error = facade.create_subject(data)
 
         if error:
             flash(error, 'error')
@@ -28,8 +30,12 @@ def create_subject():
         flash('Asignatura añadida satisfactoriamente!', 'success')
         #* Si se logro, se lo redirige a la misma pagia para añadir otra materia
         return redirect(url_for('subject.create_subject'))
+    subjects,error = facade.get_all_subjects()
+    if subjects is None:
+        flash(f"Error: {error}", "danger")
+        subjects = []  # Asegurarse de que 'competences' sea una lista vacía si ocurre un error
     #* Si el método NO ES POST, se muestra la vista del formulario.
-    return render_template('Subject/createSubject.html')  # Vista para crear la asignatura
+    return render_template('Subject/createSubject.html', subjects=subjects)  # Vista para crear la asignatura
 
 
 @subject_bp.route('/get_subject', methods=['GET', 'POST'])
@@ -50,56 +56,76 @@ def get_subject():
 
 @subject_bp.route('/search_subject', methods=['GET', 'POST'])
 def search_subject():
-    subject = None
-    name = request.args.get('name', '')
-
-    # Si el método es GET, se renderiza la vista de búsqueda de asignatura
-    if request.method == 'GET':
-        return render_template('Subject/searchUpdateSubject.html', subject=subject)
-
-    # Si el método es POST, se intenta buscar la asignatura por nombre
+    facade = SubjectManagementFacade()
     if request.method == 'POST':
-        name = request.form.get('name')  # Capturar el nombre enviado
-        if not name:
-            flash("Por favor, ingrese el nombre de la asignatura.", "error")
-            return redirect(url_for('subject.search_subject', name=''))
+        data=request.form.to_dict()
 
-        subject, error = SubjectService.get_subject_by_name(name)
-        if error:
-            flash(error, "error")
-            return redirect(url_for('subject.search_subject', name=''))
+        try:
+            selected_subject = data['subject_id']
+            print("Id seleccionado:------------")
+            print(selected_subject)
 
-        if subject:
-            return render_template('Subject/updateSubject.html', subject=subject)
-        else:
-            # Si no se encuentra la asignatura, se muestra un mensaje y se regresa a la búsqueda
-            flash("La asignatura no existe", "error")
-            return render_template('Subject/searchUpdateSubject.html', subject=subject)
+            if not selected_subject:
+                flash("Por favor, complete todos los campos del formulario.", "danger")
+                return redirect(url_for('subject.search_subject'))
 
-@subject_bp.route('/update_subject', methods=['GET', 'POST'])
-def update_subject():
+            # Llamar al servicio para obtener la asignatura
+            subject, error = facade.get_subject_by_id(selected_subject)
+            
+            print(subject)
+            if error:
+                flash(error, 'error')
+                return redirect(url_for('subject.search_subject'))
+            if subject:
+                return render_template('Subject/updateSubject.html', subject=subject)
+            
+        except Exception as e:
+            flash(f"Error al recuperar la asignatura: {e}", "danger")
+    #Metodo para recuperar todas las asignaturas y cargarlas en el combobox
+    cbxsubjects,error = facade.get_all_subjects()
+    if cbxsubjects is None:
+        flash(f"Error: {error}", "danger")
+        cbxsubjects = []  # Asegurarse de que 'competences' sea una lista vacía si ocurre un error
+    #* Si el método NO ES POST, se muestra la vista del formulario.
+    return render_template('Subject/searchUpdateSubject.html', cbxsubjects=cbxsubjects)
+
+@subject_bp.route('/update_subject/<int:id>', methods=['GET', 'POST'])
+def update_subject(id):
+    facade = SubjectManagementFacade()
     subject = None
+
     if request.method == 'POST':
         data = request.form.to_dict()
-        name = data.get('name')  # Obtener el nombre del formulario
 
-        #!¡IMPORTANTE!
-        #* A la hora de quereer actualizar la asignatura, no se le puede actualizar el nombre porque sino va a generar
-        #* un ciclo donde vuelve a llamarse otro metodo y demas. Entonces:
-        # ? Como solucionar ese ciclo?
-        # ? Mejor hacer la busqueda por id?
+        try:
+            # Llamar al servicio para actualizar la asignatura
+            updated_subject, error = facade.update_subject(id, data)
 
-        # Llamamos al servicio para actualizar la asignatura
-        subject, error = SubjectService.update_subject(name, data)
-        if error:
-            flash(error, "error")
-            return redirect(url_for('subject.update_subject', name=name))  # Pasamos el nombre para seguir con el flujo
-        if subject:
+            if error:
+                flash(error, "danger")
+                return redirect(url_for('subject.update_subject', id=id))
+
             flash("Asignatura actualizada con éxito!", 'success')
-            return redirect(url_for('subject.search_subject', name=subject.name))  # Redirigimos usando el nombre actualizado
+            return redirect(url_for('subject.search_subject'))
 
-    # Si el método NO ES POST, se muestra la vista del formulario.
+        except Exception as e:
+            flash(f"Error al actualizar la asignatura: {e}", "danger")
+            return redirect(url_for('subject.update_subject', id=id))
+
+    try:
+        # Recuperar los datos de la asignatura actual para mostrarlos en el formulario
+        subject, error = facade.get_subject_by_id(id)
+
+        if error or not subject:
+            flash("Error al recuperar los datos de la asignatura.", "danger")
+            return redirect(url_for('subject.search_subject'))
+
+    except Exception as e:
+        flash(f"Error al cargar los datos de la asignatura: {e}", "danger")
+        return redirect(url_for('subject.search_subject'))
+
     return render_template('Subject/updateSubject.html', subject=subject)
+
 
 
 

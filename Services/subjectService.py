@@ -21,7 +21,7 @@ class SubjectService:
             #No se pone el id porque se genera automaticamente cuando se crea una nueva instancia
             name=data['name'],
             credits=data['credits'],
-            goals=data.get('goals'),
+            goals=data['goals'],
             semester=data['semester']
         )
 
@@ -30,13 +30,13 @@ class SubjectService:
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            return None, f"Error en la base de datos: {str(e)}"
+            return None, f"Error al crear la asignatura: {str(e)}"
 
         return new_subject, None
     
     @staticmethod
     def get_all_subjects():
-        #*Obtiene todas las asignaturas
+        #*Obtiene todos los ids y nombres de las asignaturas
         try:
             # Consultar todas las asignaturas 
             subjects = db.session.query(Subject.id, Subject.name).all()
@@ -45,6 +45,19 @@ class SubjectService:
             subjects_dict = [{"id":sub.id, "name":sub.name} for sub in subjects]
             print(subjects_dict)  # Esto imprimirá el contenido de los diccionarios
             
+            return subjects_dict, None  # Devolver los resultados como lista de diccionarios
+        except Exception as e:
+            # En caso de error, devolver el mensaje de error
+            return [], f"Error al obtener las asignaturas: {str(e)}"
+
+    @staticmethod
+    def get_all_subjects_camps():
+        #*Obtiene todas las asignaturas
+        try:
+            # Consultar todas las asignaturas 
+            subjects = db.session.query(Subject).all()
+            # Convertir los objetos de asignaturas a diccionarios y ver su contenido con un print
+            subjects_dict = [sub.to_dict() for sub in subjects]
             return subjects_dict, None  # Devolver los resultados como lista de diccionarios
         except Exception as e:
             # En caso de error, devolver el mensaje de error
@@ -62,10 +75,27 @@ class SubjectService:
         return subject, None
 
     @staticmethod
-    def update_subject(name, data):
-        subject = Subject.query.filter_by(name=name).first()
+    def get_subject_by_id(id):
+        # Validaciones de los datos
+        if not id:
+            return None, "El id es requerido"
+
+        # Buscar la asignatura por ID
+        subject = db.session.query(Subject).filter_by(id=id).first()
+
         if not subject:
-            return None, f"No se encontro una asignatura con el nombre: {name}"
+            return None, f"No se encontró una asignatura con el id {id}."
+
+        # Convertir el objeto a diccionario
+        subject_dict = subject.to_dict()
+        return subject_dict, None
+
+    
+    @staticmethod
+    def update_subject(id, data):
+        subject = Subject.query.filter_by(id=id).first()
+        if not subject:
+            return None, f"No se encontro una asignatura con el id: {id}"
 
         try:
             subject.name = data.get('name', subject.name)#Actualiza el campo subject.name con 'name' que es el que llega
@@ -81,4 +111,6 @@ class SubjectService:
         except Exception as e:
             db.session.rollback()
             return None, f"Error inesperado: {str(e)}"
+
+
 

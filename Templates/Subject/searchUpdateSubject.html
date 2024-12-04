@@ -2,22 +2,37 @@
 
 {% block body %}
 
-<!-- Mostrar mensajes flash -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-    <ul>
-        {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-{% endwith %}
-
-    <h1>Buscar asignatura para actualizar</h1>
-    <form action="{{ url_for('subject.search_subject', name='') }}" method="POST">
-        <label for="name">Nombre de la asignatura:</label>
-        <input type="text" id="name" name="name" required>
-        <button type="submit">Buscar</button>
-    </form>
+<div class="row">
+    <div class="container d-flex justify-content-center" style="min-height: 60vh; margin-top: 10vh;">
+        <div class="col-md-6">
+            <div class="card card-body">
+                <!-- Mostrar mensajes flash -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul>
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="{{ url_for('subject.search_subject') }}">
+                    <div class="form-group mt-2">
+                        <label for="subject_id">Seleccione una Asignatura para actualizar:</label>
+                        <br>
+                        <select name="subject_id" id="subject_id" class="form-control mt-1">
+                            <option value="">Seleccione</option>
+                            {% for subject in cbxsubjects %}
+                                <option value="{{ subject.id }}">{{ subject.name }}</option>
+                            {% endfor %}
+                        </select><br>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>         
+</div>
 {% endblock %}
 
