@@ -40,7 +40,77 @@ def create_program_competence():
 
     return render_template('Competence/createCompetence.html', competences=competences)
 
+@competence_bp.route('/search_competence', methods=['GET', 'POST'])
+def search_competence():
+    facade = CmpLoutFacade()
+    if request.method == 'POST':
+        data=request.form.to_dict()
 
+        try:
+            selected_competence = data['comp_id']
+            print("Id seleccionado:------------")
+            print(selected_competence)
+
+            if not selected_competence:
+                flash("Por favor, complete todos los campos del formulario.", "danger")
+                return redirect(url_for('competence.search_competence'))
+
+            # Llamar al servicio para obtener la asignatura
+            competence, error = facade.get_competence_by_id(selected_competence)
+
+            print(competence)
+            if error:
+                flash(error, 'error')
+                return redirect(url_for('competence.search_competence'))
+            if competence:
+                return render_template('Competence/updateCompetence.html', competence=competence)
+            
+        except Exception as e:
+            flash(f"Error al recuperar la competencia: {e}", "danger")
+    #Metodo para recuperar todas las asignaturas y cargarlas en el combobox
+    cbxcompetences,error = facade.get_all_competences()
+    if cbxcompetences is None:
+        flash(f"Error: {error}", "danger")
+        cbxcompetences = []  # Asegurarse de que 'competences' sea una lista vacía si ocurre un error
+    #* Si el método NO ES POST, se muestra la vista del formulario.
+    return render_template('Competence/searchUpdateCompetence.html', cbxcompetences=cbxcompetences)
+
+@competence_bp.route('/update_competence/<int:id>', methods=['GET', 'POST'])
+def update_competence(id):
+    facade = CmpLoutFacade()
+    competence = None
+
+    if request.method == 'POST':
+        data = request.form.to_dict()
+
+        try:
+            # Llamar al servicio para actualizar la asignatura
+            updated_competence, error = facade.update_comeptence(id,data)
+
+            if error:
+                flash(error, "danger")
+                return redirect(url_for('competence.update_competence', id=id))
+
+            flash("Asignatura actualizada con éxito!", 'success')
+            #return redirect(url_for('subject.update_subject'))
+
+        except Exception as e:
+            flash(f"Error al actualizar la competencia: {e}", "danger")
+            return redirect(url_for('competence.competence', id=id))
+
+    try:
+        # Recuperar los datos de la asignatura actual para mostrarlos en el formulario
+        competence, error = facade.get_competence_by_id(id)
+
+        if error or not competence:
+            flash("Error al recuperar los datos de la competencia.", "danger")
+            return redirect(url_for('competence.search_competence'))
+
+    except Exception as e:
+        flash(f"Error al cargar los datos de la asignatura: {e}", "danger")
+        return redirect(url_for('competence.search_competence'))
+
+    return render_template('Competence/updateCompetence.html', competence=competence)
 
 
 """""

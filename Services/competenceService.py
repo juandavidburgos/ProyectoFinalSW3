@@ -85,6 +85,7 @@ class CompetenceService:
             return [], f"Error al obtener las competencias: {str(e)}" 
 
 
+
     """"
     @staticmethod
     def create_competence(data):
@@ -98,7 +99,7 @@ class CompetenceService:
         if data['comp_type'] not in valid_types:
             return None, f"El tipo de competencia debe ser uno de los siguientes: {', '.join(valid_types)}"
 
-         # Validar para competencias de tipo Programa
+        # Validar para competencias de tipo Programa
         if data['comp_type'] == 'Programa':
             data['program_comp_id'] = None
 
@@ -136,15 +137,15 @@ class CompetenceService:
         except Exception as e:
             db.session.rollback()  # En caso de error, hacer rollback
             return None, f"Error en la base de datos: {str(e)}"
-
+    """
     @staticmethod
     def update_competence(comp_id, data):
         #Actualiza una competencia existente.
-        try:
-            competence = Competence.query.get(comp_id)
-            if not competence:
-                return None, "Competencia no encontrada"
+        competence = Competence.query.filter_by(comp_id=comp_id).first()
+        if not competence:
+            return None, "Competencia no encontrada"
 
+        try:
             # Actualiza los campos de la competencia
             competence.comp_description = data.get('comp_description', competence.comp_description)
             competence.comp_type = data.get('comp_type', competence.comp_type)
@@ -159,19 +160,20 @@ class CompetenceService:
         except Exception as e:
             db.session.rollback()
             return None, f"Error al actualizar la competencia: {str(e)}"
-    """
-    """"
+    
+
     @staticmethod
     def get_competence_by_id(comp_id):
         # Validaciones de los datos
         if not comp_id:
             return None, "El ID es requerido"
 
-        competence = Competence.query.filter_by(comp_id=comp_id).first()
+        competence = db.session.query(Competence).filter_by(comp_id=comp_id).first()
         if not competence:
-            return None, f"No se encontro una asignatura con ese ID {comp_id}."
-        return competence, None
-    
+            return None, f"No se encontro una competencia con ese ID {comp_id}."
+        competence_dict = competence.to_dict()
+        return competence_dict, None
+    """
     @staticmethod
     def get_competences_by_type(comp_type):
         #Obtiene todas las competencias por tipo.
@@ -188,5 +190,6 @@ class CompetenceService:
             linked_competences = Competence.query.filter_by(program_comp_id=program_comp_id).all()
             return [competence.to_dict() for competence in linked_competences]
         except Exception as e:
-            return {"error": str(e)}"""
+            return {"error": str(e)}
+            """
 

@@ -11,3 +11,8 @@ class CmpLoutFacade:
         # Obtener todas las competencias del servicio
         return self.competence_service.get_all_competences()
 
+    def get_competence_by_id(self,comp_id):
+        return self.competence_service.get_competence_by_id(comp_id)
+    
+    def update_comeptence(self, id, data):
+        return self.competence_service.update_competence(id,data)
