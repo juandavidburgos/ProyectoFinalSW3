@@ -1,6 +1,6 @@
 #holaaaaaaaaaa
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from Facade.cmpLoutFacade import CmpLoutFacade
+from Facade.CmpLoutFacade import CmpLoutFacade
 
 competence_bp = Blueprint('competence', __name__)
 

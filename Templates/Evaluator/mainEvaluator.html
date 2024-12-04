@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluator Dashboard</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Evaluator Dashboard</h1>
+        <h2>Welcome, {{ evaluator.eva_nombre }} {{ evaluator.eva_apellido }}</h2>
+
+        <!-- Section: Rubrics List -->
+        <h3 class="mt-4">Assigned Rubrics</h3>
+        {% if rubrics %}
+            <ul class="list-group">
+                {% for rubric in rubrics %}
+                    <li class="list-group-item">
+                        <strong>Rubric:</strong> {{ rubric.rub_nombre }} <br>
+                        <strong>Criteria:</strong> {{ rubric.rub_criteriodesc }} <br>
+                        <strong>Grade:</strong> {{ rubric.rub_nota }} <br>
+                        <small><strong>Level:</strong> {{ rubric.rub_nivel }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">No rubrics assigned at the moment.</p>
+        {% endif %}
+
+        <!-- Section: Generate Report -->
+        <h3 class="mt-4">Generate Report</h3>
+        <form action="/evaluators/{{ evaluator.eva_id }}/report" method="GET">
+            <button type="submit" class="btn btn-primary">Download Report</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <p>&copy; 2024 Academic Management System</p>
+    </footer>
+</body>
+</html>
