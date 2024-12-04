@@ -15,42 +15,24 @@ class TeacherService:
 
             return None, "Todos los campos son requeridos"
         
-        try:
-            teTypeIdentification = TypeIdentification[data['teTypeIdentification']]  # Convertir a Enum
-            teTypeTeacher = TypeTeacher[data['teTypeTeacher']]  # Convertir a Enum
-        except KeyError as e:
-            return None, f"Valor inválido para tipo de identificación o tipo de docente: {str(e)}"
-        
-
-        """try:
-            teTypeIdentification = TypeIdentification[data['teTypeIdentification']]
-        except KeyError:
-            return None, "Tipo de identificación inválido"
-
-        try:
-            teTypeTeacher = TypeTeacher[data['teTypeTeacher']]
-        except KeyError:
-            return None, "Tipo de docente inválido"""
-    
-
         # Crear un nuevo docente
         new_teacher = Teacher(
-            teTypeIdentification=data.get(teTypeIdentification),
-            teIdentification=data['teIdentification'],
-            teTypeTeacher=teTypeTeacher,
-            teName=data['teName'],
-            teLastName=data['teLastName'],
-            teLastTitle=data['teLastTitle'],
-            teEmail=data['teEmail'],
-            teState='Activo'
-        )
+                teTypeIdentification=data['teTypeIdentification'],
+                teIdentification=data['teIdentification'],
+                teTypeTeacher=data['teTypeTeacher'],
+                teName=data['teName'],
+                teLastName=data['teLastName'],
+                teLastTitle=data['teLastTitle'],
+                teEmail=data['teEmail'],
+                teState=['Activo']
+            )
         
         try:
             db.session.add(new_teacher)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            return None, f"Ha ocurrido un error en la base de datos: {str(e)}"
+            return None, f"Error al crear el profesor: {str(e)}"
 
         return new_teacher, None
     
@@ -60,12 +42,12 @@ class TeacherService:
         try:
             # Consultar todos los docentes 
             # Consultar solo los campos requeridos
-            teachers = db.session.query(Teacher.teId, Teacher.teName, Teacher.teLastName).all()
+            teachers = db.session.query(Teacher).all()
 
             if not teachers:
                 return [], "No se encontraron docentes."
             # Convertir las tuplas resultantes en una lista de diccionarios
-            teachers_dict = [{"teId": tea.teId, "teName": tea.teName, "teLastName": tea.teLastName} for tea in teachers]
+            teachers_dict = [tea.to_dict() for tea in teachers]
         
             print(teachers_dict)  # Esto imprimirá el contenido de los diccionarios
             

@@ -1,60 +1,113 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<body>
-    <h1>Crear Docente</h1>
-    <!-- Mostrar mensajes flash -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+<div class="row">
+    <!-- Columna para el formulario -->
+    <div class="col-md-3">
+        <div class="card card-body">
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul>
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
 
-    <form action="{{ url_for('teacher.create_teacher') }}" method="POST">
-        <!-- Tipo de Identificación -->
-        <label for="teTypeIdentification">Tipo de Identificación:</label>
-        <select id="teTypeIdentification" name="teTypeIdentification" required>
-            <option value="">Seleccione</option>
-            <option value="CIVILREGISTRY">Registro Civil</option>
-            <option value="TARJETAIDENTIDAD">Tarjeta de identidad</option>
-            <option value="CEDULA">Cédula</option>
-            <option value="PASAPORTE">Pasaporte</option>
-            <option value="CEDULAEXTRANJERIA">Cédula extranjeria</option>
-        </select><br><br>
+            <form action="{{ url_for('teacher.create_teacher') }}" method="POST">
+                <div class="form-group mt-2">
+                    <label for="teTypeIdentification">Tipo de Identificación:</label>
+                    <select id="teTypeIdentification" name="teTypeIdentification" class="form-control mt-1" required>
+                        <option value="">Seleccione</option>
+                        <option value="CIVILREGISTRY">Registro Civil</option>
+                        <option value="TARJETAIDENTIDAD">Tarjeta de identidad</option>
+                        <option value="CEDULA">Cédula</option>
+                        <option value="PASAPORTE">Pasaporte</option>
+                        <option value="CEDULAEXTRANJERIA">Cédula extranjeria</option>
+                    </select>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="teIdentification">Número de Identificación:</label>
+                    <input type="text" id="teIdentification" name="teIdentification" class="form-control mt-1" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="teTypeTeacher">Tipo de Docente:</label>
+                    <select id="teTypeTeacher" name="teTypeTeacher" class="form-control mt-1" required>
+                        <option value="">Seleccione</option>
+                        <option value="PLANT">Planta</option>
+                        <option value="FULLTIME">Tiempo completo</option>
+                        <option value="CATHEDRA">Cátedra</option>
+                    </select>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="teName">Nombres:</label>
+                    <input type="text" id="teName" name="teName" class="form-control mt-1" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="teLastName">Apellidos:</label>
+                    <input type="text" id="teLastName" name="teLastName" class="form-control mt-1" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="teLastTitle">Último Título:</label>
+                    <input type="text" id="teLastTitle" name="teLastTitle" class="form-control mt-1" required>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="teEmail">Correo Electrónico:</label>
+                    <input type="email" id="teEmail" name="teEmail" class="form-control mt-1" required>
+                </div>
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a href="{{ url_for('main.mainCoordinator') }}" class="btn btn-danger">Regresar</a>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <!-- Número de Identificación -->
-        <label for="teIdentification">Número de Identificación:</label>
-        <input type="text" id="teIdentification" name="teIdentification" required><br><br>
-
-        <!-- Tipo de Docente -->
-        <label for="teTypeTeacher">Tipo de Docente:</label>
-        <select id="teTypeTeacher" name="teTypeTeacher" required>
-            <option value="">Seleccione</option>
-            <option value="PLANT">Planta</option>
-            <option value="FULLTIME">Tiempo completo</option>
-            <option value="CATHEDRA">Cátedra</option>
-        </select><br><br>
-
-        <!-- Nombres -->
-        <label for="teName">Nombres:</label>
-        <input type="text" id="teName" name="teName" required><br><br>
-
-        <!-- Apellidos -->
-        <label for="teLastName">Apellidos:</label>
-        <input type="text" id="teLastName" name="teLastName" required><br><br>
-
-        <!-- Último Título -->
-        <label for="teLastTitle">Último Título:</label>
-        <input type="text" id="teLastTitle" name="teLastTitle" required><br><br>
-
-        <!-- Correo Electrónico -->
-        <label for="teEmail">Correo Electrónico:</label>
-        <input type="email" id="teEmail" name="teEmail" required><br><br>
-
-        <button type="submit">Crear Docente</button>
-    </form>
+    <!-- Columna para la tabla -->
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h3>Profesores existentes</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th>ID Profesor</th>
+                            <th>Tipo de Identificación</th>
+                            <th>Tipo Docente</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Identificación</th>
+                            <th>Último Título</th>
+                            <th>Correo Electrónico</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tea in teachers %}
+                        <tr>
+                            <td>{{ tea.teId }}</td>
+                            <td>{{ tea.teTypeIdentification }}</td>
+                            <td>{{ tea.teTypeTeacher }}</td>
+                            <td>{{ tea.teName }}</td>
+                            <td>{{ tea.teLastName }}</td>
+                            <td>{{ tea.teIdentification }}</td>
+                            <td>{{ tea.teLastTitle }}</td>
+                            <td>{{ tea.teEmail }}</td>
+                            <td>{{ tea.teState }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="9">No hay docentes registrados</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

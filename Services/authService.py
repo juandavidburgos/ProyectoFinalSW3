@@ -61,7 +61,7 @@ class AuthService:
             user_id = user.coId
         elif isinstance(user, Evaluator):
             role = "Evaluador"
-            user_id = user.evId
+            user_id = user.evaId
         else:
             return None, "Rol no reconocido"
 

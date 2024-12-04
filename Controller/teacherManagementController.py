@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_jwt_extended import jwt_required, get_jwt_identity,decode_token  # Importar JWT, decorador
 from flask import current_app
 from Services.teacherService import TeacherService
+from Facade.teacherManagementFacade import TeacherManagementFacade
 
 #CONTROLADOR GESTION DE Docentes
 
@@ -19,13 +20,13 @@ def create_teacher():
     # Obtener la identidad del usuario desde el token JWT
     #current_user = get_jwt_identity()
     #print(f"Usuario autenticado: {current_user}")
-
+    facade = TeacherManagementFacade()
     if request.method == 'POST':
         # Se obtienen los datos del formulario y se convierten a un diccionario
         data = request.form.to_dict()
         print(f"Datos recibidos: {data}")  # Verificar que se estén pasando los datos
         # Se llama al servicio para crear el docente
-        new_teacher, error = TeacherService.create_teacher(data)
+        new_teacher, error = TeacherManagementFacade.create_teacher(data)
 
         # En caso de que ocurra un error  
         if error:
@@ -37,9 +38,13 @@ def create_teacher():
         # En caso contrario se muestra un mensaje y se redirige a la misma página
         flash('Docente agregado exitosamente')
         return redirect(url_for('Teacher/teacher.create_teacher'))
-    
+    teachers,error = facade.get_all_teachers()
+    if teachers is None:
+        flash(f"Error: {error}", "danger")
+        teachers = []  # Asegurarse de que 'competences' sea una lista vacía si ocurre un error
+    #* Si el método NO ES POST, se muestra la vista del formulario.
     #Si el metodo no es POST se muestra la vista del formulario
-    return render_template('Teacher/createTeacher.html')
+    return render_template('Teacher/createTeacher.html',teachers=teachers)
 
 #Metodo para mostrar todos los docentes
 @teacher_blueprint.route('/search_allTeacher')
@@ -96,3 +101,11 @@ def edit_teacher(teIdentification):
             flash(error, 'error')
             return redirect(url_for('teacher.edit_teacher'))
         return redirect(url_for('teacher.edit_teacher', teIdentification=edit_teacher.teIdentification))
+    
+@teacher_blueprint.route('/manage_rubrics', methods=['GET','POST'])
+def manage_rubrics():
+    return render_template('Teacher/rubrics.html')
+
+@teacher_blueprint.route('/edit_teacher_1>', methods=['GET', 'POST'])
+def edit_teacher_1():
+    return render_template('Teacher/searchTeacher.html')

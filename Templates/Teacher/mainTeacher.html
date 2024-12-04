@@ -1,43 +1,35 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 
 {% block body %}
-<div class="container text-center">
-    <!-- Incluir la fuente de Google Fonts (puedes elegir otra fuente llamativa) -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
-
-    <!-- Título con estilo personalizado -->
-    <h1 class="my-4 text-center display-3" style="font-family: 'Poppins', sans-serif; color: #f5e1d5;">Dashboard Coordinador</h1>
-
-
-    <div class="row">
-        <!-- <div class="col-md-3">
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="row w-75 justify-content-around">
+        <!-- Primera carta -->
+        <div class="col-md-5">
             <div class="card h-100">
-                <img src="{{ url_for('static', filename='images/competencias.jpg') }}" class="card-img-top" alt="Competencias" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">Gestión de Rubricas</h5>
-                        Contenedor para alinear los botones uno encima de otro 
-                    <div class="d-flex flex-column mt-3">
-                        <a href="{{ url_for('competence.create_program_competence') }}" class="btn btn-primary mb-2">Ir a crear una competencia</a>
-                        <a href="{{ url_for('competence.view_competences') }}" class="btn btn-secondary mb-2">Listar</a>
-                        <a href="{{ url_for('competence.search_competence') }}" class="btn btn-warning">Editar</a>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-        
-        <div class="col-md-3">
-            <div class="card h-100">
-                <img src="{{ url_for('static', filename='images/docente.jpg') }}" class="card-img-top" alt="Docente" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">Configuración de competencias y resultados de aprendizaje</h5>
-                    <!-- Contenedor para alinear los botones -->
-                    <div class="d-flex flex-column mt-3">
-                        <a href="{{ url_for('integration.search_subcomp') }}" class="btn btn-primary mb-2">Configurar competencias y ra</a>
-                    </div>
+                <img src="{{ url_for('static', filename='images/raps.png') }}" 
+                    class="card-img-top" 
+                    alt="Gestión de Resultados de Aprendizaje" 
+                        style="height: 300px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Configuración de Resultados de Aprendizaje</h5>
+                    <a href="{{ url_for('integration.search_subcomp') }}" class="btn btn-primary btn-lg mt-3">Configurar Resultados</a>
                 </div>
             </div>
         </div>
-        
+
+        <!-- Segunda carta -->
+        <div class="col-md-5">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/rubricas.png') }}" 
+                    class="card-img-top" 
+                    alt="Gestión de Rúbricas" 
+                    style="height: 300px; object-fit: cover;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Gestión de Rúbricas</h5>
+                    <a href="{{ url_for('teacher.manage_rubrics') }}" class="btn btn-secondary btn-lg mt-3">Gestionar Rúbricas</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
