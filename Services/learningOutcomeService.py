@@ -52,6 +52,7 @@ class LearningOutcomeService:
     def get_learning_outcomes_by_competencia(comp_id):
         """Obtiene todos los Resultados de Aprendizaje asociados a una Competencia"""
         # Validar que la competencia existe
+        print("ENTRO?")
         competence = Competence.query.get(comp_id)
         if not competence:
             return None, "La competencia especificada no existe"

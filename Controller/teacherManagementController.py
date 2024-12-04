@@ -110,28 +110,5 @@ def edit_teacher(teIdentification):
         # En caso de error, mostrar mensaje y redirigir
         if error:
             flash(error, 'error')
-            return redirect(url_for('teacher.edit_teacher', teIdentification=teIdentification))
-
-        # Mostrar mensaje de éxito
-        flash('Docente actualizado exitosamente')
-        return redirect(url_for('Teacher/teacher.search_allTeacher'))
-
-    # Si es GET, buscar el docente y mostrar los datos en el formulario
-    teacher, error = TeacherService.search_by_identificationTeacher(teIdentification)
-    if error:
-        flash(error, 'error')
-        return redirect(url_for('teacher.search_allTeacher'))
-
-    return render_template('Teacher/editTeacher.html', teacher=teacher)
-
-#Metodo para cambiar el estado de un docente
-@teacher_blueprint.route('/edit_stateTeacher/<teIdentification>', methods=['GET', 'POST'])
-def edit_stateTeacher(teIdentification):
-    if request.method == 'POST':
-        #Se obtiene la identificación del formulario
-        teIdentification = request.form.get('teIdentification')
-        #Se llama al servicio
-        stateTeacher,error = TeacherService.search_by_identificationTeacher(teIdentification)
-        #En caso de que ocurra un error
-        #Se llama al servicio para cambiar el estado del docente
-    return render_template('Teacher/editStateTeacher.html', teIdentification=teIdentification)
+            return redirect(url_for('teacher.edit_teacher'))
+        return redirect(url_for('teacher.edit_teacher', teIdentification=edit_teacher.teIdentification))

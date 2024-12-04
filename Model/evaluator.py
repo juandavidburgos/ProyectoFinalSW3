@@ -1,13 +1,10 @@
 #Clase
 #*EVALUADOR
-from enum import Enum
 from .connection import db # Importa el db desde connection.py
 
 class Evaluator(db.Model):
     __tablename__ = 'TBL_EVALUADOR'  # Nombre de la tabla en la base de datos
 
-    #Se definen las columnas que tiene la tabla en la base de datos
-    # Definición de las columnas
     evaId = db.Column('EVA ID', db.Integer, primary_key=True, autoincrement=True)  # Identificador único
     evaTypeIdentification = db.Column('EVA TIPOIDENTIFICACION',db.String(50), nullable=False)  # Tipo de identificación
     evaIdentification = db.Column('EVA IDENTIFICACION', db.String(100), nullable=False)  # Número de identificación
@@ -40,7 +37,7 @@ class Evaluator(db.Model):
 #convierte un diccionario en una instancia de la clase Teacher
     @staticmethod
     def from_dict(data): 
-        return Evaluador(
+        return Evaluator(
             evaId=data.get("evaId"),
             evaTypeIdentification=data.get("evaTypeIdentification"),
             evaIdentification=data.get("evaIdentification"),

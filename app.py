@@ -1,27 +1,24 @@
-#Aplicacion principal
-from flask import Flask
+from flask import Flask, render_template
 from Model.connection import Connection
-from Controller.teacherManagementController  import *
-
+from Controller.teacherManagementController import teacher_blueprint
 from Controller.mainController import main_bp
 from Controller.subjectManagementController import subject_bp
-from Controller.teacherManagementController import teacher_blueprint
 from Controller.competenceManagementController import competence_bp
 from Controller.learningOutcomeManagementController import learning_outcome_bp
 from Controller.integrationController import integration_bp
 from Controller.rubricManagementController import rubric_blueprint
 from Controller.evaluatorManagementController import evaluator_blueprint
-
-
-# Inicializacion de la aplicacion Flask
+from Controller.ResultaApRubricaManagementController import resultaApRubric_blueprint
+# Inicialización de la aplicación Flask
 app = Flask(__name__)  
-#Clave secreta
+# Clave secreta
 app.secret_key = 'mysecretkey'  # Necesario para usar 'flash'
-# Inicializacion de la conexión MySQL ANTES de definir las rutas
-db = Connection.init_database(app) # Obtiene el objeto `db`
+
+# Inicialización de la conexión MySQL ANTES de definir las rutas
+db = Connection.init_database(app)  # Obtiene el objeto db
 
 # Configuración e inicialización de JWT
-jwt = Connection.config_JWT(app)  # Obtiene el objeto `jwt`s
+jwt = Connection.config_JWT(app)  # Obtiene el objeto `jwt`
 
 #Registro de los controladores
 app.register_blueprint(main_bp) #Controlador de la pagina principal
@@ -40,7 +37,9 @@ app.register_blueprint(integration_bp, url_prefix='/asign')
 app.register_blueprint(rubric_blueprint, url_prefix='/rubric')
 #Controlador de la gestion de evaluadores
 app.register_blueprint(evaluator_blueprint, url_prefix='/evaluator')
+#controlador integracion rubrica-resultado de aprendizaje
+app.register_blueprint(resultaApRubric_blueprint, url_prefix='/resultaApRubric')
 
 #Comprobar que el archivo que se esta ejecutando es el principal
 if __name__ == '__main__':
-    app.run(debug=True, port= 3000) #debug = true, actualiza cada vez que hacemos cambios en el servidor
+    app.run(debug=True, port=3000)  # debug = true, actualiza cada vez que hacemos cambios en el servidor
