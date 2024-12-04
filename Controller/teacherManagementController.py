@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_jwt_extended import jwt_required, get_jwt_identity,decode_token  # Importar JWT, decorador
+from flask import current_app
 from Services.teacherService import TeacherService
 
 #CONTROLADOR GESTION DE Docentes
@@ -10,28 +12,34 @@ teacher_blueprint = Blueprint('teacher', __name__)
 #POST:Sirve para crear un docente en la base de datos 
 
 # Metodo crear docente
+# Ruta protegida para crear docente
 @teacher_blueprint.route('/create_teacher', methods=['GET', 'POST'])
+#@jwt_required()  # Proteger la ruta con JWT
 def create_teacher():
+    # Obtener la identidad del usuario desde el token JWT
+    #current_user = get_jwt_identity()
+    #print(f"Usuario autenticado: {current_user}")
+
     if request.method == 'POST':
-        #Se obtienen los datos del formulario y se convierten a un diccionario
+        # Se obtienen los datos del formulario y se convierten a un diccionario
         data = request.form.to_dict()
-        print(f"Datos recibidos: {data}")#verificar que se esten pasando los datos
-        #Se llama al servicio para crear el docente
+        print(f"Datos recibidos: {data}")  # Verificar que se estén pasando los datos
+        # Se llama al servicio para crear el docente
         new_teacher, error = TeacherService.create_teacher(data)
 
-        #En caso de que ocurra un error  
+        # En caso de que ocurra un error  
         if error:
-            #se muestra un mensaje
+            # Se muestra un mensaje
             flash(error, 'error')
-            #se redirige a la misma pagina para poder intentar de nuevo
+            # Se redirige a la misma página para poder intentar de nuevo
             return redirect(url_for('teacher.create_teacher'))
-        
-        #En caso contrario se muestra un mensaje y se redirige a la misma pagina
+
+        # En caso contrario se muestra un mensaje y se redirige a la misma página
         flash('Docente agregado exitosamente')
-        return redirect(url_for('teacher/teacher.create_teacher'))
-    
-    #Si el metodo no es POST se muestra la vista del formulario
-    return render_template('createTeacher.html')
+        return redirect(url_for('teacher.create_teacher'))
+
+    # Si el método no es POST se muestra la vista del formulario
+    return render_template('Teacher/createTeacher.html')
 
 #Metodo para mostrar todos los docentes
 @teacher_blueprint.route('/search_allTeacher')
