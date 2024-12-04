@@ -34,16 +34,11 @@
                 </div>
 
                 <div class="form-group mt-2">
-                    <label for="rub_score">Nota:</label>
-                    <textarea id="rub_score" name="rub_score" class="form-control mt-1" required></textarea>
-                </div>
-
-                <div class="form-group mt-2">
                     <label for="evaid">Evaluador:</label>
                     <textarea id="evaid" name="evaid" class="form-control mt-1" required></textarea>
                 </div>
                    
-                <label for="rub_level">Último Título:</label>
+                <label for="rub_level">Nivel de desempeño:</label>
                 <select id = "rub_level" name="rub_level" required>
                     <option value="">Seleccione</option>
                     <option value="Excelente">Excelente</option>
@@ -73,23 +68,23 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Creditos</th>
-                                        <th>Objetivos</th>
-                                        <th>Semestre</th>
+                                        <th>Nota</th>
+                                        <th>Criterio</th>
+                                        <th>Nivel</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for sub in subjects %}
+                                    {% for rub in rubric %}
                                     <tr>
-                                        <td>{{ sub.id }}</td>
-                                        <td>{{ sub.name }}</td>
-                                        <td>{{ sub.credits }}</td>
-                                        <td>{{ sub.goals }}</td>
-                                        <td>{{ sub.semester }}</td>
+                                        <td>{{ rub.id }}</td>
+                                        <td>{{ rub_name }}</td>
+                                        <td>{{ rub.rub_score }}</td>
+                                        <td>{{ rub.criterion_description }}</td>
+                                        <td>{{ rub.rub_level }}</td>
                                     </tr>
                                     {% else %}
                                     <tr>
-                                        <td colspan="5">No hay asignaturas registradas</td>
+                                        <td colspan="5">No hay rubricas registradas</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -102,14 +97,9 @@
     </div>
 
     <div class="md-7">
-        <a href="{{ url_for('subject.get_subject') }}">  , name=subject.name
-            <button>Consultar asignatura</button>
+        <a href="{{ url_for('rubric.search_allRubricr') }}">  , name=subject.name
+            <button>Consultar rubrica</button>
         </a>
-
-        <a href="{{ url_for('subject.search_subject') }}"> <!-- , name=subject.name-->
-            <button>Actualizar asignatura</button>
-        </a>
-    </div>
 </div>
 
 {% endblock %}

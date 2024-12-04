@@ -30,15 +30,14 @@ def create_rubric():
         return redirect(url_for('rubric.create_rubric'))
     
     #Si el metodo no es POST se muestra la vista del formulario
-    return render_template('Rubric/gestionRubric.html')
-
+    return render_template('Rubricc/createRubric.html')
 #Metodo para mostrar todos las rubricas
 @rubric_blueprint.route('/search_allRubric')
 def search_allRubricr():
     #Se llama al servicio para obtener todos las rubricas
     rubrics = RubricService.get_all_Rubric()
     #Se muestra la vista de todos los docentes
-    return render_template('Rubric/searchRubric.html', rubrics=rubrics)
+    return render_template('Rubricc/createRubric.html', rubrics=rubrics)
 
 #Metodo para buscar un 
 @rubric_blueprint.route('/search_by_criterion_description', methods=['GET', 'POST'])
@@ -53,7 +52,7 @@ def search_by_criterion_description(criterion_description):
             return redirect(url_for('rubric.searchRubric'))
         #En caso contrario se muestra la vista con el docente encontrado
         return render_template('rubric/searchRubric.html', rubrics=byCriterion_description)
-    return render_template('rubric/searchRubric.html')
+    return render_template('Rubric/searchRubric.html')
         
     
 #Metodo para buscar una rubrica por el nivel desempeño
