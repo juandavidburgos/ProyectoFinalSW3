@@ -1,122 +1,90 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from Services.coordinatorService import CoordinatorService
+from Services.teacherService import TeacherService
 
-# CONTROLADOR GESTION DE COORDINADORES
+#CONTROLADOR GESTION DE Docentes
 
-# Blueprint para las rutas del coordinador
-coordinator_blueprint = Blueprint('coordinator', __name__)
+#Blueprint para el controlador de docentes
+teacher_blueprint = Blueprint('teacher', _name_)
 
-# Método para listar todos los coordinadores
-@coordinator_blueprint.route('/coordinators', methods=['GET'])
-def get_all_coordinators():
-    coordinators = CoordinatorService.get_all_coordinators()
-    return render_template('coordinator/searchCoordinator.html', coordinators=coordinators)
+#GET:Sirve para mostrar el formulario para crear un docente 
+#POST:Sirve para crear un docente en la base de datos 
 
-# Método para obtener un coordinador por ID
-@coordinator_blueprint.route('/coordinators/<int:coordinator_id>', methods=['GET'])
-def get_coordinator_by_id(coordinator_id):
-    coordinator = CoordinatorService.get_coordinator_by_id(coordinator_id)
-    if not coordinator:
-        flash("Coordinador no encontrado", 'error')
-        return redirect(url_for('coordinator.get_all_coordinators'))
-    return render_template('coordinator/detailCoordinator.html', coordinator=coordinator)
-
-# Método para crear un nuevo coordinador
-@coordinator_blueprint.route('/create_coordinator', methods=['GET', 'POST'])
-def create_coordinator():
+# Metodo crear docente
+@teacher_blueprint.route('/create_teacher', methods=['GET', 'POST'])
+def create_teacher():
     if request.method == 'POST':
+        #Se obtienen los datos del formulario y se convierten a un diccionario
         data = request.form.to_dict()
-        print(f"Datos recibidos: {data}")  # Verificar datos en consola
-        new_coordinator, error = CoordinatorService.create_coordinator(data)
+        print(f"Datos recibidos: {data}")#verificar que se esten pasando los datos
+        #Se llama al servicio para crear el docente
+        new_teacher, error = TeacherService.create_teacher(data)
 
+        #En caso de que ocurra un error  
         if error:
+            #se muestra un mensaje
             flash(error, 'error')
-            return redirect(url_for('coordinator.create_coordinator'))
+            #se redirige a la misma pagina para poder intentar de nuevo
+            return redirect(url_for('teacher.create_teacher'))
         
-        flash("Coordinador creado exitosamente", 'success')
-        return redirect(url_for('coordinator.get_all_coordinators'))
+        #En caso contrario se muestra un mensaje y se redirige a la misma pagina
+        flash('Docente agregado exitosamente')
+        return redirect(url_for('teacher/teacher.create_teacher'))
+    
+    #Si el metodo no es POST se muestra la vista del formulario
+    return render_template('createTeacher.html')
 
-    return render_template('coordinator/createCoordinator.html')
+#Metodo para mostrar todos los docentes
+@teacher_blueprint.route('/search_allTeacher')
+def search_allTeacher():
+    #Se llama al servicio para obtener todos los docentes
+    teachers = TeacherService.search_allTeacher()
+    #Se muestra la vista de todos los docentes
+    return render_template('teacher/searchTeacher.html', teachers=teachers)
 
-# Método para actualizar un coordinador existente
-@coordinator_blueprint.route('/edit_coordinator/<int:coordinator_id>', methods=['GET', 'POST'])
-def update_coordinator(coordinator_id):
-    coordinator = CoordinatorService.get_coordinator_by_id(coordinator_id)
-    if not coordinator:
-        flash("Coordinador no encontrado", 'error')
-        return redirect(url_for('coordinator.get_all_coordinators'))
-
+#Metodo para buscar un docente por su identificación
+@teacher_blueprint.route('/search_by_identificationTeacher', methods=['GET', 'POST'])
+def search_by_identificationTeacher():
     if request.method == 'POST':
-        data = request.form.to_dict()
-        updated_coordinator, error = CoordinatorService.update_coordinator(coordinator_id, data)
+        #Se obtiene la identificación del formulario
+        teIdentification = request.form.get('teIdentification')
+        #Se llama al servicio
+        byIdentificationTeacher,error = TeacherService.search_by_identificationTeacher(teIdentification)
+        #En caso de que ocurra un error
+        if error:
+            #Se muestra un mensaje
+            flash(error, 'error')
+            #Se redirige a la misma pagina para intentar de nuevo
+            return redirect(url_for('teacher.searchTeacher'))
+        #En caso contrario se muestra la vista con el docente encontrado
+        return render_template('teacher/searchTeacher.html', teacher=byIdentificationTeacher)
+    return render_template('teacher/searchTeacher.html')
+    
+#Metodo para buscar un docente por el tipo docente
+@teacher_blueprint.route('/search_by_typeTeacher', methods=['GET', 'POST'])
+def search_by_typeTeacher():
+    if request.method == 'POST':
+        #Se obtiene la identificación del formulario
+        teTypeTeacher = request.form.get('teTypeTeacher')
+        print(f"Datos recibidos: {teTypeTeacher}")#verificar que se esten pasando los datos
+        #Se llama al servicio
+        byTypeTeacher,error = TeacherService.search_by_typeTeacher(teTypeTeacher)
+        #En caso de que ocurra un error
+        if error:
+            #Se muestra un mensaje
+            flash(error, 'error')
+            #Se redirige a la misma pagina para intentar de nuevo
+            return redirect(url_for('teacher.searchTeacher'))
+        #En caso contrario se muestra la vista con el docente encontrado
+        return render_template('teacher/searchTeacher.html', teachers=byTypeTeacher)
+    return render_template('teacher/searchTeacher.html')
 
+#Metodo para editar un docente
+@teacher_blueprint.route('/edit_teacher/<string:teIdentification>', methods=['GET', 'POST'])
+def edit_teacher(teIdentification):
+    if request.method == 'POST':
+        teIdentification = request.form.get('teIdentification')
+        edit_teacher, error = TeacherService.edit_teacher(teIdentification)
         if error:
             flash(error, 'error')
-            return redirect(url_for('coordinator.update_coordinator', coordinator_id=coordinator_id))
-
-        flash("Coordinador actualizado exitosamente", 'success')
-        return redirect(url_for('coordinator.get_all_coordinators'))
-
-    return render_template('coordinator/editCoordinator.html', coordinator=coordinator)
-
-# Método para eliminar un coordinador
-@coordinator_blueprint.route('/delete_coordinator/<int:coordinator_id>', methods=['POST'])
-def delete_coordinator(coordinator_id):
-    try:
-        CoordinatorService.delete_coordinator(coordinator_id)
-        flash("Coordinador eliminado exitosamente", 'success')
-    except ValueError as e:
-        flash(f"Error al eliminar el coordinador: {str(e)}", 'error')
-
-    return redirect(url_for('coordinator.get_all_coordinators'))
-
-# Método para crear un docente por parte de un coordinador
-@coordinator_blueprint.route('/create_teacher_by_coordinator', methods=['GET', 'POST'])
-def create_teacher_by_coordinator():
-    if request.method == 'POST':
-        data = request.form.to_dict()
-        print(f"Datos recibidos: {data}")  # Verificar datos en consola
-        new_teacher, error = CoordinatorService.create_teacher(data)
-
-        if error:
-            flash(error, 'error')
-            return redirect(url_for('coordinator.create_teacher_by_coordinator'))
-
-        flash("Docente creado exitosamente", 'success')
-        return redirect(url_for('coordinator.get_all_coordinators'))
-
-    return render_template('coordinator/createTeacherByCoordinator.html')
-
-# Método para gestionar asignaturas (crear y vincular competencias y RA)
-@coordinator_blueprint.route('/create_subject', methods=['GET', 'POST'])
-def manage_subjects():
-    if request.method == 'POST':
-        data = request.form.to_dict()
-        print(f"Datos recibidos: {data}")  # Verificar datos en consola
-        new_subject, error = CoordinatorService.create_subject(data)
-
-        if error:
-            flash(error, 'error')
-            return redirect(url_for('coordinator.manage_subjects'))
-
-        flash("Asignatura creada exitosamente", 'success')
-        return redirect(url_for('coordinator.get_all_coordinators'))
-
-    return render_template('coordinator/manageSubjects.html')
-
-# Método para gestionar competencias y RA
-@coordinator_blueprint.route('/create_competency', methods=['GET', 'POST'])
-def manage_competencies():
-    if request.method == 'POST':
-        data = request.form.to_dict()
-        print(f"Datos recibidos: {data}")  # Verificar datos en consola
-        new_competency, error = CoordinatorService.create_competency(data)
-
-        if error:
-            flash(error, 'error')
-            return redirect(url_for('coordinator.manage_competencies'))
-
-        flash("Competencia creada exitosamente", 'success')
-        return redirect(url_for('coordinator.get_all_coordinators'))
-
-    return render_template('coordinator/manageCompetencies.html')
+            return redirect(url_for('teacher.edit_teacher'))
+        return redirect(url_for('teacher.edit_teacher', teIdentification=edit_teacher.teIdentification))
