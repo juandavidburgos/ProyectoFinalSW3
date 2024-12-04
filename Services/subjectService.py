@@ -98,7 +98,7 @@ class SubjectService:
             return None, f"No se encontro una asignatura con el id: {id}"
 
         try:
-            subject.name = data.get('name', subject.name)#Actualiza el campo subject.name con 'name' que es el que llega
+            subject.name = data.get('name', subject.name)
             subject.credits = int(data.get('credits', subject.credits)) 
             subject.goals = data.get('goals', subject.goals)
             subject.semester = int(data.get('semester', subject.semester))

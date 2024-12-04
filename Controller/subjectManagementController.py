@@ -71,7 +71,7 @@ def search_subject():
 
             # Llamar al servicio para obtener la asignatura
             subject, error = facade.get_subject_by_id(selected_subject)
-            
+
             print(subject)
             if error:
                 flash(error, 'error')
@@ -106,7 +106,7 @@ def update_subject(id):
                 return redirect(url_for('subject.update_subject', id=id))
 
             flash("Asignatura actualizada con éxito!", 'success')
-            return redirect(url_for('subject.search_subject'))
+            #return redirect(url_for('subject.update_subject'))
 
         except Exception as e:
             flash(f"Error al actualizar la asignatura: {e}", "danger")

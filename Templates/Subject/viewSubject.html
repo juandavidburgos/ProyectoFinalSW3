@@ -15,36 +15,47 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Formulario para ingresar el nombre de la asignatura a consultar -->
-    <form action="{{ url_for('subject.get_subject') }}" method="POST">
-        <label for="name">Nombre asignatura:</label>
-        <input type="text" name="name" id="name" value="{{ subject.name }}" required><br>
-        <button type="submit">Consultar</button>
-    </form>
-
-    <!-- Mostrar la asignatura en una tabla si fue encontrada -->
-    {% if subject %}
-    <h2>Subject Found:</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Id:</th>
-                <th>Nombre:</th>
-                <th>Creditos:</th>
-                <th>Objetivos:</th>
-                <th>Semestre:</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ subject.id }}</td>
-                <td>{{ subject.name }}</td>
-                <td>{{ subject.credits }}</td>
-                <td>{{ subject.goals }}</td>
-                <td>{{ subject.semester }}</td>
-            </tr>
-        </tbody>
-    </table>
-    {% endif %}
+    <div class="col-md-6">
+        <div class="container">
+            <div class="row">
+                <!-- Tabla de Asignaturas-->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Asignaturas existentes</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Creditos</th>
+                                        <th>Objetivos</th>
+                                        <th>Semestre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for sub in subjects %}
+                                    <tr>
+                                        <td>{{ sub.id }}</td>
+                                        <td>{{ sub.name }}</td>
+                                        <td>{{ sub.credits }}</td>
+                                        <td>{{ sub.goals }}</td>
+                                        <td>{{ sub.semester }}</td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="5">No hay asignaturas registradas</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
