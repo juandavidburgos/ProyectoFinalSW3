@@ -1,25 +1,49 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Coordinador</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <header>
-        <h1>Bienvenido, Coordinador</h1>
-    </header>
-    <main>
-        <div>
-            <a href="{{ url_for('coordinator.get_all_coordinators') }}" class="btn">Ver Coordinadores</a>
-            <a href="{{ url_for('coordinator.create_coordinator') }}" class="btn">Crear Coordinador</a>
-            <a href="{{ url_for('coordinator.manage_subjects') }}" class="btn">Crear Asignatura</a>
-            <a href="{{ url_for('coordinator.manage_competencies') }}" class="btn">Gestionar Competencias</a>
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container text-center">
+    <h1 class="my-4">Dashboard Coordinador</h1>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/competencias.jpg') }}" class="card-img-top" alt="Competencias">
+                <div class="card-body">
+                    <h5 class="card-title">Crear Competencias</h5>
+                    <a href="{{ url_for('coordinator.create_competencies') }}" class="btn btn-primary">Ir a Crear Competencias</a>
+                </div>
+            </div>
         </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 Gestión Académica. Todos los derechos reservados.</p>
-    </footer>
-</body>
-</html>
+        
+        <div class="col-md-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/docente.jpg') }}" class="card-img-top" alt="Docente">
+                <div class="card-body">
+                    <h5 class="card-title">Crear Docente</h5>
+                    <a href="{{ url_for('coordinator.create_teacher') }}" class="btn btn-primary">Ir a Crear Docente</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/asignatura.jpg') }}" class="card-img-top" alt="Asignatura">
+                <div class="card-body">
+                    <h5 class="card-title">Crear Asignatura</h5>
+                    <a href="{{ url_for('coordinator.create_subject') }}" class="btn btn-primary">Ir a Crear Asignatura</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/asignacion.jpg') }}" class="card-img-top" alt="Asignación Académica">
+                <div class="card-body">
+                    <h5 class="card-title">Asignación Académica</h5>
+                    <a href="{{ url_for('coordinator.assign_academic') }}" class="btn btn-primary">Ir a Asignación Académica</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

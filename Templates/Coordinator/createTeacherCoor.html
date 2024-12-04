@@ -1,80 +1,18 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Docente</title>
-    <link rel="stylesheet" href="path_to_your_css_file.css"> <!-- Asegúrate de enlazar correctamente tu archivo CSS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Si usas jQuery para alguna funcionalidad -->
-</head>
-<body>
+{% extends "layout.html" %}
 
-<!-- Barra de Navegación -->
-<nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#"> 
-            <img src="logo.png" alt="Logo"> <!-- Ajusta la ruta de la imagen -->
-            <span>Gestión Académica</span>
-        </a>
-    </div>
-</nav>
-
-<!-- Contenedor Principal -->
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Crear Nuevo Docente</h1>
-
-    <!-- Formulario de Crear Docente -->
-    <form action="{{ url_for('crear_docente') }}" method="POST" class="p-4 border rounded bg-light">
-        <div class="form-group mb-3">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ingrese el nombre del docente" required>
+{% block body %}
+<div class="container">
+    <h1 class="my-4">Crear Docente</h1>
+    <form method="POST" action="{{ url_for('coordinator.create_teacher') }}">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Docente</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
         </div>
-
-        <div class="form-group mb-3">
-            <label for="apellido">Apellido</label>
-            <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Ingrese el apellido del docente" required>
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="email" name="email" required>
         </div>
-
-        <div class="form-group mb-3">
-            <label for="correo">Correo Electrónico</label>
-            <input type="email" id="correo" name="correo" class="form-control" placeholder="Ingrese el correo electrónico del docente" required>
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" class="form-control" placeholder="Ingrese el teléfono del docente" required>
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="direccion">Dirección</label>
-            <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Ingrese la dirección del docente" required>
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="programa">Programa</label>
-            <select id="programa" name="programa" class="form-control" required>
-                <option value="" disabled selected>Seleccione el programa</option>
-                <option value="programa1">Programa 1</option>
-                <option value="programa2">Programa 2</option>
-                <option value="programa3">Programa 3</option>
-                <!-- Agrega más opciones según lo necesites -->
-            </select>
-        </div>
-
-        <!-- Botones para enviar o cancelar -->
-        <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary">Crear Docente</button>
-            <a href="mainCoordinator.html" class="btn btn-secondary">Cancelar</a>
-        </div>
+        <button type="submit" class="btn btn-primary">Crear Docente</button>
     </form>
 </div>
-
-<!-- Pie de Página -->
-<footer class="mt-5">
-    <div class="container text-center">
-        <p>&copy; 2024 Gestión Académica. Todos los derechos reservados.</p>
-    </div>
-</footer>
-
-</body>
-</html>
+{% endblock %}

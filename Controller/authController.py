@@ -1,16 +1,30 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+"""# controller/authController.py
+from flask import Blueprint, render_template, request, redirect, url_for
 
+# Crear el blueprint para la autenticación
 auth_blueprint = Blueprint('auth', __name__)
+
+# Diccionario de usuarios y contraseñas con roles
+users = {
+    'coordinador1': {'password': 'clavecoordinador', 'role': 'coordinador'},
+    'profesor1': {'password': 'claveprofesor', 'role': 'profesor'},
+}
 
 @auth_blueprint.route('/login', methods=['POST'])
 def login():
-    usuario = request.form.get('usuario')
-    clave = request.form.get('clave')
-
-    # Validar credenciales (puedes usar un servicio o modelo para esto)
-    if usuario == 'coordinador' and clave == 'password123':  # Ejemplo simple
-        session['user'] = usuario
-        return redirect(url_for('coordinator.main_dashboard'))
+    usuario = request.form['usuario']
+    clave = request.form['clave']
     
-    flash("Usuario o contraseña incorrectos", 'error')
-    return render_template('index.html', error="Credenciales inválidas")
+    # Verificar si el usuario existe en el diccionario y si la contraseña es correcta
+    if usuario in users and users[usuario]['password'] == clave:
+        role = users[usuario]['role']
+        
+        # Redirigir según el rol
+        if role == 'coordinador':
+            return redirect(url_for('mainCoordinator'))
+        elif role == 'profesor':
+            return redirect(url_for('mainTeacher'))
+    
+    # Si el usuario o la contraseña no son correctos, mostrar error
+    return render_template('index.html', error="Usuario o contraseña incorrectos")
+"""
