@@ -6,7 +6,7 @@ class LearningOutcomeService:
     def create_learning_outcome(data):
         """Crea un nuevo Resultado de Aprendizaje"""
         # Validaciones de los datos
-        if not data.get('lo_description') or not data.get('comp_id'):
+        if not data.get('lout_description') or not data.get('comp_id'):
             return None, "La descripción y el ID de la competencia son requeridos"
 
         # Validar que el comp_id esté asociado a una competencia existente
@@ -17,7 +17,7 @@ class LearningOutcomeService:
         # Crear el nuevo Resultado de Aprendizaje
         new_learning_outcome = LearningOutcome(
             comp_id=data['comp_id'],
-            lo_description=data['lo_description']
+            lo_description=data['lout_description']
         )
 
         try:
@@ -30,16 +30,14 @@ class LearningOutcomeService:
         return new_learning_outcome, None
     
     @staticmethod
-    def update_learning_outcome(lo_id, data):
-        """Actualiza un Resultado de Aprendizaje existente"""
+    def update_learning_outcome(lout_id, data):
+        #Actualiza un Resultado de Aprendizaje existente
         # Buscar el Resultado de Aprendizaje por su ID
         try:
-            learning_outcome = LearningOutcome.query.get(lo_id)
+            learning_outcome = LearningOutcome.query.filter_by(lout_id=lout_id).first()
             if not learning_outcome:
                 return None, "El Resultado de Aprendizaje no existe"
-            learning_outcome.comp_id = int(data.get('lo_id', learning_outcome.lo_id))
-            learning_outcome.comp_id = int(data.get('comp_id', learning_outcome.comp_id))
-            learning_outcome.lo_description = data.get('lo_description', learning_outcome.lo_description)
+            learning_outcome.lout_description = data.get('lout_description', learning_outcome.lout_description)
 
             db.session.commit()
             return  learning_outcome,None
@@ -75,13 +73,14 @@ class LearningOutcomeService:
             return None, f"Error al obtener los Resultados de Aprendizaje: {str(e)}"
     
     @staticmethod
-    def get_learning_outcome_by_id(lo_id):
+    def get_learning_outcome_by_id(lout_id):
         # Validaciones de los datos
-        if not lo_id:
+        if not lout_id:
             return None, "El ID es requerido"
 
-        learningOutcome = LearningOutcome.query.filter_by(lo_id=lo_id).first()
+        learningOutcome = LearningOutcome.query.filter_by(lout_id=lout_id).first()
         if not learningOutcome:
-            return None, f"No se encontro un RA con ese ID {lo_id}."
-        return learningOutcome, None
+            return None, f"No se encontro un RA con ese ID {lout_id}."
+        learningOutcome_dict = learningOutcome.to_dict()
+        return learningOutcome_dict, None
 

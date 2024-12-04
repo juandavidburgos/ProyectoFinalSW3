@@ -1,16 +1,17 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from Services.learningOutcomeService import LearningOutcomeService
-
+from Facade.learningOutcomeManagementFacade import LoutFacade
 # Crear un blueprint para el controlador de resultados de aprendizaje
 learning_outcome_bp = Blueprint('learning_outcome', __name__)
 
 @learning_outcome_bp.route('/create_learning_outcome', methods=['GET', 'POST'])
 def create_learning_outcome():
     """Ruta para crear un nuevo Resultado de Aprendizaje"""
+    facade= LoutFacade()
     if request.method == 'POST':
         data = request.form.to_dict()
         # Llamar al servicio para crear el resultado de aprendizaje
-        new_learning_outcome, error = LearningOutcomeService.create_learning_outcome(data)
+        new_learning_outcome, error = facade.create_lo(data)
 
         if error:
             flash(error, 'error')
@@ -24,9 +25,10 @@ def create_learning_outcome():
 @learning_outcome_bp.route('/list_learning_outcome', methods=['GET', 'POST'])
 def list_and_search_learning_outcomes():
     """Ruta para listar y buscar resultados de aprendizaje"""
+    facade= LoutFacade()
     try:
         # Obtener todos los resultados de aprendizaje para mostrarlos en la tabla
-        learning_outcomes, error = LearningOutcomeService.get_all_learning_outcomes()
+        learning_outcomes, error = facade.get_all_louts()
         if error:
             flash(error, 'error')
             learning_outcomes = []
@@ -39,7 +41,7 @@ def list_and_search_learning_outcomes():
                 return render_template('LearningOutcome/listLearningOutcome.html', learning_outcomes=learning_outcomes)
 
             # Buscar resultado de aprendizaje por ID
-            learning_outcome, error = LearningOutcomeService.get_learning_outcome_by_id(lo_id)
+            learning_outcome, error = facade.get_learning_outcome_by_id(lo_id)
             if error:
                 flash(error, 'error')
                 return render_template('LearningOutcome/listLearningOutcome.html', learning_outcomes=learning_outcomes)
@@ -59,20 +61,21 @@ def list_and_search_learning_outcomes():
 @learning_outcome_bp.route('/update_learning_outcome', methods=['GET', 'POST'])
 def update_learning_outcome():
     learning_outcome = None
+    facade = LoutFacade()
     if request.method == 'POST':
         data = request.form.to_dict()
-        lo_id = data.get('lo_id')  # Obtener el nombre del formulario
+        lout_id = data.get('lout_id')  # Obtener el nombre del formulario
 
         # Llamamos al servicio para actualizar el RA
-        learning_outcome, error = LearningOutcomeService.update_learning_outcome(lo_id, data)
+        learning_outcome, error = facade.update_learning_outcome(lout_id, data)
         if error:
-            flash(error, "error")
-            return redirect(url_for('learning_outcome.list_and_search_learning_outcomes', lo_id=lo_id))
+            flash(f"Error al actualizar: {str(error)}")
+            return redirect(url_for('learning_outcome.update_learning_outcome', learning_outcome=data))
         if learning_outcome:
             flash("RA actualizado con éxito!", 'success')
-            return redirect(url_for('learning_outcome.list_and_search_learning_outcomes', lo_id=lo_id))  # Redirigimos usando el nombre actualizado
-
+            #return redirect(url_for('learning_outcome.list_and_search_learning_outcomes', lout_id=lout_id))  # Redirigimos usando el nombre actualizado
     # Si el método NO ES POST, se muestra la vista del formulario.
+    
     return render_template('LearningOutcome/updateLearningOutcome.html', learning_outcome=learning_outcome)
 
 

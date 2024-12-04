@@ -104,3 +104,52 @@ class IntegrationService:
             # En caso de error, devolver el mensaje de error
             print(f"Error: {str(e)}")
             return [], f"Error al obtener las asignaciones: {str(e)}" 
+        
+    @staticmethod
+    def get_assign_by_teacher(tea_id):
+        """
+        Obtiene todas las asignaciones para un profesor específico basado en su ID.
+        """
+        try:
+            # Consultar las asignaciones del profesor
+            assignments = IntegrationTSC.query.filter_by(teach_id=tea_id).all()
+
+            if not assignments:
+                return None, f"No se encontraron asignaciones para el docente con ID {tea_id}"
+
+            # Convertir los resultados a diccionarios
+            return [assignment.to_dict() for assignment in assignments], None
+            
+
+        except Exception as e:
+            return None, f"Error al consultar las asignaciones: {str(e)}"
+
+    @staticmethod
+    def get_competences_names_by_ids(comp_ids):
+        try:
+            # Consulta de competencias
+            competencias = (
+                db.session.query(Competence.comp_id, Competence.comp_description)
+                .filter(Competence.comp_id.in_(comp_ids))
+                .all()
+            )
+            # Convertir los resultados a una lista de diccionarios
+            return [{"comp_id": comp[0], "comp_description": comp[1]} for comp in competencias],None
+        except Exception as e:
+            
+            return [], f"Error al consultar competencias: {e}"
+        
+    @staticmethod
+    def get_louts_names_by_ids(louts_ids):
+        try:
+            # Consulta de competencias
+            louts = (
+                db.session.query(LearningOutcome.lout_id, LearningOutcome.lout_description)
+                .filter(LearningOutcome.lout_id.in_(louts_ids))
+                .all()
+            )
+            # Convertir los resultados a una lista de diccionarios
+            return [{"lout_id": lo[0], "lout_description": lo[1]} for lo in louts],None
+        except Exception as e:
+            
+            return [], f"Error al consultar resultados de aprendizaje: {e}"
