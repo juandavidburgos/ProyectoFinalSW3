@@ -1,34 +1,84 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
 
-    <h1>Update subject</h1>
+            <form action="{{ url_for('subject.update_subject',id=subject.id) }}" method="POST">
+                
+                <div class ="form-group mt-2">
+                    <label for="name">Nombre de la asignatura:</label>
+                    <input type="text" id="name" name="name" class="form-control mt-1" value="{{ subject.name }}" required><br> <!-- Si no queremos que el usuario lo cambie, se pone: 'readonly' antes de required-->
+                </div>
 
-    <!-- Mostrar mensajes flash -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+                <div class ="form-group mt-2">
+                    <label for="credits">Creditos:</label>
+                    <input type="number" id="credits" name="credits" class="form-control mt-1" value="{{ subject.credits }}" required><br>
+                </div>
 
-    <form action="{{ url_for('subject.update_subject') }}" method="POST">
-        <label for="name">Nombre:</label>
-        <input type="text" name="name" id="name" value="{{ subject.name }}" readonly required><br> <!-- Si no queremos que el usuario lo cambie, se pone: 'readonly' antes de required-->
+                <div class ="form-group mt-2">
+                    <label for="goals">Objetivos:</label>
+                    <textarea id="goals" name="goals" class="form-control mt-1">{{ subject.goals }}</textarea><br>
+                </div>
 
-        <label for="credits">Creditos:</label>
-        <input type="number" name="credits" id="credits" value="{{ subject.credits }}" required><br>
+                <div class ="form-group mt-2">
+                    <label for="semester">Semestre:</label>
+                    <input type="number" id="semester" name="semester" class="form-control mt-1" value="{{ subject.semester }}" required><br>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+            </form>
+        </div>
+    </div>
 
-        <label for="goals">Objetivos:</label>
-        <textarea name="goals" id="goals">{{ subject.goals }}</textarea><br>
+    <div class="col-md-6">
+        <div class="container">
+            <div class="row">
+                <!-- Tabla de Asignaturas-->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Asignatura</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Creditos</th>
+                                        <th>Objetivos</th>
+                                        <th>Semestre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ subject.id }}</td>
+                                        <td>{{ subject.name }}</td>
+                                        <td>{{ subject.credits }}</td>
+                                        <td>{{ subject.goals }}</td>
+                                        <td>{{ subject.semester }}</td>
+                                    </tr>
 
-        <label for="semester">Semestre:</label>
-        <input type="number" name="semester" id="semester" value="{{ subject.semester }}" required><br>
-
-        <button type="submit">Actualizar</button>
-    </form>
-
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
