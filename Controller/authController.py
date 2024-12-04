@@ -1,4 +1,29 @@
-from flask import Blueprint, request, redirect, url_for, flash, render_template
+from flask import Blueprint, request, jsonify, flash, redirect, url_for
+from Services.authService import AuthService
+
+# Blueprint para el controlador de autenticación
+auth_blueprint = Blueprint('auth', __name__)
+
+# Ruta para iniciar sesión
+@auth_blueprint.route('/login', methods=['POST'])
+def login():
+    # Obtener los datos del formulario
+    data = request.get_json()
+    print(f"Datos recibidos para login: {data}")
+
+    # Llamar al servicio de login
+    auth_data, error = AuthService.login_user(data)
+    if error:
+        return jsonify({"error": error}), 401
+
+    # Retornar el token generado
+    return jsonify({
+        "message": "Inicio de sesión exitoso",
+        "token": auth_data["token"],
+        "role": auth_data["role"]
+    }), 200
+
+'''from flask import Blueprint, request, redirect, url_for, flash, render_template
 from Services.authService import AuthService
 
 # Blueprint para el controlador de autenticación
@@ -25,4 +50,4 @@ def login():
         # Redirigir al dashboard o página según el rol
         return redirect(url_for('dashboard.index'))
 
-    return render_template('auth/login.html')
+    return render_template('auth/login.html')'''
