@@ -116,10 +116,13 @@ def get_lout_by_competence():
     if request.method == 'POST':
         data = request.form.to_dict()
         try:
+            print("ENTRAMOS A GET_LOUT_BY_COMPTENCE")
             selected_comp_id = data['competence_id']
+            print(selected_comp_id)
             # Llamar al servicio para actualizar la asignatura
             raas, error = facade.get_lout_by_competence(selected_comp_id)
-
+            print("pASAMOS A RASS,ERROR")
+            print(raas)
             if error:
                 flash(error, "danger")
                 return redirect(url_for('integration.get_lout_by_competence'))
@@ -127,6 +130,7 @@ def get_lout_by_competence():
             if raas:
                 raaIds = [lou["lout_id"] for lou in raas]
                 raas,error = facade.get_lout_names_by_ids(raaIds)
+                print("Entramos al if de raas")
                 if error:
                     print(error)
                 mostrar_cbx = True
