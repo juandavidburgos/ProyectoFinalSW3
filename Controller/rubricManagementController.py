@@ -2,7 +2,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from Services.rubricService import RubricService
 
-
 #Blueprint para el controlador de rubrica
 rubric_blueprint = Blueprint('rubric', __name__)
 

@@ -1,9 +1,9 @@
 from Model.rubric import Rubric
 from Model.connection import db
 from Model.evaluator import Evaluator
+from Model.connection import db
 
 class RubricService:
-     
     @staticmethod
     def create_rubric(data):
         print(f"Datos recibidos en el servicio: {data}")
@@ -33,23 +33,23 @@ class RubricService:
     
     @staticmethod
     def get_all_Rubric():
-        #*Obtiene todos los docentes
+        #*Obtiene todos las rubricas
         try:
-            # Consultar todos los docentes 
+            # Consultar todos los rubricas 
             # Consultar solo los campos requeridos
-            teachers = db.session.query(Teacher.teId, Teacher.teName, Teacher.teLastName).all()
+            rubrics = db.session.query(Rubric.rub_id,Rubric.rub_name,Rubric.criterion_description, Rubric.rub_level,Rubric.rub_score).all()
 
-            if not teachers:
-                return [], "No se encontraron docentes."
+            if not rubrics:
+                return [], "No se encontraron rubricas."
             # Convertir las tuplas resultantes en una lista de diccionarios
-            teachers_dict = [{"teId": tea.teId, "teName": tea.teName, "teLastName": tea.teLastName} for tea in teachers]
+            rubric_dict = [{"rub_id": rubric.rub_id, "rub_name": rubric.rub_name, "criterion_description": Rubric.criterion_description,"rub_level": Rubric.rub_level,"rub_score": Rubric.rub_score } for rubric in rubrics]
         
-            print(teachers_dict)  # Esto imprimirá el contenido de los diccionarios
+            print(rubric_dict)  # Esto imprimirá el contenido de los diccionarios
             
-            return teachers_dict, None  # Devolver los resultados como lista de diccionarios
+            return rubric_dict, None  # Devolver los resultados como lista de diccionarios
         except Exception as e:
             # En caso de error, devolver el mensaje de error
-            return [], f"Error al obtener los docentes: {str(e)}"
+            return [], f"Error al obtener los rubricas: {str(e)}"
          
     @staticmethod
     def search_by_rub_level(rub_level):

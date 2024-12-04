@@ -1,4 +1,4 @@
-from Model.ResultaApRubrica import ResultaApRubrica
+from Model.resultaApRubrica import ResultaApRubrica
 from Model.rubric import Rubric
 from Model.evaluator import Evaluator
 from Model.learningOutcome import LearningOutcome

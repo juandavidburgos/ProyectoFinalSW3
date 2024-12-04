@@ -8,7 +8,7 @@ from Controller.learningOutcomeManagementController import learning_outcome_bp
 from Controller.integrationController import integration_bp
 from Controller.rubricManagementController import rubric_blueprint
 from Controller.evaluatorManagementController import evaluator_blueprint
-from Controller.ResultaApRubricaManagementController import resultaApRubric_blueprint
+#from Controller.resultaApRubricaManagementController import resultaApRubric_bp
 # Inicialización de la aplicación Flask
 app = Flask(__name__)  
 # Clave secreta
@@ -38,8 +38,8 @@ app.register_blueprint(rubric_blueprint, url_prefix='/rubric')
 #Controlador de la gestion de evaluadores
 app.register_blueprint(evaluator_blueprint, url_prefix='/evaluator')
 #controlador integracion rubrica-resultado de aprendizaje
-app.register_blueprint(resultaApRubric_blueprint, url_prefix='/resultaApRubric')
+#app.register_blueprint(resultaApRubric_bp, url_prefix='/resultaApRubric')
 
 #Comprobar que el archivo que se esta ejecutando es el principal
 if __name__ == '__main__':
-    app.run(debug=True, port=3000)  # debug = true, actualiza cada vez que hacemos cambios en el servidor
+    app.run(debug=True, port=8080)  # debug = true, actualiza cada vez que hacemos cambios en el servidor

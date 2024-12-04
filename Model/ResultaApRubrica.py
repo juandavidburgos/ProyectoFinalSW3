@@ -1,4 +1,4 @@
-from connection import db  # Importa db desde connection.py
+from .connection import db  # Importa db desde connection.py
 
 class ResultaApRubrica(db.Model):
     __tablename__ = 'RESULTAAP_RUBRICA'  #Nombre de la tabla

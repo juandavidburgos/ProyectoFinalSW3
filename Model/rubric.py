@@ -1,6 +1,5 @@
 # #*RUBRICA
-from connection import db  # Importa db desde connection.py
-
+from .connection import db
 class Rubric(db.Model):
     __tablename__ = 'TBL_RUBRICA'  # Nombre de la tabla
 
