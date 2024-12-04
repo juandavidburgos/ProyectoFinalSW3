@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Coordinador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Detalle del Coordinador</h1>
+    </header>
+    <main>
+        <p><strong>ID:</strong> {{ coordinator.id }}</p>
+        <p><strong>Nombre:</strong> {{ coordinator.name }}</p>
+        <p><strong>Email:</strong> {{ coordinator.email }}</p>
+        <p><strong>Teléfono:</strong> {{ coordinator.phone }}</p>
+    </main>
+    <footer>
+        <a href="{{ url_for('coordinator.get_all_coordinators') }}">Volver a la Lista de Coordinadores</a>
+    </footer>
+</body>
+</html>

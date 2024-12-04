@@ -1,7 +1,7 @@
 #holaaaaaaaaaa
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from Facade.integrationFacade import IntegrationFacade
-from Facade.cmpLoutFacade import CmpLoutFacade
+from Facade.CmpLoutFacade import CmpLoutFacade
 
 integration_bp = Blueprint('integration', __name__)
 
